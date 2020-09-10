@@ -1,0 +1,28 @@
+{
+	"name": "Lens",
+	"version": "0.0.1",
+	"main": "src/index.js",
+	"author": "Michał Kleszczyński (https://github.com/Magiczne)",
+	"license": "MIT",
+	"scripts": {
+		"start": "node ./node_modules/ts-node/dist/bin.js src/index.ts",
+		"lint": "eslint . --ext .ts",
+		"lint-and-fix": "eslint . --ext .ts --fix"
+	},
+	"dependencies": {
+		"boxen": "^4.2.0",
+		"chalk": "^4.1.0",
+		"puppeteer": "^5.2.1",
+		"ts-node": "^9.0.0",
+		"typescript": "^4.0.2",
+		"yargs": "^16.0.3"
+	},
+	"devDependencies": {
+		"@types/node": "^14.10.0",
+		"@types/puppeteer": "^3.0.2",
+		"@types/yargs": "^15.0.5",
+		"@typescript-eslint/eslint-plugin": "^4.1.0",
+		"@typescript-eslint/parser": "^4.1.0",
+		"eslint": "^7.8.1"
+	}
+}
