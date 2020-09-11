@@ -14,8 +14,10 @@ const args: LensArguments = yargs
 	})
 	.option('resolution', {
 		alias: 'r',
-		describe: 'Custom resolution (e.g. 800x600)',
-		string: true
+		string: true,
+		describe: 'Custom resolution (e.g. 800x600). ' +
+			'If you want to create screenshots for multiple resolutions separate them with a space ' +
+            '(e.g. 800x600 1920x1080)'
 	})
 	.option('tag', {
 		alias: 't',

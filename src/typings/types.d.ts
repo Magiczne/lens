@@ -1,5 +1,10 @@
 import { UrlWithStringQuery } from 'url'
 
+interface Resolution {
+	width: number
+	height: number
+}
+
 interface LensArguments {
 	[x: string]: unknown
 
@@ -13,10 +18,7 @@ interface LensArguments {
 
 interface ParsedLensArguments {
 	url: UrlWithStringQuery
-	resolution?: {
-		width: number
-		height: number
-	}
+	resolutions?: Resolution[]
 	tag: string
 }
 
@@ -28,6 +30,6 @@ interface Logger {
 }
 
 export {
-	LensArguments, ParsedLensArguments,
+	LensArguments, ParsedLensArguments, Resolution,
 	Logger
 }

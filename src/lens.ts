@@ -2,7 +2,7 @@ import fs from 'fs'
 import puppeteer, { Browser } from 'puppeteer'
 import url, { UrlWithStringQuery } from 'url'
 
-import { LensArguments, Logger, ParsedLensArguments } from './typings/types'
+import { LensArguments, Logger, ParsedLensArguments, Resolution } from './typings/types'
 import { ConsoleLogger } from './logger'
 
 export default class Lens {
@@ -81,17 +81,19 @@ export default class Lens {
 	 * @private
 	 */
 	private async generateScreenshot (args: ParsedLensArguments, dir: string): Promise<void> {
-		const page = await this.browser.newPage()
+		await Promise.all(args.resolutions.map(async res => {
+			const page = await this.browser.newPage()
 
-		await page.setViewport({ ...args.resolution })
-		await page.goto(args.url.href)
-		await page.screenshot({
-			path: `${dir}/${args.resolution.width}x${args.resolution.height}.png`
-		})
+			await page.setViewport({ ...res })
+			await page.goto(args.url.href)
+			await page.screenshot({
+				path: `${dir}/${res.width}x${res.height}.png`
+			})
 
-		this.logger.success(`[DONE] ${args.url.host} ${args.resolution.width}x${args.resolution.height}`)
+			await page.close()
 
-		await page.close()
+			this.logger.success(`[DONE] ${args.url.host} ${res.width}x${res.height}`)
+		}))
 	}
 
 	/**
@@ -108,16 +110,24 @@ export default class Lens {
 	 * @private
 	 */
 	private parseArguments (args: LensArguments): ParsedLensArguments {
-		const resolution = args.resolution
-			? args.resolution.split('x').map(x => parseInt(x, 10))
+		const resolutions: Resolution[] | undefined = args.resolution
+			? args.resolution.split(' ')
+				.map(res => {
+					return res.trim()
+						.split('x')
+						.map(x => parseInt(x, 10))
+				})
+				.map(res => {
+					return {
+						width: res[0],
+						height: res[1]
+					} as Resolution
+				})
 			: undefined
 
 		return {
 			url: url.parse(args.url),
-			resolution: args.resolution ? {
-				width: resolution[0],
-				height: resolution[1]
-			} : undefined,
+			resolutions: resolutions,
 			tag: args.tag,
 		}
 	}
