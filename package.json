@@ -1,28 +1,51 @@
 {
-	"name": "Lens",
+	"name": "web-lens",
 	"version": "0.0.1",
-	"main": "src/index.js",
-	"author": "Michał Kleszczyński (https://github.com/Magiczne)",
-	"license": "MIT",
+	"description": "Create screenshots of your webpage in different resolutions in a matter of seconds.",
+	"main": "./lib/index.js",
+	"bin": {
+		"lens": "./bin/lens"
+	},
 	"scripts": {
+		"build:dev": "ncc build ./src/index.ts -e puppeteer -o lib",
+		"build:prod": "ncc build ./src/index.ts -e puppeteer -o lib -m",
 		"start": "node ./node_modules/ts-node/dist/bin.js src/index.ts",
 		"lint": "eslint . --ext .ts",
 		"lint-and-fix": "eslint . --ext .ts --fix"
 	},
-	"dependencies": {
-		"boxen": "^4.2.0",
-		"chalk": "^4.1.0",
-		"puppeteer": "^5.2.1",
-		"ts-node": "^9.0.0",
-		"typescript": "^4.0.2",
-		"yargs": "^16.0.3"
+	"engines": {
+		"node": ">=12"
 	},
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/Magiczne/lens.git"
+	},
+	"keywords": [],
+	"author": {
+		"name": "Michał Kleszczyński",
+		"email": "michalkamilkleszczynski@gmail.com",
+		"url": "https://github.com/Magiczne"
+	},
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/Magiczne/lens/issues"
+	},
+	"homepage": "https://github.com/Magiczne/lens",
 	"devDependencies": {
 		"@types/node": "^14.10.0",
 		"@types/puppeteer": "^3.0.2",
 		"@types/yargs": "^15.0.5",
 		"@typescript-eslint/eslint-plugin": "^4.1.0",
 		"@typescript-eslint/parser": "^4.1.0",
-		"eslint": "^7.8.1"
+		"@vercel/ncc": "^0.24.0",
+		"boxen": "^4.2.0",
+		"chalk": "^4.1.0",
+		"eslint": "^7.8.1",
+		"ts-node": "^9.0.0",
+		"typescript": "^4.0.2",
+		"yargs": "^16.0.3"
+	},
+	"dependencies": {
+		"puppeteer": "^5.2.1"
 	}
 }
