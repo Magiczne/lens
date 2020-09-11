@@ -13,7 +13,7 @@ export default class Lens {
 	private browser: Browser
 	private logger: Logger
 
-	public constructor (args: LensArguments, logger: Logger = undefined) {
+	public constructor (args: LensArguments, logger: Logger | undefined = undefined) {
 		this.args = this.parseArguments(args)
 		this.logger = logger ?? new ConsoleLogger()
 	}
