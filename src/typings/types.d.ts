@@ -17,7 +17,7 @@ interface LensArguments {
 }
 
 interface ParsedLensArguments {
-	url: UrlWithStringQuery
+	urls: UrlWithStringQuery[]
 	resolutions?: Resolution[]
 	tag: string
 }

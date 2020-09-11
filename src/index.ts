@@ -3,12 +3,13 @@ import yargs from 'yargs'
 import { Device, LensArguments } from './typings/types'
 import Lens from './lens'
 
-const options: LensArguments = yargs
 const args: LensArguments = yargs
 	.usage('Usage: -u <url>')
 	.option('url', {
 		alias: 'u',
-		describe: 'The url from which screenshots will be taken',
+		describe: 'The url from which screenshots will be taken. ' +
+                  'If you want to create screenshots from multiple urls separate them with a space.' +
+                  '(e.g. https://example.com https://example.com/subpage)',
 		string: true,
 		demandOption: true
 	})

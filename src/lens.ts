@@ -4,6 +4,7 @@ import url, { UrlWithStringQuery } from 'url'
 
 import { LensArguments, Logger, ParsedLensArguments, Resolution } from './typings/types'
 import { ConsoleLogger } from './logger'
+import { forEachAsync } from './utils'
 
 export default class Lens {
 	private readonly screenshotsDir = './screenshots'
@@ -40,10 +41,12 @@ export default class Lens {
 	 * Run lens
 	 */
 	public async run (): Promise<void> {
-		this.logger.header(`Running lens for ${this.args.url.href}`)
+		await forEachAsync(this.args.urls, async u => {
+			this.logger.header(`Running lens for ${u.href}`)
 
-		const directory = this.createDirectoryForUrl(this.args.url, this.args.tag)
-		await this.generateScreenshot(this.args, directory)
+			const directory = this.createDirectoryForUrl(u, this.args.tag)
+			await this.generateScreenshots(this.args, u, directory)
+		})
 	}
 
 	/**
@@ -74,25 +77,26 @@ export default class Lens {
 	}
 
 	/**
-	 * Generate screenshot based on the specified arguments
+	 * Generate screenshots based on the specified arguments
 	 *
 	 * @param args
+	 * @param url
 	 * @param dir
 	 * @private
 	 */
-	private async generateScreenshot (args: ParsedLensArguments, dir: string): Promise<void> {
+	private async generateScreenshots (args: ParsedLensArguments, url: UrlWithStringQuery, dir: string): Promise<void> {
 		await Promise.all(args.resolutions.map(async res => {
 			const page = await this.browser.newPage()
 
 			await page.setViewport({ ...res })
-			await page.goto(args.url.href)
+			await page.goto(url.href)
 			await page.screenshot({
 				path: `${dir}/${res.width}x${res.height}.png`
 			})
 
 			await page.close()
 
-			this.logger.success(`[DONE] ${args.url.host} ${res.width}x${res.height}`)
+			this.logger.success(`[DONE] ${url.host} ${res.width}x${res.height}`)
 		}))
 	}
 
@@ -110,6 +114,9 @@ export default class Lens {
 	 * @private
 	 */
 	private parseArguments (args: LensArguments): ParsedLensArguments {
+		const urls: UrlWithStringQuery[] = args.url.split(' ')
+			.map(u => url.parse(u))
+
 		const resolutions: Resolution[] | undefined = args.resolution
 			? args.resolution.split(' ')
 				.map(res => {
@@ -126,7 +133,7 @@ export default class Lens {
 			: undefined
 
 		return {
-			url: url.parse(args.url),
+			urls: urls,
 			resolutions: resolutions,
 			tag: args.tag,
 		}
