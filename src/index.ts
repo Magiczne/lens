@@ -1,6 +1,6 @@
 import yargs from 'yargs'
 
-import { Device, LensArguments } from './typings/types'
+import { LensArguments } from './typings/types'
 import Lens from './lens'
 
 const args: LensArguments = yargs
