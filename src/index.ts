@@ -1,0 +1,34 @@
+import yargs from 'yargs'
+
+import { Device, LensArguments } from './typings/types'
+import Lens from './lens'
+
+const options: LensArguments = yargs
+	.usage('Usage: -u <url>')
+	.option('url', {
+		alias: 'u',
+		describe: 'The url from which screenshots will be taken',
+		string: true,
+		demandOption: true
+	})
+	.option('resolution', {
+		alias: 'r',
+		describe: 'Custom resolution (e.g. 800x600)',
+		string: true
+	})
+	.option('tag', {
+		alias: 't',
+		describe: 'Custom tag that will be applied to filenames',
+		string: true,
+		default: ''
+	})
+	.argv
+
+const main = async () => {
+	const lens = new Lens()
+	await lens.init()
+	await lens.run(options)
+	await lens.dispose()
+}
+
+main()
