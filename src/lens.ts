@@ -8,10 +8,12 @@ import { ConsoleLogger } from './logger'
 export default class Lens {
 	private readonly screenshotsDir = './screenshots'
 
+	private readonly args: ParsedLensArguments
 	private browser: Browser
 	private logger: Logger
 
-	public constructor (logger: Logger = undefined) {
+	public constructor (args: LensArguments, logger: Logger = undefined) {
+		this.args = this.parseArguments(args)
 		this.logger = logger ?? new ConsoleLogger()
 	}
 
@@ -35,16 +37,13 @@ export default class Lens {
 	}
 
 	/**
-	 * Run lens with specified arguments
-	 *
-	 * @param args
+	 * Run lens
 	 */
-	public async run (args: LensArguments): Promise<void> {
-		const parsedArgs = this.parseArguments(args)
-		this.logger.header(`Running lens for ${args.url}`)
+	public async run (): Promise<void> {
+		this.logger.header(`Running lens for ${this.args.url.href}`)
 
-		const directory = this.createDirectoryForUrl(parsedArgs.url, parsedArgs.tag)
-		await this.generateScreenshot(parsedArgs, directory)
+		const directory = this.createDirectoryForUrl(this.args.url, this.args.tag)
+		await this.generateScreenshot(this.args, directory)
 	}
 
 	/**

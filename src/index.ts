@@ -4,6 +4,7 @@ import { Device, LensArguments } from './typings/types'
 import Lens from './lens'
 
 const options: LensArguments = yargs
+const args: LensArguments = yargs
 	.usage('Usage: -u <url>')
 	.option('url', {
 		alias: 'u',
@@ -25,9 +26,9 @@ const options: LensArguments = yargs
 	.argv
 
 const main = async () => {
-	const lens = new Lens()
+	const lens = new Lens(args)
 	await lens.init()
-	await lens.run(options)
+	await lens.run()
 	await lens.dispose()
 }
 
