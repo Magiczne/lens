@@ -117,7 +117,7 @@ export default class Lens {
 		const urls: UrlWithStringQuery[] = args.url.split(' ')
 			.map(u => url.parse(u))
 
-		const resolutions: Resolution[] | undefined = args.resolution
+		const resolutions: Resolution[] = args.resolution
 			? args.resolution.split(' ')
 				.map(res => {
 					return res.trim()
@@ -128,9 +128,9 @@ export default class Lens {
 					return {
 						width: res[0],
 						height: res[1]
-					} as Resolution
+					}
 				})
-			: undefined
+			: []
 
 		return {
 			urls: urls,
