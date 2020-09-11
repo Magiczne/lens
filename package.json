@@ -2,8 +2,13 @@
 	"name": "web-lens",
 	"version": "0.0.1",
 	"description": "Create screenshots of your webpage in different resolutions in a matter of seconds.",
-	"main": "src/index.ts",
+	"main": "./lib/index.js",
+	"bin": {
+		"lens": "./bin/lens"
+	},
 	"scripts": {
+		"build:dev": "ncc build ./src/index.ts -e puppeteer -o lib",
+		"build:prod": "ncc build ./src/index.ts -e puppeteer -o lib -m",
 		"start": "node ./node_modules/ts-node/dist/bin.js src/index.ts",
 		"lint": "eslint . --ext .ts",
 		"lint-and-fix": "eslint . --ext .ts --fix"
@@ -32,14 +37,15 @@
 		"@types/yargs": "^15.0.5",
 		"@typescript-eslint/eslint-plugin": "^4.1.0",
 		"@typescript-eslint/parser": "^4.1.0",
-		"eslint": "^7.8.1"
-	},
-	"dependencies": {
+		"@vercel/ncc": "^0.24.0",
 		"boxen": "^4.2.0",
 		"chalk": "^4.1.0",
-		"puppeteer": "^5.2.1",
+		"eslint": "^7.8.1",
 		"ts-node": "^9.0.0",
 		"typescript": "^4.0.2",
 		"yargs": "^16.0.3"
+	},
+	"dependencies": {
+		"puppeteer": "^5.2.1"
 	}
 }
