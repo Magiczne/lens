@@ -10,7 +10,7 @@ export default class Lens {
 	private readonly screenshotsDir = './screenshots'
 
 	private readonly args: ParsedLensArguments
-	private browser: Browser
+	private browser: Browser | undefined
 	private logger: Logger
 
 	public constructor (args: LensArguments, logger: Logger | undefined = undefined) {
@@ -41,6 +41,12 @@ export default class Lens {
 	 * Run lens
 	 */
 	public async run (): Promise<void> {
+		if (!this.browser) {
+			this.logger.error('Lens has not been initialized. Please run "init" before running.')
+
+			process.exit(15)
+		}
+
 		await forEachAsync(this.args.urls, async u => {
 			this.logger.header(`Running lens for ${u.href}`)
 
@@ -86,6 +92,8 @@ export default class Lens {
 	 */
 	private async generateScreenshots (args: ParsedLensArguments, url: UrlWithStringQuery, dir: string): Promise<void> {
 		await Promise.all(args.resolutions.map(async res => {
+			if (!this.browser) return // TODO: Handle that in a prettier way
+
 			const page = await this.browser.newPage()
 
 			await page.setViewport({ ...res })
@@ -104,7 +112,7 @@ export default class Lens {
 	 * Do the cleanup
 	 */
 	public async dispose (): Promise<void> {
-		await this.browser.close()
+		await this.browser?.close()
 	}
 
 	/**
