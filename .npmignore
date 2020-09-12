@@ -1,10 +1,9 @@
 .eslintrc.json
 .github/
 .idea/
-.tsconfig.json
 .yarnrc
 .vscode/
 package-lock.json
-yarn.lock
+tsconfig.json
 screenshots
-src
+yarn.lock
