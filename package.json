@@ -1,5 +1,5 @@
 {
-	"name": "web-lens",
+	"name": "@magiczne/lens",
 	"version": "0.0.1",
 	"description": "Create screenshots of your webpage in different resolutions in a matter of seconds.",
 	"main": "./lib/index.js",
