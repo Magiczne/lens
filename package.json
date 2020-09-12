@@ -20,7 +20,9 @@
 		"type": "git",
 		"url": "git://github.com/Magiczne/lens.git"
 	},
-	"keywords": [],
+	"keywords": [
+		"automation", "capture", "layout", "puppeteer", "screen", "screenshot", "testing", "visual testing"
+	],
 	"author": {
 		"name": "Michał Kleszczyński",
 		"email": "michalkamilkleszczynski@gmail.com",
