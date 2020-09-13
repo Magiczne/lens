@@ -3,6 +3,9 @@
 
 Create screenshots of your webpage in different resolutions in a matter of seconds.
 
+By default, **lens** will generate screenshots for some common screen resolutions.
+You can find more info by exploring files in the [resolutions](https://github.com/Magiczne/lens/tree/master/src/resolutions) directory.
+
 ## Prerequisites
 - Node.js >= 12
 
@@ -21,7 +24,7 @@ yarn global add @magiczne/lens
 ```
 lens --help
 
-  Usage: -u <url> -r <resolution>
+  Usage: -u <url>
   
   Options:
         --help        Show help                                          [boolean]
@@ -32,11 +35,12 @@ lens --help
                                                                [string] [required]
     -r, --resolution  Custom resolution (e.g. 800x600). If you want to create
                       screenshots for multiple resolutions separate them with a
-                      space (e.g. 800x600 1920x1080)           [string] [required]
+                      space (e.g. 800x600 1920x1080)                      [string]
     -t, --tag         Custom tag that will be used as a subdirectory for 
                       screenshots                           [string] [default: ""]
                       
   Examples:
+    lens -u https://example.com
     lens -u https://example.com -r 1280x720
     lens -u "https://example.com https://example.com/subpage" -r 1920x1080
     lens -u https://example.com -r "800x600 1280x720"
