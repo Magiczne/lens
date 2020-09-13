@@ -1,9 +1,7 @@
 import { UrlWithStringQuery } from 'url'
+import { Viewport } from 'puppeteer'
 
-interface Resolution {
-	width: number
-	height: number
-}
+type Resolution = Pick<Viewport, 'width' | 'height' | 'deviceScaleFactor'>
 
 interface LensArguments {
 	[x: string]: unknown
@@ -18,7 +16,7 @@ interface LensArguments {
 
 interface ParsedLensArguments {
 	urls: UrlWithStringQuery[]
-	resolutions: Resolution[]
+	resolutions: Record<string, Resolution[]>
 	tag: string
 }
 
