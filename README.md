@@ -1,4 +1,6 @@
 # lens
+[![npm](https://img.shields.io/badge/dynamic/json?color=blue&label=npm&query=version&style=flat-square&url=https%3A%2F%2Fraw.githubusercontent.com%2FMagiczne%2Flens%2Fmaster%2Fpackage.json)](https://www.npmjs.com/package/@magiczne/lens)
+
 Create screenshots of your webpage in different resolutions in a matter of seconds.
 
 ## Prerequisites
