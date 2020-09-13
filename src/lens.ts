@@ -2,9 +2,9 @@ import fs from 'fs'
 import puppeteer, { Browser } from 'puppeteer'
 import url, { UrlWithStringQuery } from 'url'
 
-import { LensArguments, Logger, ParsedLensArguments, Resolution } from './typings/types'
-import { ConsoleLogger } from './logger'
-import { forEachAsync } from './utils'
+import { LensArguments, Logger, ParsedLensArguments, Resolution } from '@/typings/types'
+import { ConsoleLogger } from '@/logger'
+import { forEachAsync } from '@/utils'
 
 export default class Lens {
 	private readonly screenshotsDir = './screenshots'

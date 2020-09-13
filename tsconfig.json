@@ -1,6 +1,7 @@
 {
 	"compilerOptions": {
 		"allowSyntheticDefaultImports": true,
+		"baseUrl": ".",
 		"esModuleInterop": true,
 		"experimentalDecorators": true,
 		"forceConsistentCasingInFileNames": true,
@@ -10,7 +11,12 @@
 		"noFallthroughCasesInSwitch": true,
         "noImplicitReturns": true,
         "outDir": "./dist/",
-        "pretty": true,
+		"paths": {
+			"@/*": [
+				"./src/*"
+			]
+		},
+		"pretty": true,
         "sourceMap": true,
         "target": "es2015"
 	},

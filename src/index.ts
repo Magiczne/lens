@@ -2,8 +2,8 @@
 
 import yargs from 'yargs'
 
-import { LensArguments } from './typings/types'
-import Lens from './lens'
+import { LensArguments } from '@/typings/types'
+import Lens from '@/lens'
 
 const args: LensArguments = yargs
 	.usage('Usage: -u <url> -r <resolution>')

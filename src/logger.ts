@@ -1,7 +1,7 @@
 import chalk from 'chalk'
 import boxen from 'boxen'
 
-import { Logger } from './typings/types'
+import { Logger } from '@/typings/types'
 
 class ConsoleLogger implements Logger {
     public error (message: string): void {
