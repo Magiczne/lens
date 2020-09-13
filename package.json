@@ -1,6 +1,6 @@
 {
 	"name": "@magiczne/lens",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "Create screenshots of your webpage in different resolutions in a matter of seconds.",
 	"main": "./lib/index.js",
 	"bin": {
@@ -9,7 +9,7 @@
 	"scripts": {
 		"build:dev": "ncc build ./src/index.ts -e puppeteer -o lib",
 		"build:prod": "ncc build ./src/index.ts -e puppeteer -o lib -m",
-		"start": "node ./node_modules/ts-node/dist/bin.js src/index.ts",
+		"start": "ts-node -r tsconfig-paths/register src/index.ts",
 		"lint": "eslint . --ext .ts",
 		"lint-and-fix": "eslint . --ext .ts --fix"
 	},
@@ -20,7 +20,16 @@
 		"type": "git",
 		"url": "git://github.com/Magiczne/lens.git"
 	},
-	"keywords": [],
+	"keywords": [
+		"automation",
+		"capture",
+		"layout",
+		"puppeteer",
+		"screen",
+		"screenshot",
+		"testing",
+		"visual testing"
+	],
 	"author": {
 		"name": "Michał Kleszczyński",
 		"email": "michalkamilkleszczynski@gmail.com",
@@ -42,6 +51,7 @@
 		"chalk": "^4.1.0",
 		"eslint": "^7.8.1",
 		"ts-node": "^9.0.0",
+		"tsconfig-paths": "^3.9.0",
 		"typescript": "^4.0.2",
 		"yargs": "^16.0.3"
 	},

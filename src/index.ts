@@ -2,11 +2,11 @@
 
 import yargs from 'yargs'
 
-import { LensArguments } from './typings/types'
-import Lens from './lens'
+import { LensArguments } from '@/typings/types'
+import Lens from '@/lens'
 
 const args: LensArguments = yargs
-	.usage('Usage: -u <url> -r <resolution>')
+	.usage('Usage: -u <url>')
 	.option('url', {
 		alias: 'u',
 		describe: 'The url from which screenshots will be taken. ' +
@@ -27,8 +27,9 @@ const args: LensArguments = yargs
 		string: true,
 		default: ''
 	})
-	.demandOption(['url', 'resolution'], 'Please provide both url and resolution arguments to work with this tool')
+	.demandOption(['url'], 'Please provide both url and resolution arguments to work with this tool')
 	.epilogue('For advanced usage documentation please visit https://github.com/Magiczne/lens')
+	.example('lens -u https://example.com', '')
 	.example('lens -u https://example.com -r 1280x720', '')
 	.example('lens -u "https://example.com https://example.com/subpage" -r 1920x1080', '')
 	.example('lens -u https://example.com -r "800x600 1280x720"', '')

@@ -2,9 +2,10 @@ import fs from 'fs'
 import puppeteer, { Browser } from 'puppeteer'
 import url, { UrlWithStringQuery } from 'url'
 
-import { LensArguments, Logger, ParsedLensArguments, Resolution } from './typings/types'
-import { ConsoleLogger } from './logger'
-import { forEachAsync } from './utils'
+import { LensArguments, Logger, ParsedLensArguments, Resolution } from '@/typings/types'
+import { ConsoleLogger } from '@/logger'
+import { forEachAsync } from '@/utils'
+import { defaultResolutions } from '@/resolutions'
 
 export default class Lens {
 	private readonly screenshotsDir = './screenshots'
@@ -91,21 +92,28 @@ export default class Lens {
 	 * @private
 	 */
 	private async generateScreenshots (args: ParsedLensArguments, url: UrlWithStringQuery, dir: string): Promise<void> {
-		await Promise.all(args.resolutions.map(async res => {
-			if (!this.browser) return // TODO: Handle that in a prettier way
+		let pendingScreenshots: Promise<void>[] = []
 
-			const page = await this.browser.newPage()
+		for (const key of Object.keys(args.resolutions)) {
+			// TODO: Extract screenshot taking to separate method
+			pendingScreenshots = pendingScreenshots.concat(args.resolutions[key].map(async res => {
+				if (!this.browser) return // TODO: Handle that in a prettier way
 
-			await page.setViewport({ ...res })
-			await page.goto(url.href)
-			await page.screenshot({
-				path: `${dir}/${res.width}x${res.height}.png`
-			})
+				const page = await this.browser.newPage()
 
-			await page.close()
+				await page.setViewport({ ...res })
+				await page.goto(url.href)
+				await page.screenshot({
+					path: `${dir}/${key !== 'default' ? `[${key}] ` : ''}${res.width}x${res.height}.png`
+				})
 
-			this.logger.success(`[DONE] ${url.host} ${res.width}x${res.height}`)
-		}))
+				await page.close()
+
+				this.logger.success(`[DONE] ${url.host} ${res.width}x${res.height}`)
+			}))
+		}
+
+		await Promise.all(pendingScreenshots)
 	}
 
 	/**
@@ -115,6 +123,7 @@ export default class Lens {
 		await this.browser?.close()
 	}
 
+	// TODO: Argument parser as a separate class
 	/**
 	 * Parse arguments from user and return them
 	 *
@@ -125,20 +134,22 @@ export default class Lens {
 		const urls: UrlWithStringQuery[] = args.url.split(' ')
 			.map(u => url.parse(u))
 
-		const resolutions: Resolution[] = args.resolution
-			? args.resolution.split(' ')
-				.map(res => {
-					return res.trim()
-						.split('x')
-						.map(x => parseInt(x, 10))
-				})
-				.map(res => {
-					return {
-						width: res[0],
-						height: res[1]
-					}
-				})
-			: []
+		const resolutions: Record<string, Resolution[]> = args.resolution
+			? {
+				default: args.resolution.split(' ')
+					.map(res => {
+						return res.trim()
+							.split('x')
+							.map(x => parseInt(x, 10))
+					})
+					.map(res => {
+						return {
+							width: res[0],
+							height: res[1]
+						}
+					})
+			}
+			: defaultResolutions
 
 		return {
 			urls: urls,
