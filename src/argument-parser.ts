@@ -2,6 +2,7 @@ import nodeUrl, { UrlWithStringQuery } from 'url'
 
 import { ArgumentParser, LensArguments, ParsedLensArguments, Resolution } from '@/typings/types'
 import { defaultResolutions } from '@/resolutions'
+import { LensResolutionError } from '@/errors'
 
 export default class DefaultArgumentParser implements ArgumentParser {
     parse (args: LensArguments): ParsedLensArguments {
@@ -26,9 +27,15 @@ export default class DefaultArgumentParser implements ArgumentParser {
 
         const resolutions =  resolution.split(' ')
             .map(res => {
-                return res.trim()
+                const parsedResolution = res.trim()
                     .split('x')
                     .map(x => parseInt(x, 10))
+
+                if (parsedResolution.length !== 2) {
+                    throw new LensResolutionError(`Invalid resolution ${res}. It should follow format [width]x[height]`)
+                }
+
+                return parsedResolution
             })
             .map(res => {
                 return {
