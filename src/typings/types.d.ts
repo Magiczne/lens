@@ -15,6 +15,9 @@ interface LensArguments {
 }
 
 interface LensConfig {
+	directories: {
+		output: string
+	},
 	puppeteer: {
 		headless: boolean,
 		waitUntil: LoadEvent | LoadEvent[]

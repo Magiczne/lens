@@ -8,8 +8,6 @@ import {
 import { forEachAsync } from '@/utils'
 
 export default class Lens {
-	private readonly screenshotsDir = './screenshots'
-
 	private readonly argumentParser: ArgumentParser
 	private browser: Browser | undefined
 	private readonly logger: Logger
@@ -30,10 +28,10 @@ export default class Lens {
 		this.args = this.argumentParser.parse(args)
 		this.config = config
 
-		if (!fs.existsSync(this.screenshotsDir)) {
+		if (!fs.existsSync(this.config.directories.output)) {
 			try {
-				fs.mkdirSync(this.screenshotsDir, { recursive: true })
-				this.logger.info(`Created ${this.screenshotsDir}`)
+				fs.mkdirSync(this.config.directories.output, { recursive: true })
+				this.logger.info(`Created ${this.config.directories.output}`)
 			} catch (e) {
 				this.logger.error(`Could not create screenshots directory`)
 
@@ -72,7 +70,7 @@ export default class Lens {
 	 * @private
 	 */
 	private createDirectoryForUrl (url: UrlWithStringQuery, tag = ''): string {
-		let directory = `${this.screenshotsDir}/${url.host}`
+		let directory = `${this.config.directories.output}/${url.host}`
 		if (tag) {
 			directory = `${directory}/${tag}`
 		}

@@ -60,6 +60,7 @@ Currently, these are options you can configure:
 
 | Option              | Type               | Default                  | Description                              |
 |---------------------|--------------------|--------------------------|------------------------------------------|
+| directories.output  | string             | './screenshots'          | Output directory for the screenshots.    |
 | puppeteer.headless  | boolean            | true                     | Whether to run browser in headless mode. |
 | puppeteer.waitUntil | string \| string[] | ['load', 'networkidle2'] | When to consider navigation succedeed. Refer to the [puppeteer docs](https://github.com/puppeteer/puppeteer/blob/v5.3.0/docs/api.md#pagegotourl-options) for detailed information. |
 
@@ -68,6 +69,9 @@ Example config:
 **.lens.config.js**
 ```javascript
 module.exports = {
+    directories: {
+        output: './output'
+    },
     puppeteer: {
         headless: true,
         waitUntil: ['load', 'domcontentloaded', 'networkidle2']
@@ -78,6 +82,9 @@ module.exports = {
 **.lens.config.json**
 ```json
 {
+    "directories": {
+        "output": "./output"
+    },
     "puppeteer": {
         "headless": true,
         "waitUntil": ["load", "domcontentloaded", "networkidle2"]
