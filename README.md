@@ -48,9 +48,6 @@ lens --help
     lens -u https://example.com -r 1280x720 -t "custom tag"
 ```
 
-```lens``` will create a **screenshots** directory in a place where you will run it.
-For example if you run it in ```C:\lens\``` it will create ```C:\lens\screenshots``` directory.
-
 ## Advanced configuration
 
 ```lens``` can be configured both locally and globally. When using ```lens``` globally, you can
