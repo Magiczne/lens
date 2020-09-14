@@ -49,3 +49,16 @@ lens --help
 
 ```lens``` will create a **screenshots** directory in a place where you will run it.
 For example if you run it in ```C:\lens\``` it will create ```C:\lens\screenshots``` directory.
+
+## Advanced configuration
+
+```lens``` can be configured both locally and globally. When using ```lens``` globally, you can
+configure it in either a ```.lens.config.js``` or ```.lens.config.json``` located in your home directory.
+When using ```lens``` locally you can configure it using the same files, but located in your project directory.
+
+Currently, these are options you can configure:
+
+| Option              | Type               | Default                  | Description                              |
+|---------------------|--------------------|--------------------------|------------------------------------------|
+| puppeteer.headless  | boolean            | true                     | Whether to run browser in headless mode. |
+| puppeteer.waitUntil | string \| string[] | ['load', 'networkidle2'] | When to consider navigation succedeed. Refer to the [puppeteer docs](https://github.com/puppeteer/puppeteer/blob/v5.3.0/docs/api.md#pagegotourl-options) for detailed information. |
