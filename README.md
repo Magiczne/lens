@@ -62,3 +62,25 @@ Currently, these are options you can configure:
 |---------------------|--------------------|--------------------------|------------------------------------------|
 | puppeteer.headless  | boolean            | true                     | Whether to run browser in headless mode. |
 | puppeteer.waitUntil | string \| string[] | ['load', 'networkidle2'] | When to consider navigation succedeed. Refer to the [puppeteer docs](https://github.com/puppeteer/puppeteer/blob/v5.3.0/docs/api.md#pagegotourl-options) for detailed information. |
+
+Example config:
+
+**.lens.config.js**
+```javascript
+module.exports = {
+    puppeteer: {
+        headless: true,
+        waitUntil: ['load', 'domcontentloaded', 'networkidle2']
+    }
+}
+```
+
+**.lens.config.json**
+```json
+{
+    "puppeteer": {
+        "headless": true,
+        "waitUntil": ["load", "domcontentloaded", "networkidle2"]
+    }
+}
+```
