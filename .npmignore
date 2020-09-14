@@ -3,7 +3,9 @@
 .idea/
 .yarnrc
 .vscode/
+jest.config.js
 package-lock.json
 tsconfig.json
 screenshots
+tests
 yarn.lock

@@ -9,9 +9,11 @@
 	"scripts": {
 		"build:dev": "ncc build ./src/index.ts -e puppeteer -o lib",
 		"build:prod": "ncc build ./src/index.ts -e puppeteer -o lib -m",
+		"coverage": "jest --coverage",
 		"start": "ts-node -r tsconfig-paths/register src/index.ts",
 		"lint": "eslint . --ext .ts",
-		"lint-and-fix": "eslint . --ext .ts --fix"
+		"lint-and-fix": "eslint . --ext .ts --fix",
+		"test": "jest"
 	},
 	"engines": {
 		"node": ">=12"
@@ -50,6 +52,9 @@
 		"boxen": "^4.2.0",
 		"chalk": "^4.1.0",
 		"eslint": "^7.8.1",
+		"jest": "^26.4.2",
+		"jest-each": "^26.4.2",
+		"ts-jest": "^26.3.0",
 		"ts-node": "^9.0.0",
 		"tsconfig-paths": "^3.9.0",
 		"typescript": "^4.0.2",
