@@ -5,7 +5,7 @@ import yargs from 'yargs'
 import { LensArguments } from '@/typings/types'
 import Lens from '@/lens'
 import DefaultArgumentParser from '@/argument-parser'
-import ConsoleLogger from '@/console-logger'
+import ConsoleLogger from '@/logging/console-logger'
 
 const args: LensArguments = yargs
 	.usage('Usage: -u <url>')
