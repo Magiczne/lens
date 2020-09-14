@@ -122,39 +122,4 @@ export default class Lens {
 	public async dispose (): Promise<void> {
 		await this.browser?.close()
 	}
-
-	// TODO: Argument parser as a separate class
-	/**
-	 * Parse arguments from user and return them
-	 *
-	 * @param args
-	 * @private
-	 */
-	private parseArguments (args: LensArguments): ParsedLensArguments {
-		const urls: UrlWithStringQuery[] = args.url.split(' ')
-			.map(u => url.parse(u))
-
-		const resolutions: Record<string, Resolution[]> = args.resolution
-			? {
-				default: args.resolution.split(' ')
-					.map(res => {
-						return res.trim()
-							.split('x')
-							.map(x => parseInt(x, 10))
-					})
-					.map(res => {
-						return {
-							width: res[0],
-							height: res[1]
-						}
-					})
-			}
-			: defaultResolutions
-
-		return {
-			urls: urls,
-			resolutions: resolutions,
-			tag: args.tag,
-		}
-	}
 }

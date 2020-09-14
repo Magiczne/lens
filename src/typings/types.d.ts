@@ -27,7 +27,11 @@ interface Logger {
 	success (message: string): void
 }
 
+interface ArgumentParser {
+	parse (args: LensArguments): ParsedLensArguments
+}
+
 export {
-	LensArguments, ParsedLensArguments, Resolution,
+	ArgumentParser,
 	Logger
 }
