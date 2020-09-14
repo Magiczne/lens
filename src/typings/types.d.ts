@@ -1,5 +1,5 @@
 import { UrlWithStringQuery } from 'url'
-import { Viewport } from 'puppeteer'
+import { LoadEvent, Viewport } from 'puppeteer'
 
 type Resolution = Pick<Viewport, 'width' | 'height' | 'deviceScaleFactor'>
 
@@ -12,6 +12,13 @@ interface LensArguments {
 
 	_: string[]
 	$0: string
+}
+
+interface LensConfig {
+	puppeteer: {
+		headless: boolean,
+		waitUntil: LoadEvent | LoadEvent[]
+	}
 }
 
 interface LensDependencies {
@@ -38,6 +45,6 @@ interface ArgumentParser {
 
 export {
 	ArgumentParser,
-	LensArguments, LensDependencies, ParsedLensArguments, Resolution,
+	LensArguments, LensConfig, LensDependencies, ParsedLensArguments, Resolution,
 	Logger
 }

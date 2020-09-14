@@ -2,7 +2,9 @@ import fs from 'fs'
 import puppeteer, { Browser } from 'puppeteer'
 import { UrlWithStringQuery } from 'url'
 
-import { ArgumentParser, LensArguments, LensDependencies, Logger, ParsedLensArguments } from '@/typings/types'
+import {
+	ArgumentParser, LensArguments, LensConfig, LensDependencies, Logger, ParsedLensArguments
+} from '@/typings/types'
 import { forEachAsync } from '@/utils'
 
 export default class Lens {
@@ -13,6 +15,7 @@ export default class Lens {
 	private readonly logger: Logger
 
 	private args: ParsedLensArguments
+	private config: LensConfig
 
 	public constructor ({ argumentParser, logger }: LensDependencies) {
 		this.argumentParser = argumentParser
@@ -23,8 +26,9 @@ export default class Lens {
 	 * Create directory for screenshots if it does not exist,
 	 * then instantiate browser.
 	 */
-	public async init (args: LensArguments): Promise<void> {
+	public async init (args: LensArguments, config: LensConfig): Promise<void> {
 		this.args = this.argumentParser.parse(args)
+		this.config = config
 
 		if (!fs.existsSync(this.screenshotsDir)) {
 			try {
@@ -37,7 +41,9 @@ export default class Lens {
 			}
 		}
 
-		this.browser = await puppeteer.launch()
+		this.browser = await puppeteer.launch({
+			headless: this.config.puppeteer.headless
+		})
 	}
 
 	/**
@@ -104,7 +110,9 @@ export default class Lens {
 				const page = await this.browser.newPage()
 
 				await page.setViewport({ ...res })
-				await page.goto(url.href)
+				await page.goto(url.href, {
+					waitUntil: this.config.puppeteer.waitUntil
+				})
 				await page.screenshot({
 					path: `${dir}/${key !== 'default' ? `[${key}] ` : ''}${res.width}x${res.height}.png`
 				})

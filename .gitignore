@@ -3,4 +3,6 @@ node_modules/
 screenshots/
 tests/coverage
 
+.lens.config.js
+.lens.config.json
 yarn-error.log

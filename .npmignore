@@ -1,6 +1,8 @@
 .eslintrc.json
 .github/
 .idea/
+.lens.config.js
+.lens.config.json
 .yarnrc
 .vscode/
 jest.config.js

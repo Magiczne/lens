@@ -2,6 +2,7 @@
 
 import yargs from 'yargs'
 
+import config from '@/config'
 import { LensArguments } from '@/typings/types'
 import Lens from '@/lens'
 import DefaultArgumentParser from '@/argument-parser'
@@ -39,6 +40,7 @@ const args: LensArguments = yargs
 	.argv
 
 const main = async () => {
+	const lensConfig = await config()
 	const logger = new ConsoleLogger()
 
 	try {
@@ -46,7 +48,7 @@ const main = async () => {
 			argumentParser: new DefaultArgumentParser(),
 			logger
 		})
-		await lens.init(args)
+		await lens.init(args, lensConfig)
 		await lens.run()
 		await lens.dispose()
 	} catch (e) {
