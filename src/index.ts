@@ -39,13 +39,23 @@ const args: LensArguments = yargs
 	.argv
 
 const main = async () => {
-	const lens = new Lens({
-		argumentParser: new DefaultArgumentParser(),
-		logger: new ConsoleLogger()
-	})
-	await lens.init(args)
-	await lens.run()
-	await lens.dispose()
+	const logger = new ConsoleLogger()
+
+	try {
+		const lens = new Lens({
+			argumentParser: new DefaultArgumentParser(),
+			logger
+		})
+		await lens.init(args)
+		await lens.run()
+		await lens.dispose()
+	} catch (e) {
+		if (e.name.startsWith('Lens')) {
+			logger.error(e.message)
+		} else {
+			throw e
+		}
+	}
 }
 
 main()
