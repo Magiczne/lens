@@ -24,7 +24,7 @@ yarn global add @magiczne/lens
 ```
 lens --help
 
-  Usage: -u <url>
+  Usage: lens -u <url>
   
   Options:
         --help        Show help                                          [boolean]
@@ -38,12 +38,13 @@ lens --help
                       space (e.g. 800x600 1920x1080)                      [string]
     -t, --tag         Custom tag that will be used as a subdirectory for 
                       screenshots                           [string] [default: ""]
+    -o, --output-dir  Output directory for the screenshots                [string]
                       
   Examples:
     lens -u https://example.com
     lens -u https://example.com -r 1280x720
     lens -u "https://example.com https://example.com/subpage" -r 1920x1080
-    lens -u https://example.com -r "800x600 1280x720"
+    lens -u https://example.com -r "800x600 1280x720" -o ./output
     lens -u https://example.com -r 1280x720 -t "custom tag"
 ```
 

@@ -10,6 +10,8 @@ interface LensArguments {
 	resolution?: string
 	tag: string
 
+	outputDir?: string
+
 	_: string[]
 	$0: string
 }
@@ -33,6 +35,8 @@ interface ParsedLensArguments {
 	urls: UrlWithStringQuery[]
 	resolutions: Record<string, Resolution[]>
 	tag: string
+
+	outputDir?: string
 }
 
 interface Logger {

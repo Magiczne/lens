@@ -28,6 +28,8 @@ export default class Lens {
 		this.args = this.argumentParser.parse(args)
 		this.config = config
 
+		this.overrideConfigFromFlags()
+
 		if (!fs.existsSync(this.config.directories.output)) {
 			try {
 				fs.mkdirSync(this.config.directories.output, { recursive: true })
@@ -122,6 +124,17 @@ export default class Lens {
 		}
 
 		await Promise.all(pendingScreenshots)
+	}
+
+	/**
+	 * Override some config values if there are present in the command line arguments
+	 *
+	 * @private
+	 */
+	private overrideConfigFromFlags (): void {
+		if (this.args.outputDir) {
+			this.config.directories.output = this.args.outputDir
+		}
 	}
 
 	/**

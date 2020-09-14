@@ -1,3 +1,4 @@
+import path from 'path'
 import nodeUrl, { UrlWithStringQuery } from 'url'
 
 import { ArgumentParser, LensArguments, ParsedLensArguments, Resolution } from '@/typings/types'
@@ -9,8 +10,25 @@ export default class DefaultArgumentParser implements ArgumentParser {
         return {
             urls: this.parseUrls(args.url),
             resolutions: this.parseResolution(args.resolution),
-            tag: args.tag
+            tag: args.tag,
+
+            outputDir: this.parseDirectory(args.outputDir)
         }
+    }
+
+    /**
+     * Resolve path to directory if present.
+     * Return undefined otherwise.
+     *
+     * @param dir
+     * @private
+     */
+    private parseDirectory (dir?: string): string | undefined {
+        if (dir) {
+            return path.resolve(dir)
+        }
+
+        return undefined
     }
 
     /**
