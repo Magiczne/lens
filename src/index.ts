@@ -2,11 +2,14 @@
 
 import yargs from 'yargs'
 
+import config from '@/config'
 import { LensArguments } from '@/typings/types'
 import Lens from '@/lens'
+import DefaultArgumentParser from '@/argument-parser'
+import ConsoleLogger from '@/logging/console-logger'
 
 const args: LensArguments = yargs
-	.usage('Usage: -u <url>')
+	.usage('Usage: lens -u <url>')
 	.option('url', {
 		alias: 'u',
 		describe: 'The url from which screenshots will be taken. ' +
@@ -27,20 +30,39 @@ const args: LensArguments = yargs
 		string: true,
 		default: ''
 	})
-	.demandOption(['url'], 'Please provide both url and resolution arguments to work with this tool')
+	.option('output-dir', {
+		alias: 'o',
+		describe: 'Output directory for the screenshots',
+		string: true
+	})
+	.demandOption(['url'], 'You need to provide at least the "url" parameter to work with this tool')
 	.epilogue('For advanced usage documentation please visit https://github.com/Magiczne/lens')
 	.example('lens -u https://example.com', '')
 	.example('lens -u https://example.com -r 1280x720', '')
 	.example('lens -u "https://example.com https://example.com/subpage" -r 1920x1080', '')
-	.example('lens -u https://example.com -r "800x600 1280x720"', '')
+	.example('lens -u https://example.com -r "800x600 1280x720" -o ./output', '')
 	.example('lens -u https://example.com -r 1280x720 -t "custom tag"', '')
 	.argv
 
 const main = async () => {
-	const lens = new Lens(args)
-	await lens.init()
-	await lens.run()
-	await lens.dispose()
+	const lensConfig = await config()
+	const logger = new ConsoleLogger()
+
+	try {
+		const lens = new Lens({
+			argumentParser: new DefaultArgumentParser(),
+			logger
+		})
+		await lens.init(args, lensConfig)
+		await lens.run()
+		await lens.dispose()
+	} catch (e) {
+		if (e.name.startsWith('Lens')) {
+			logger.error(e.message)
+		} else {
+			throw e
+		}
+	}
 }
 
 main()

@@ -1,33 +1,39 @@
 import fs from 'fs'
 import puppeteer, { Browser } from 'puppeteer'
-import url, { UrlWithStringQuery } from 'url'
+import { UrlWithStringQuery } from 'url'
 
-import { LensArguments, Logger, ParsedLensArguments, Resolution } from '@/typings/types'
-import { ConsoleLogger } from '@/logger'
+import {
+	ArgumentParser, LensArguments, LensConfig, LensDependencies, Logger, ParsedLensArguments
+} from '@/typings/types'
 import { forEachAsync } from '@/utils'
-import { defaultResolutions } from '@/resolutions'
 
 export default class Lens {
-	private readonly screenshotsDir = './screenshots'
-
-	private readonly args: ParsedLensArguments
+	private readonly argumentParser: ArgumentParser
 	private browser: Browser | undefined
-	private logger: Logger
+	private readonly logger: Logger
 
-	public constructor (args: LensArguments, logger: Logger | undefined = undefined) {
-		this.args = this.parseArguments(args)
-		this.logger = logger ?? new ConsoleLogger()
+	private args: ParsedLensArguments
+	private config: LensConfig
+
+	public constructor ({ argumentParser, logger }: LensDependencies) {
+		this.argumentParser = argumentParser
+		this.logger = logger
 	}
 
 	/**
 	 * Create directory for screenshots if it does not exist,
 	 * then instantiate browser.
 	 */
-	public async init (): Promise<void> {
-		if (!fs.existsSync(this.screenshotsDir)) {
+	public async init (args: LensArguments, config: LensConfig): Promise<void> {
+		this.args = this.argumentParser.parse(args)
+		this.config = config
+
+		this.overrideConfigFromFlags()
+
+		if (!fs.existsSync(this.config.directories.output)) {
 			try {
-				fs.mkdirSync(this.screenshotsDir, { recursive: true })
-				this.logger.info(`Created ${this.screenshotsDir}`)
+				fs.mkdirSync(this.config.directories.output, { recursive: true })
+				this.logger.info(`Created ${this.config.directories.output}`)
 			} catch (e) {
 				this.logger.error(`Could not create screenshots directory`)
 
@@ -35,7 +41,9 @@ export default class Lens {
 			}
 		}
 
-		this.browser = await puppeteer.launch()
+		this.browser = await puppeteer.launch({
+			headless: this.config.puppeteer.headless
+		})
 	}
 
 	/**
@@ -64,7 +72,7 @@ export default class Lens {
 	 * @private
 	 */
 	private createDirectoryForUrl (url: UrlWithStringQuery, tag = ''): string {
-		let directory = `${this.screenshotsDir}/${url.host}`
+		let directory = `${this.config.directories.output}/${url.host}`
 		if (tag) {
 			directory = `${directory}/${tag}`
 		}
@@ -102,14 +110,16 @@ export default class Lens {
 				const page = await this.browser.newPage()
 
 				await page.setViewport({ ...res })
-				await page.goto(url.href)
+				await page.goto(url.href, {
+					waitUntil: this.config.puppeteer.waitUntil
+				})
 				await page.screenshot({
 					path: `${dir}/${key !== 'default' ? `[${key}] ` : ''}${res.width}x${res.height}.png`
 				})
 
 				await page.close()
 
-				this.logger.success(`[DONE] ${url.host} ${res.width}x${res.height}`)
+				this.logger.success(`${url.host} ${res.width}x${res.height}`)
 			}))
 		}
 
@@ -117,44 +127,20 @@ export default class Lens {
 	}
 
 	/**
+	 * Override some config values if there are present in the command line arguments
+	 *
+	 * @private
+	 */
+	private overrideConfigFromFlags (): void {
+		if (this.args.outputDir) {
+			this.config.directories.output = this.args.outputDir
+		}
+	}
+
+	/**
 	 * Do the cleanup
 	 */
 	public async dispose (): Promise<void> {
 		await this.browser?.close()
-	}
-
-	// TODO: Argument parser as a separate class
-	/**
-	 * Parse arguments from user and return them
-	 *
-	 * @param args
-	 * @private
-	 */
-	private parseArguments (args: LensArguments): ParsedLensArguments {
-		const urls: UrlWithStringQuery[] = args.url.split(' ')
-			.map(u => url.parse(u))
-
-		const resolutions: Record<string, Resolution[]> = args.resolution
-			? {
-				default: args.resolution.split(' ')
-					.map(res => {
-						return res.trim()
-							.split('x')
-							.map(x => parseInt(x, 10))
-					})
-					.map(res => {
-						return {
-							width: res[0],
-							height: res[1]
-						}
-					})
-			}
-			: defaultResolutions
-
-		return {
-			urls: urls,
-			resolutions: resolutions,
-			tag: args.tag,
-		}
 	}
 }

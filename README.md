@@ -24,7 +24,7 @@ yarn global add @magiczne/lens
 ```
 lens --help
 
-  Usage: -u <url>
+  Usage: lens -u <url>
   
   Options:
         --help        Show help                                          [boolean]
@@ -38,14 +38,54 @@ lens --help
                       space (e.g. 800x600 1920x1080)                      [string]
     -t, --tag         Custom tag that will be used as a subdirectory for 
                       screenshots                           [string] [default: ""]
+    -o, --output-dir  Output directory for the screenshots                [string]
                       
   Examples:
     lens -u https://example.com
     lens -u https://example.com -r 1280x720
     lens -u "https://example.com https://example.com/subpage" -r 1920x1080
-    lens -u https://example.com -r "800x600 1280x720"
+    lens -u https://example.com -r "800x600 1280x720" -o ./output
     lens -u https://example.com -r 1280x720 -t "custom tag"
 ```
 
-```lens``` will create a **screenshots** directory in a place where you will run it.
-For example if you run it in ```C:\lens\``` it will create ```C:\lens\screenshots``` directory.
+## Advanced configuration
+
+```lens``` can be configured both locally and globally. When using ```lens``` globally, you can
+configure it in either a ```.lens.config.js``` or ```.lens.config.json``` located in your home directory.
+When using ```lens``` locally you can configure it using the same files, but located in your project directory.
+
+Currently, these are options you can configure:
+
+| Option              | Type               | Default                  | Description                              |
+|---------------------|--------------------|--------------------------|------------------------------------------|
+| directories.output  | string             | './screenshots'          | Output directory for the screenshots.    |
+| puppeteer.headless  | boolean            | true                     | Whether to run browser in headless mode. |
+| puppeteer.waitUntil | string \| string[] | ['load', 'networkidle2'] | When to consider navigation succedeed. Refer to the [puppeteer docs](https://github.com/puppeteer/puppeteer/blob/v5.3.0/docs/api.md#pagegotourl-options) for detailed information. |
+
+Example config:
+
+**.lens.config.js**
+```javascript
+module.exports = {
+    directories: {
+        output: './output'
+    },
+    puppeteer: {
+        headless: true,
+        waitUntil: ['load', 'domcontentloaded', 'networkidle2']
+    }
+}
+```
+
+**.lens.config.json**
+```json
+{
+    "directories": {
+        "output": "./output"
+    },
+    "puppeteer": {
+        "headless": true,
+        "waitUntil": ["load", "domcontentloaded", "networkidle2"]
+    }
+}
+```

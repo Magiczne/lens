@@ -1,6 +1,6 @@
 {
 	"name": "@magiczne/lens",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"description": "Create screenshots of your webpage in different resolutions in a matter of seconds.",
 	"main": "./lib/index.js",
 	"bin": {
@@ -9,9 +9,11 @@
 	"scripts": {
 		"build:dev": "ncc build ./src/index.ts -e puppeteer -o lib",
 		"build:prod": "ncc build ./src/index.ts -e puppeteer -o lib -m",
+		"coverage": "jest --coverage",
 		"start": "ts-node -r tsconfig-paths/register src/index.ts",
 		"lint": "eslint . --ext .ts",
-		"lint-and-fix": "eslint . --ext .ts --fix"
+		"lint-and-fix": "eslint . --ext .ts --fix",
+		"test": "jest"
 	},
 	"engines": {
 		"node": ">=12"
@@ -41,6 +43,7 @@
 	},
 	"homepage": "https://github.com/Magiczne/lens",
 	"devDependencies": {
+		"@types/lodash": "^4.14.161",
 		"@types/node": "^14.10.0",
 		"@types/puppeteer": "^3.0.2",
 		"@types/yargs": "^15.0.5",
@@ -49,7 +52,14 @@
 		"@vercel/ncc": "^0.24.0",
 		"boxen": "^4.2.0",
 		"chalk": "^4.1.0",
+		"cosmiconfig": "^7.0.0",
 		"eslint": "^7.8.1",
+		"is-installed-globally": "^0.3.2",
+		"jest": "^26.4.2",
+		"jest-each": "^26.4.2",
+		"lodash": "^4.17.20",
+		"pkg-dir": "^4.2.0",
+		"ts-jest": "^26.3.0",
 		"ts-node": "^9.0.0",
 		"tsconfig-paths": "^3.9.0",
 		"typescript": "^4.0.2",
