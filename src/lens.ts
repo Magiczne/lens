@@ -111,7 +111,7 @@ export default class Lens {
 
 				await page.close()
 
-				this.logger.success(`[DONE] ${url.host} ${res.width}x${res.height}`)
+				this.logger.success(`${url.host} ${res.width}x${res.height}`)
 			}))
 		}
 

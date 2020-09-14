@@ -5,7 +5,7 @@ import { Logger } from '@/typings/types'
 
 export default class ConsoleLogger implements Logger {
     public error (message: string): void {
-        console.error(chalk.red(message))
+        console.error(chalk.red(`[ERROR] ${message}`))
     }
 
     public header (message: string): void {
@@ -21,10 +21,10 @@ export default class ConsoleLogger implements Logger {
     }
 
     public info (message: string): void {
-        console.info(chalk.blue(message))
+        console.log(chalk.blue(`[INFO] ${message}`))
     }
 
     public success (message: string): void {
-        console.info(chalk.yellowBright(message))
+        console.log(chalk.greenBright(`[SUCCESS] ${message}`))
     }
 }
