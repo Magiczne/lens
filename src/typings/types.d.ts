@@ -14,6 +14,11 @@ interface LensArguments {
 	$0: string
 }
 
+interface LensDependencies {
+	argumentParser: ArgumentParser
+	logger: Logger
+}
+
 interface ParsedLensArguments {
 	urls: UrlWithStringQuery[]
 	resolutions: Record<string, Resolution[]>
@@ -33,5 +38,6 @@ interface ArgumentParser {
 
 export {
 	ArgumentParser,
+	LensArguments, LensDependencies, ParsedLensArguments, Resolution,
 	Logger
 }

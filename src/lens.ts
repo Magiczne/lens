@@ -1,29 +1,31 @@
 import fs from 'fs'
 import puppeteer, { Browser } from 'puppeteer'
-import url, { UrlWithStringQuery } from 'url'
+import { UrlWithStringQuery } from 'url'
 
-import { LensArguments, Logger, ParsedLensArguments, Resolution } from '@/typings/types'
-import { ConsoleLogger } from '@/logger'
+import { ArgumentParser, LensArguments, LensDependencies, Logger, ParsedLensArguments } from '@/typings/types'
 import { forEachAsync } from '@/utils'
-import { defaultResolutions } from '@/resolutions'
 
 export default class Lens {
 	private readonly screenshotsDir = './screenshots'
 
-	private readonly args: ParsedLensArguments
+	private readonly argumentParser: ArgumentParser
 	private browser: Browser | undefined
-	private logger: Logger
+	private readonly logger: Logger
 
-	public constructor (args: LensArguments, logger: Logger | undefined = undefined) {
-		this.args = this.parseArguments(args)
-		this.logger = logger ?? new ConsoleLogger()
+	private args: ParsedLensArguments
+
+	public constructor ({ argumentParser, logger }: LensDependencies) {
+		this.argumentParser = argumentParser
+		this.logger = logger
 	}
 
 	/**
 	 * Create directory for screenshots if it does not exist,
 	 * then instantiate browser.
 	 */
-	public async init (): Promise<void> {
+	public async init (args: LensArguments): Promise<void> {
+		this.args = this.argumentParser.parse(args)
+
 		if (!fs.existsSync(this.screenshotsDir)) {
 			try {
 				fs.mkdirSync(this.screenshotsDir, { recursive: true })

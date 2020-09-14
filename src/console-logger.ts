@@ -3,7 +3,7 @@ import boxen from 'boxen'
 
 import { Logger } from '@/typings/types'
 
-class ConsoleLogger implements Logger {
+export default class ConsoleLogger implements Logger {
     public error (message: string): void {
         console.error(chalk.red(message))
     }
@@ -27,8 +27,4 @@ class ConsoleLogger implements Logger {
     public success (message: string): void {
         console.info(chalk.yellowBright(message))
     }
-}
-
-export {
-    ConsoleLogger
 }

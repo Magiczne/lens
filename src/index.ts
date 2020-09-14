@@ -4,6 +4,8 @@ import yargs from 'yargs'
 
 import { LensArguments } from '@/typings/types'
 import Lens from '@/lens'
+import DefaultArgumentParser from '@/argument-parser'
+import ConsoleLogger from '@/console-logger'
 
 const args: LensArguments = yargs
 	.usage('Usage: -u <url>')
@@ -37,8 +39,11 @@ const args: LensArguments = yargs
 	.argv
 
 const main = async () => {
-	const lens = new Lens(args)
-	await lens.init()
+	const lens = new Lens({
+		argumentParser: new DefaultArgumentParser(),
+		logger: new ConsoleLogger()
+	})
+	await lens.init(args)
 	await lens.run()
 	await lens.dispose()
 }
