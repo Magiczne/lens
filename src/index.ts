@@ -27,7 +27,7 @@ const args: LensArguments = yargs
 		string: true,
 		default: ''
 	})
-	.demandOption(['url'], 'Please provide both url and resolution arguments to work with this tool')
+	.demandOption(['url'], 'You need to provide at least the "url" parameter to work with this tool')
 	.epilogue('For advanced usage documentation please visit https://github.com/Magiczne/lens')
 	.example('lens -u https://example.com', '')
 	.example('lens -u https://example.com -r 1280x720', '')
