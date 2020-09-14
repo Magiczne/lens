@@ -1,6 +1,6 @@
 import { cosmiconfig } from 'cosmiconfig'
-import deepmerge from 'deepmerge'
 import isInstalledGlobally from 'is-installed-globally'
+import { defaultsDeep } from 'lodash'
 import os from 'os'
 import packageDir from 'pkg-dir'
 
@@ -32,7 +32,7 @@ const config = async (): Promise<LensConfig>  => {
 
     const { config } = (await explorer.search(searchDirectory)) || { config: {} }
 
-    return deepmerge(defaultConfig, config)
+    return defaultsDeep(config, defaultConfig)
 }
 
 export default config
