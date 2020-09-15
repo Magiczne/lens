@@ -2,7 +2,7 @@ import each from 'jest-each'
 
 import { ArgumentParser, LensArguments } from '@/typings/types'
 import DefaultArgumentParser from '@/argument-parser'
-import { defaultResolutions } from '@/resolutions'
+import { defaultViewports } from '@/viewports'
 import { LensResolutionError } from '@/errors'
 
 jest.mock('url')
@@ -79,7 +79,7 @@ describe('DefaultArgumentParser', () => {
             urls: [
                 url.parse('https://example.com')
             ],
-            resolutions: defaultResolutions,
+            resolutions: defaultViewports,
             tag: 'default'
         })
     })

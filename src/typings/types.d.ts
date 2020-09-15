@@ -1,8 +1,6 @@
 import { UrlWithStringQuery } from 'url'
 import { LoadEvent, Viewport } from 'puppeteer'
 
-type Resolution = Pick<Viewport, 'width' | 'height' | 'deviceScaleFactor'>
-
 interface LensArguments {
 	[x: string]: unknown
 
@@ -33,7 +31,7 @@ interface LensDependencies {
 
 interface ParsedLensArguments {
 	urls: UrlWithStringQuery[]
-	resolutions: Record<string, Resolution[]>
+	resolutions: Record<string, Viewport[]>
 	tag: string
 
 	outputDir?: string
@@ -52,6 +50,6 @@ interface ArgumentParser {
 
 export {
 	ArgumentParser,
-	LensArguments, LensConfig, LensDependencies, ParsedLensArguments, Resolution,
+	LensArguments, LensConfig, LensDependencies, ParsedLensArguments,
 	Logger
 }

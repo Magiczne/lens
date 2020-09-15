@@ -1,7 +1,8 @@
 import fs from 'fs'
-import puppeteer, { Browser } from 'puppeteer'
+import puppeteer, { Browser, Viewport } from 'puppeteer'
 import { UrlWithStringQuery } from 'url'
 
+import ExitCode from '@/enums/exit-code'
 import {
 	ArgumentParser, LensArguments, LensConfig, LensDependencies, Logger, ParsedLensArguments
 } from '@/typings/types'
@@ -29,17 +30,7 @@ export default class Lens {
 		this.config = config
 
 		this.overrideConfigFromFlags()
-
-		if (!fs.existsSync(this.config.directories.output)) {
-			try {
-				fs.mkdirSync(this.config.directories.output, { recursive: true })
-				this.logger.info(`Created ${this.config.directories.output}`)
-			} catch (e) {
-				this.logger.error(`Could not create screenshots directory`)
-
-				process.exit(14)
-			}
-		}
+		this.createOutputDirectory()
 
 		this.browser = await puppeteer.launch({
 			headless: this.config.puppeteer.headless
@@ -53,14 +44,14 @@ export default class Lens {
 		if (!this.browser) {
 			this.logger.error('Lens has not been initialized. Please run "init" before running.')
 
-			process.exit(15)
+			process.exit(ExitCode.BrowserNotInitialized)
 		}
 
-		await forEachAsync(this.args.urls, async u => {
-			this.logger.header(`Running lens for ${u.href}`)
+		await forEachAsync(this.args.urls, async url => {
+			this.logger.header(`Running lens for ${url.href}`)
 
-			const directory = this.createDirectoryForUrl(u, this.args.tag)
-			await this.generateScreenshots(this.args, u, directory)
+			const directory = this.createDirectoryForUrl(url, this.args.tag)
+			await this.generateScreenshots(url, directory)
 		})
 	}
 
@@ -84,7 +75,7 @@ export default class Lens {
 			} catch {
 				this.logger.error(`Could not create directory ${directory}`)
 
-				process.exit(14)
+				process.exit(ExitCode.DirectoryNotCreated)
 			}
 		}
 
@@ -92,38 +83,71 @@ export default class Lens {
 	}
 
 	/**
+	 * Create output directory if it does not exist
+	 *
+	 * @private
+	 */
+	private createOutputDirectory (): void {
+		if (!fs.existsSync(this.config.directories.output)) {
+			try {
+				fs.mkdirSync(this.config.directories.output, { recursive: true })
+
+				this.logger.info(`Created ${this.config.directories.output}`)
+			} catch (e) {
+				this.logger.error(`Could not create screenshots directory`)
+
+				process.exit(ExitCode.DirectoryNotCreated)
+			}
+		}
+	}
+
+	/**
 	 * Generate screenshots based on the specified arguments
 	 *
-	 * @param args
 	 * @param url
 	 * @param dir
 	 * @private
 	 */
-	private async generateScreenshots (args: ParsedLensArguments, url: UrlWithStringQuery, dir: string): Promise<void> {
+	private async generateScreenshots (url: UrlWithStringQuery, dir: string): Promise<void> {
 		let pendingScreenshots: Promise<void>[] = []
 
-		for (const key of Object.keys(args.resolutions)) {
-			// TODO: Extract screenshot taking to separate method
-			pendingScreenshots = pendingScreenshots.concat(args.resolutions[key].map(async res => {
+		// TODO: Running all data at once may cause some issues. Make it run some batch of screenshots at a time
+		for (const [key, value] of Object.entries(this.args.resolutions)) {
+			pendingScreenshots = pendingScreenshots.concat(value.map(async viewport => {
 				if (!this.browser) return // TODO: Handle that in a prettier way
 
-				const page = await this.browser.newPage()
-
-				await page.setViewport({ ...res })
-				await page.goto(url.href, {
-					waitUntil: this.config.puppeteer.waitUntil
-				})
-				await page.screenshot({
-					path: `${dir}/${key !== 'default' ? `[${key}] ` : ''}${res.width}x${res.height}.png`
-				})
-
-				await page.close()
-
-				this.logger.success(`${url.host} ${res.width}x${res.height}`)
+				// Do not remove space at the end of tag.
+				const tag = key === 'default' ? '' : `[${key}] `
+				await this.generateScreenshot(dir, tag, url, viewport)
 			}))
 		}
 
 		await Promise.all(pendingScreenshots)
+	}
+
+	/**
+	 * Generate single screenshot
+	 *
+	 * @param dir
+	 * @param tag
+	 * @param url
+	 * @param viewport
+	 * @private
+	 */
+	private async generateScreenshot (
+		dir: string,
+		tag: string,
+		url: UrlWithStringQuery,
+		viewport: Viewport
+	): Promise<void> {
+		const page = await this.browser.newPage()
+
+		await page.setViewport({ ...viewport })
+		await page.goto(url.href, { waitUntil: this.config.puppeteer.waitUntil })
+		await page.screenshot({ path: `${dir}/${tag}${viewport.width}x${viewport.height}.png` })
+		await page.close()
+
+		this.logger.success(`${url.host} ${viewport.width}x${viewport.height}`)
 	}
 
 	/**

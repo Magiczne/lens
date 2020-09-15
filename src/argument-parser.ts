@@ -1,8 +1,9 @@
 import path from 'path'
+import { Viewport } from 'puppeteer'
 import nodeUrl, { UrlWithStringQuery } from 'url'
 
-import { ArgumentParser, LensArguments, ParsedLensArguments, Resolution } from '@/typings/types'
-import { defaultResolutions } from '@/resolutions'
+import { ArgumentParser, LensArguments, ParsedLensArguments } from '@/typings/types'
+import { defaultViewports } from '@/viewports'
 import { LensResolutionError } from '@/errors'
 
 export default class DefaultArgumentParser implements ArgumentParser {
@@ -38,12 +39,12 @@ export default class DefaultArgumentParser implements ArgumentParser {
      * @param resolution
      * @private
      */
-    private parseResolution (resolution?: string): Record<string, Resolution[]> {
+    private parseResolution (resolution?: string): Record<string, Viewport[]> {
         if (!resolution) {
-            return defaultResolutions
+            return defaultViewports
         }
 
-        const resolutions =  resolution.split(' ')
+        const viewports = resolution.split(' ')
             .map(res => {
                 const parsedResolution = res.trim()
                     .split('x')
@@ -62,7 +63,7 @@ export default class DefaultArgumentParser implements ArgumentParser {
                 }
             })
 
-        return { default: resolutions }
+        return { default: viewports }
     }
 
     /**
