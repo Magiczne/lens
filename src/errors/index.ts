@@ -14,7 +14,17 @@ class LensResolutionError extends LensError {
     }
 }
 
+class LensUrlError extends LensError {
+    constructor (message: string) {
+        super(message)
+
+        this.name = 'LensUrlError'
+    }
+}
+
 export {
     LensError,
     LensResolutionError
+    LensResolutionError,
+    LensUrlError
 }

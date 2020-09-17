@@ -3,7 +3,7 @@ import { Viewport } from 'puppeteer'
 
 import { ArgumentParser, LensArguments, ParsedLensArguments } from '@/typings/types'
 import { defaultViewports } from '@/viewports'
-import { LensResolutionError } from '@/errors'
+import { LensResolutionError, LensUrlError } from '@/errors'
 
 export default class DefaultArgumentParser implements ArgumentParser {
     parse (args: LensArguments): ParsedLensArguments {
@@ -68,8 +68,14 @@ export default class DefaultArgumentParser implements ArgumentParser {
      *
      * @param url
      */
-    private parseUrl (url: string): URL[] {
+    parseUrl (url: string): URL[] {
         return url.split(' ')
-            .map(u => new URL(u))
+            .map(u => {
+                try {
+                    return new URL(u)
+                } catch (e) {
+                    throw new LensUrlError(`Url ${u} is invalid`)
+                }
+            })
     }
 }
