@@ -46,6 +46,10 @@ interface Logger {
 
 interface ArgumentParser {
 	parse (args: LensArguments): ParsedLensArguments
+
+	parseDirectory (dir?: string): string | undefined
+	parseResolution (resolution?: string): Record<string, Viewport[]>
+	parseUrl (url: string): UrlWithStringQuery[]
 }
 
 export {

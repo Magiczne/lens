@@ -9,7 +9,7 @@ import { LensResolutionError } from '@/errors'
 export default class DefaultArgumentParser implements ArgumentParser {
     parse (args: LensArguments): ParsedLensArguments {
         return {
-            urls: this.parseUrls(args.url),
+            urls: this.parseUrl(args.url),
             resolutions: this.parseResolution(args.resolution),
             tag: args.tag,
 
@@ -22,9 +22,8 @@ export default class DefaultArgumentParser implements ArgumentParser {
      * Return undefined otherwise.
      *
      * @param dir
-     * @private
      */
-    private parseDirectory (dir?: string): string | undefined {
+    parseDirectory (dir?: string): string | undefined {
         if (dir) {
             return path.resolve(dir)
         }
@@ -37,9 +36,8 @@ export default class DefaultArgumentParser implements ArgumentParser {
      * If argument is not present, use default resolutions list.
      *
      * @param resolution
-     * @private
      */
-    private parseResolution (resolution?: string): Record<string, Viewport[]> {
+    parseResolution (resolution?: string): Record<string, Viewport[]> {
         if (!resolution) {
             return defaultViewports
         }
@@ -70,7 +68,6 @@ export default class DefaultArgumentParser implements ArgumentParser {
      * Retrieve all urls from the input arguments
      *
      * @param url
-     * @private
      */
     private parseUrls (url: string): UrlWithStringQuery[] {
         return url.split(' ')
