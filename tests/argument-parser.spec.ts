@@ -3,97 +3,116 @@ import each from 'jest-each'
 import { ArgumentParser, LensArguments } from '@/typings/types'
 import DefaultArgumentParser from '@/argument-parser'
 import { defaultViewports } from '@/viewports'
-import { LensResolutionError } from '@/errors'
+import { LensResolutionError, LensUrlError } from '@/errors'
 
 jest.mock('url')
-import url from 'url'
+jest.mock('path')
+import nodeUrl from 'url'
 
 describe('DefaultArgumentParser', () => {
     let parser: ArgumentParser
-
-    const createLensArguments = (args: Partial<LensArguments> = {}): LensArguments => {
-        return {
-            _: [],
-            $0: '',
-
-            url: 'https://example.com',
-            resolution: '1280x720',
-            tag: 'default',
-
-            ...args
-        }
-    }
 
     beforeEach(() => {
         parser = new DefaultArgumentParser()
     })
 
-    it('parses multiple arguments', () => {
-        const args = createLensArguments({
-            url: 'https://example.com https://example.com/subpage',
-            resolution: '1280x720 1920x1080',
-            tag: 'custom tag',
+    describe('parseDirectory', () => {
+        it('returns undefined when directory is undefined', () => {
+            const directory = parser.parseDirectory(undefined)
+
+            expect(directory).toBe(undefined)
         })
 
-        const parsedArgs = parser.parse(args)
+        it('returns resolved path', () => {
+            const directory = parser.parseDirectory('./screenshots')
 
-        expect(parsedArgs).toStrictEqual({
-            urls: [
-                url.parse('https://example.com'),
-                url.parse('https://example.com/subpage')
-            ],
-            resolutions: {
+            expect(directory).toBe('resolved path')
+        })
+    })
+
+    describe('parseResolution', () => {
+        it('return default viewports with no arguments', () => {
+            const viewports = parser.parseResolution()
+
+            expect(viewports).toStrictEqual(defaultViewports)
+        })
+
+        each([
+            // Invalid number of parts
+            '1280', '1280x720x2', '1280x720 720',
+            // Invalid separator
+            '1280xx720', '1280;720', '1280x720 1280.720',
+            // Negative resolution
+            '-1280x720', '-1280x-720',
+            // Zero
+            '0x720', '0x0'
+        ]).it('should throw on invalid resolution (%s)', (res) => {
+            expect(() => {
+                parser.parseResolution(res)
+            }).toThrow(LensResolutionError)
+        })
+
+        it('parses resolution correctly', () => {
+            const viewports = parser.parseResolution('1280x720')
+
+            expect(viewports).toStrictEqual({
                 default: [
-                    { width: 1280, height: 720 },
-                    { width: 1920, height: 1080 }
+                    {
+                        width: 1280,
+                        height: 720
+                    }
                 ]
-            },
-            tag: 'custom tag'
+            })
         })
     })
 
-    it('parses single arguments', () => {
-        const args = createLensArguments()
-        const parsedArgs = parser.parse(args)
+    describe('parseUrl', () => {
+        it('should throw on invalid url', () => {
+            expect(() => {
+                parser.parseUrl('ht:/url.pl')
+            }).toThrow(LensUrlError)
+        })
 
-        expect(parsedArgs).toStrictEqual({
-            urls: [
-                url.parse('https://example.com')
-            ],
-            resolutions: {
-                default: [
-                    { width: 1280, height: 720 }
-                ]
-            },
-            tag: 'default'
+        it('parses single url', () => {
+            const urls = parser.parseUrl('https://example.com')
+
+            expect(urls).toStrictEqual([
+                nodeUrl.parse('https://example.com')
+            ])
+        })
+
+        it('parses multiple urls', () => {
+            const urls = parser.parseUrl('https://example.com http://example.com/subpage')
+
+            expect(urls).toStrictEqual([
+                nodeUrl.parse('https://example.com'),
+                nodeUrl.parse('http://example.com/subpage')
+            ])
         })
     })
 
-    it('assigns default resolutions', () => {
-        const args = createLensArguments({
-            resolution: undefined
-        })
-        const parsedArgs = parser.parse(args)
+    describe('parse', () => {
+        it('parses all arguments at once', () => {
+            const args: LensArguments = {
+                _: [],
+                $0: '',
 
-        expect(parsedArgs).toStrictEqual({
-            urls: [
-                url.parse('https://example.com')
-            ],
-            resolutions: defaultViewports,
-            tag: 'default'
-        })
-    })
+                url: 'https://example.com',
+                resolution: '1280x720',
+                tag: 'custom tag',
 
-    each([
-        '1280', '1280xx720', '1280;720',
-        '1280x720 1920 1080', '1280x720 1650;1080'
-    ]).it('should throw on invalid resolution (%s)', (res) => {
-        const args = createLensArguments({
-            resolution: res
-        })
+                outputDir: './screenshots'
+            }
 
-        expect(() => {
-            parser.parse(args)
-        }).toThrow(LensResolutionError)
+            const parsedArgs = parser.parse(args)
+
+            expect(parsedArgs).toStrictEqual({
+                urls: parser.parseUrl('https://example.com'),
+                resolutions: parser.parseResolution('1280x720'),
+                tag: 'custom tag',
+
+                outputDir: parser.parseDirectory(args.outputDir)
+            })
+        })
     })
 })
