@@ -1,6 +1,5 @@
 import fs from 'fs'
 import puppeteer, { Browser, Viewport } from 'puppeteer'
-import { UrlWithStringQuery } from 'url'
 
 import ExitCode from '@/enums/exit-code'
 import {
@@ -62,7 +61,7 @@ export default class Lens {
 	 * @param tag
 	 * @private
 	 */
-	private createDirectoryForUrl (url: UrlWithStringQuery, tag = ''): string {
+	private createDirectoryForUrl (url: URL, tag = ''): string {
 		let directory = `${this.config.directories.output}/${url.host}`
 		if (tag) {
 			directory = `${directory}/${tag}`
@@ -108,7 +107,7 @@ export default class Lens {
 	 * @param dir
 	 * @private
 	 */
-	private async generateScreenshots (url: UrlWithStringQuery, dir: string): Promise<void> {
+	private async generateScreenshots (url: URL, dir: string): Promise<void> {
 		let pendingScreenshots: Promise<void>[] = []
 
 		// TODO: Running all data at once may cause some issues. Make it run some batch of screenshots at a time
@@ -137,7 +136,7 @@ export default class Lens {
 	private async generateScreenshot (
 		dir: string,
 		tag: string,
-		url: UrlWithStringQuery,
+		url: URL,
 		viewport: Viewport
 	): Promise<void> {
 		const page = await this.browser.newPage()

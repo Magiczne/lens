@@ -1,6 +1,5 @@
 import path from 'path'
 import { Viewport } from 'puppeteer'
-import nodeUrl, { UrlWithStringQuery } from 'url'
 
 import { ArgumentParser, LensArguments, ParsedLensArguments } from '@/typings/types'
 import { defaultViewports } from '@/viewports'
@@ -69,8 +68,8 @@ export default class DefaultArgumentParser implements ArgumentParser {
      *
      * @param url
      */
-    private parseUrls (url: string): UrlWithStringQuery[] {
+    private parseUrl (url: string): URL[] {
         return url.split(' ')
-            .map(u => nodeUrl.parse(u))
+            .map(u => new URL(u))
     }
 }

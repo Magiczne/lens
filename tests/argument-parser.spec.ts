@@ -5,9 +5,7 @@ import DefaultArgumentParser from '@/argument-parser'
 import { defaultViewports } from '@/viewports'
 import { LensResolutionError, LensUrlError } from '@/errors'
 
-jest.mock('url')
 jest.mock('path')
-import nodeUrl from 'url'
 
 describe('DefaultArgumentParser', () => {
     let parser: ArgumentParser
@@ -77,7 +75,7 @@ describe('DefaultArgumentParser', () => {
             const urls = parser.parseUrl('https://example.com')
 
             expect(urls).toStrictEqual([
-                nodeUrl.parse('https://example.com')
+                new URL('https://example.com')
             ])
         })
 
@@ -85,8 +83,8 @@ describe('DefaultArgumentParser', () => {
             const urls = parser.parseUrl('https://example.com http://example.com/subpage')
 
             expect(urls).toStrictEqual([
-                nodeUrl.parse('https://example.com'),
-                nodeUrl.parse('http://example.com/subpage')
+                new URL('https://example.com'),
+                new URL('http://example.com/subpage')
             ])
         })
     })

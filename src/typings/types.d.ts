@@ -1,4 +1,3 @@
-import { UrlWithStringQuery } from 'url'
 import { LoadEvent, Viewport } from 'puppeteer'
 
 interface LensArguments {
@@ -30,7 +29,7 @@ interface LensDependencies {
 }
 
 interface ParsedLensArguments {
-	urls: UrlWithStringQuery[]
+	urls: URL[]
 	resolutions: Record<string, Viewport[]>
 	tag: string
 
@@ -49,7 +48,7 @@ interface ArgumentParser {
 
 	parseDirectory (dir?: string): string | undefined
 	parseResolution (resolution?: string): Record<string, Viewport[]>
-	parseUrl (url: string): UrlWithStringQuery[]
+	parseUrl (url: string): URL[]
 }
 
 export {
