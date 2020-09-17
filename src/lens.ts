@@ -6,6 +6,7 @@ import {
 	ArgumentParser, LensArguments, LensConfig, LensDependencies, Logger, ParsedLensArguments
 } from '@/typings/types'
 import { forEachAsync } from '@/utils'
+import { LensCriticalError } from '@/errors'
 
 export default class Lens {
 	private readonly argumentParser: ArgumentParser
@@ -41,9 +42,10 @@ export default class Lens {
 	 */
 	public async run (): Promise<void> {
 		if (!this.browser) {
-			this.logger.error('Lens has not been initialized. Please run "init" before running.')
-
-			process.exit(ExitCode.BrowserNotInitialized)
+			throw new LensCriticalError(
+				'Lens has not been initialized. Please run "init" before running.',
+				ExitCode.BrowserNotInitialized
+			)
 		}
 
 		await forEachAsync(this.args.urls, async url => {
@@ -72,9 +74,10 @@ export default class Lens {
 				fs.mkdirSync(directory, { recursive: true })
 				this.logger.info(`Created ${directory}`)
 			} catch {
-				this.logger.error(`Could not create directory ${directory}`)
-
-				process.exit(ExitCode.DirectoryNotCreated)
+				throw new LensCriticalError(
+					`Could not create directory ${directory}`,
+					ExitCode.DirectoryNotCreated
+				)
 			}
 		}
 
@@ -93,9 +96,10 @@ export default class Lens {
 
 				this.logger.info(`Created ${this.config.directories.output}`)
 			} catch (e) {
-				this.logger.error(`Could not create screenshots directory`)
-
-				process.exit(ExitCode.DirectoryNotCreated)
+				throw new LensCriticalError(
+					`Could not create output directory (${this.config.directories.output})`,
+					ExitCode.DirectoryNotCreated
+				)
 			}
 		}
 	}

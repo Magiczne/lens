@@ -7,6 +7,7 @@ import { LensArguments } from '@/typings/types'
 import Lens from '@/lens'
 import DefaultArgumentParser from '@/argument-parser'
 import ConsoleLogger from '@/logging/console-logger'
+import { LensCriticalError } from '@/errors'
 
 const args: LensArguments = yargs
 	.usage('Usage: lens -u <url>')
@@ -47,19 +48,27 @@ const args: LensArguments = yargs
 const main = async () => {
 	const lensConfig = await config()
 	const logger = new ConsoleLogger()
+	const lens = new Lens({
+		argumentParser: new DefaultArgumentParser(),
+		logger
+	})
 
 	try {
-		const lens = new Lens({
-			argumentParser: new DefaultArgumentParser(),
-			logger
-		})
 		await lens.init(args, lensConfig)
 		await lens.run()
 		await lens.dispose()
 	} catch (e) {
-		if (e.name.startsWith('Lens')) {
+		if (e.name === 'LensCriticalError') {
+			process.exitCode = (e as LensCriticalError).code
+
+			await lens?.dispose()
+
+			throw e
+		} else if (e.name.startsWith('Lens')) {
 			logger.error(e.message)
 		} else {
+			await lens?.dispose()
+
 			throw e
 		}
 	}
