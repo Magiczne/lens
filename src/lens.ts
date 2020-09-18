@@ -117,7 +117,12 @@ export default class Lens {
 		// TODO: Running all data at once may cause some issues. Make it run some batch of screenshots at a time
 		for (const [key, value] of Object.entries(this.args.resolutions)) {
 			pendingScreenshots = pendingScreenshots.concat(value.map(async viewport => {
-				if (!this.browser) return // TODO: Handle that in a prettier way
+				if (!this.browser) {
+					throw new LensCriticalError(
+						'Browser has not been initialized',
+						ExitCode.BrowserNotInitialized
+					)
+				}
 
 				// Do not remove space at the end of tag.
 				const tag = key === 'default' ? '' : `[${key}] `
