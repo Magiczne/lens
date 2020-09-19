@@ -14,6 +14,7 @@ interface LensArguments {
 }
 
 interface LensConfig {
+	chunkSize: number,
 	directories: {
 		output: string
 	},

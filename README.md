@@ -58,6 +58,7 @@ Currently, these are options you can configure:
 
 | Option              | Type               | Default                  | Description                              |
 |---------------------|--------------------|--------------------------|------------------------------------------|
+| chunkSize           | number             | 5                        | Number of screenshots to be taken at once. You can disable limit by putting 0 zero, but keep in mind it will consume your RAM. |
 | directories.output  | string             | './screenshots'          | Output directory for the screenshots.    |
 | puppeteer.headless  | boolean            | true                     | Whether to run browser in headless mode. |
 | puppeteer.waitUntil | string \| string[] | ['load', 'networkidle2'] | When to consider navigation succedeed. Refer to the [puppeteer docs](https://github.com/puppeteer/puppeteer/blob/v5.3.0/docs/api.md#pagegotourl-options) for detailed information. |
@@ -67,6 +68,7 @@ Example config:
 **.lens.config.js**
 ```javascript
 module.exports = {
+    chunkSize: 10,
     directories: {
         output: './output'
     },
@@ -80,6 +82,7 @@ module.exports = {
 **.lens.config.json**
 ```json
 {
+    "chunkSize": 10,
     "directories": {
         "output": "./output"
     },

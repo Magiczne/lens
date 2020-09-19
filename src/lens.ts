@@ -5,7 +5,7 @@ import ExitCode from '@/enums/exit-code'
 import {
 	ArgumentParser, LensArguments, LensConfig, LensDependencies, Logger, ParsedLensArguments
 } from '@/typings/types'
-import { forEachAsync } from '@/utils'
+import { arrayToChunks, forEachAsync } from '@/utils'
 import { LensCriticalError } from '@/errors'
 
 export default class Lens {
@@ -112,25 +112,23 @@ export default class Lens {
 	 * @private
 	 */
 	private async generateScreenshots (url: URL, dir: string): Promise<void> {
-		let pendingScreenshots: Promise<void>[] = []
-
-		// TODO: Running all data at once may cause some issues. Make it run some batch of screenshots at a time
-		for (const [key, value] of Object.entries(this.args.resolutions)) {
-			pendingScreenshots = pendingScreenshots.concat(value.map(async viewport => {
-				if (!this.browser) {
-					throw new LensCriticalError(
-						'Browser has not been initialized',
-						ExitCode.BrowserNotInitialized
-					)
-				}
-
-				// Do not remove space at the end of tag.
-				const tag = key === 'default' ? '' : `[${key}] `
-				await this.generateScreenshot(dir, tag, url, viewport)
-			}))
+		if (!this.browser) {
+			throw new LensCriticalError(
+				'Browser has not been initialized.',
+				ExitCode.BrowserNotInitialized
+			)
 		}
 
-		await Promise.all(pendingScreenshots)
+		for (const [key, viewports] of Object.entries(this.args.resolutions)) {
+			const chunks = arrayToChunks(viewports, this.config.chunkSize)
+
+			await forEachAsync(chunks, async chunk => {
+				await Promise.all(chunk.map(async viewport => {
+					const tag = key === 'default' ? '' : `[${key}] ` // Do not remove space at the end
+					await this.generateScreenshot(dir, tag, url, viewport)
+				}))
+			})
+		}
 	}
 
 	/**

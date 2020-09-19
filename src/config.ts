@@ -9,6 +9,7 @@ import path from 'path'
 import { LensConfig } from '@/typings/types'
 
 const defaultConfig: LensConfig = {
+    chunkSize: 5,
     directories: {
         output: path.resolve('./screenshots')
     },
