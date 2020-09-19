@@ -67,7 +67,13 @@ describe('DefaultArgumentParser', () => {
     describe('parseUrl', () => {
         it('should throw on invalid url', () => {
             expect(() => {
-                parser.parseUrl('ht:/url.pl')
+                parser.parseUrl('example.com')
+            }).toThrow(LensUrlError)
+        })
+
+        it('should throw on invalid protocol', () => {
+            expect(() => {
+                parser.parseUrl('ht:/example.com')
             }).toThrow(LensUrlError)
         })
 

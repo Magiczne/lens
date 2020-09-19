@@ -47,6 +47,10 @@ export default class DefaultArgumentParser implements ArgumentParser {
                     .split('x')
                     .map(x => parseInt(x, 10))
 
+                if (parsedResolution[0] <= 0 || parsedResolution[1] <= 0) {
+                    throw new LensResolutionError(`Invalid resolution ${res}. Resolution cannot be smaller than 0`)
+                }
+
                 if (parsedResolution.length !== 2) {
                     throw new LensResolutionError(`Invalid resolution ${res}. It should follow format [width]x[height]`)
                 }
@@ -71,11 +75,19 @@ export default class DefaultArgumentParser implements ArgumentParser {
     parseUrl (url: string): URL[] {
         return url.split(' ')
             .map(u => {
+                let url: URL
+
                 try {
-                    return new URL(u)
+                    url = new URL(u)
                 } catch (e) {
-                    throw new LensUrlError(`Url ${u} is invalid`)
+                    throw new LensUrlError(`Url ${u} is invalid. Remember to include protocol!`)
                 }
+
+                if (!['http:', 'https:'].includes(url.protocol)) {
+                    throw new LensUrlError(`Url ${u} is invalid. Only http: and https: protocols are allowed`)
+                }
+
+                return url
             })
     }
 }
