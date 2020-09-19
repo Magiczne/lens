@@ -14,15 +14,16 @@ const args: LensArguments = yargs
 	.option('url', {
 		alias: 'u',
 		describe: 'The url from which screenshots will be taken. ' +
-                  'If you want to create screenshots from multiple urls separate them with a space.' +
-                  '(e.g. https://example.com https://example.com/subpage)',
+                  'If you want to create screenshots from multiple urls separate them with a space ' +
+                  '(e.g. "https://example.com https://example.com/page"). ' +
+                  'Remember to include protocol (http:// or https://).',
 		string: true
 	})
 	.option('resolution', {
 		alias: 'r',
 		describe: 'Custom resolution (e.g. 800x600). ' +
 			'If you want to create screenshots for multiple resolutions separate them with a space ' +
-            '(e.g. 800x600 1920x1080)',
+            '(e.g. "800x600 1920x1080")',
 		string: true
 	})
 	.option('tag', {

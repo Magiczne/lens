@@ -31,11 +31,12 @@ lens --help
         --version     Show version number                                [boolean]
     -u, --url         The url from which screenshots will be taken. If you want to
                       create screenshots from multiple urls separate them with a
-                      space.(e.g. https://example.com https://example.com/subpage)
+                      space (e.g. "https://example.com https://example.com/page").
+                      Remember to include protocol (http:// or https://).
                                                                [string] [required]
     -r, --resolution  Custom resolution (e.g. 800x600). If you want to create
                       screenshots for multiple resolutions separate them with a
-                      space (e.g. 800x600 1920x1080)                      [string]
+                      space (e.g. "800x600 1920x1080")                    [string]
     -t, --tag         Custom tag that will be used as a subdirectory for 
                       screenshots                           [string] [default: ""]
     -o, --output-dir  Output directory for the screenshots                [string]
