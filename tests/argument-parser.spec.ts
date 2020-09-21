@@ -1,7 +1,7 @@
 import each from 'jest-each'
 
 import { ArgumentParser, LensArguments } from '@/typings/types'
-import DefaultArgumentParser from '@/argument-parser'
+import DefaultArgumentParser from '@/parsing/argument-parser'
 import { defaultViewports } from '@/viewports'
 import { LensResolutionError, LensUrlError } from '@/errors'
 

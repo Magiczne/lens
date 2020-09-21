@@ -5,7 +5,7 @@ import yargs from 'yargs'
 import config from '@/config'
 import { LensArguments } from '@/typings/types'
 import Lens from '@/lens'
-import DefaultArgumentParser from '@/argument-parser'
+import DefaultArgumentParser from '@/parsing/argument-parser'
 import ConsoleLogger from '@/logging/console-logger'
 import { LensCriticalError } from '@/errors'
 

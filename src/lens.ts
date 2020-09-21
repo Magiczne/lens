@@ -1,7 +1,7 @@
 import fs from 'fs'
 import puppeteer, { Browser, Viewport } from 'puppeteer'
 
-import ExitCode from '@/enums/exit-code'
+import ExitCode from '@/exit-code'
 import {
 	ArgumentParser, LensArguments, LensConfig, LensDependencies, Logger, ParsedLensArguments
 } from '@/typings/types'

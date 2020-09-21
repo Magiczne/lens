@@ -12,6 +12,7 @@ export default class DefaultArgumentParser implements ArgumentParser {
             resolutions: this.parseResolution(args.resolution),
             tag: args.tag,
 
+            inputDir: this.parseDirectory(args.inputDir),
             outputDir: this.parseDirectory(args.outputDir)
         }
     }
@@ -72,7 +73,11 @@ export default class DefaultArgumentParser implements ArgumentParser {
      *
      * @param url
      */
-    parseUrl (url: string): URL[] {
+    parseUrl (url?: string): URL[] {
+        if (!url) {
+            return []
+        }
+
         return url.split(' ')
             .map(u => {
                 let url: URL
