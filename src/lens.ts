@@ -85,6 +85,8 @@ export default class Lens {
 					const directory = this.createDirectoryForUrl(rule.url, rule.tag)
 					await this.generateScreenshots(rule.url, directory, rule.renderFor)
 				})
+			} else {
+				this.logger.info(`Ruleset ${file} disabled. Skipping.`)
 			}
 		}
 	}
