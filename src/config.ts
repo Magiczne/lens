@@ -36,7 +36,7 @@ const config = async (): Promise<LensConfig>  => {
         searchPlaces: searchPlaces,
         stopDir: searchDirectory,
         transform (result: CosmiconfigResult): CosmiconfigResult {
-            if (result.config.directories && result.config.directories.output) {
+            if (result && result.config.directories && result.config.directories.output) {
                 // Resolve input filepath
                 if (result.config.directories.input) {
                     result.config.directories.input = path.resolve(result.config.directories.input)

@@ -18,14 +18,14 @@ const arrayToChunks = <T>(array: T[], itemsPerChunk: number): Array<T[]> => {
     }, [])
 }
 
-const filterObject = <T extends Record<string, unknown>>(obj: T, keys: Array<keyof T>): Partial<T> => {
-    return Object.keys(obj)
+const filterObject = <T extends Record<string, unknown>, K extends keyof T>(obj: T, keys: Array<K>): Pick<T, K> => {
+    return (Object.keys(obj) as Array<K>)
         .filter(key => keys.includes(key))
         .reduce((ret, key) => {
             return Object.assign(ret, {
                 [key]: obj[key]
             })
-        }, {})
+        }, {}) as Pick<T, K>
 }
 
 const forEachAsync = async <T>(array: T[], callback: AsyncForEachCallback<T>): Promise<void> => {

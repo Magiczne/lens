@@ -26,24 +26,24 @@ export default class Lens {
 	private args: ParsedLensArguments
 	private config: LensConfig
 
-	public constructor ({ argumentParser, logger, rulesetParser, rulesetValidator }: LensDependencies) {
-		this.argumentParser = argumentParser
-		this.logger = logger
-		this.rulesetParser = rulesetParser
-		this.rulesetValidator = rulesetValidator
-	}
+	public constructor (dependencies: LensDependencies, args: LensArguments, config: LensConfig) {
+		this.argumentParser = dependencies.argumentParser
+		this.logger = dependencies.logger
+		this.rulesetParser = dependencies.rulesetParser
+		this.rulesetValidator = dependencies.rulesetValidator
 
-	/**
-	 * Create directory for screenshots if it does not exist,
-	 * then instantiate browser.
-	 */
-	public async init (args: LensArguments, config: LensConfig): Promise<void> {
 		this.args = this.argumentParser.parse(args)
 		this.config = config
 
 		this.overrideConfigFromFlags()
 		this.createOutputDirectory()
+	}
 
+	/**
+	 * Instantiate browser.
+	 * It cannot be done in the constructor since constructor cannot be marked as async.
+	 */
+	public async init (): Promise<void> {
 		this.browser = await puppeteer.launch({
 			headless: this.config.puppeteer.headless
 		})
@@ -196,6 +196,13 @@ export default class Lens {
 		url: URL,
 		viewport: Viewport
 	): Promise<void> {
+		if (!this.browser) {
+			throw new LensCriticalError(
+				'Lens has not been initialized. Please run "init" before running.',
+				ExitCode.BrowserNotInitialized
+			)
+		}
+
 		const page = await this.browser.newPage()
 
 		await page.setViewport({ ...viewport })

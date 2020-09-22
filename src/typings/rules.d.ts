@@ -17,7 +17,7 @@ interface ParsedRule {
 }
 
 interface Ruleset {
-    disable: boolean
+    disable?: boolean
     rules: Array<Rule>
 }
 

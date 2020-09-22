@@ -12,7 +12,7 @@ const viewportSchema: Yup.ObjectSchema<Viewport> = Yup.object().shape({
     isMobile: Yup.bool().notRequired(),
     hasTouch: Yup.bool().notRequired(),
     isLandscape: Yup.bool().notRequired()
-})
+}).required()
 
 const ruleSchema: Yup.ObjectSchema<Rule> = Yup.object().shape({
     url: Yup.string().required().test({
@@ -81,12 +81,12 @@ const ruleSchema: Yup.ObjectSchema<Rule> = Yup.object().shape({
             }
         })
     })
-})
+}).required()
 
 const rulesetSchema: Yup.ObjectSchema<Ruleset> = Yup.object().shape({
     disable: Yup.bool().default(false),
     rules: Yup.array().of(ruleSchema).required()
-})
+}).required()
 
 export {
     ruleSchema, rulesetSchema, viewportSchema

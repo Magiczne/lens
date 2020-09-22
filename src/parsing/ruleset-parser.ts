@@ -7,7 +7,7 @@ import { defaultViewports } from '@/viewports'
 class DefaultRulesetParser implements RulesetParser {
     parse (rawRuleset: Ruleset): ParsedRuleset {
         return {
-            disable: rawRuleset.disable,
+            disable: rawRuleset.disable !== undefined ? rawRuleset.disable : false,
             rules: rawRuleset.rules.map(rule => this.parseRule(rule))
         }
     }
@@ -29,7 +29,11 @@ class DefaultRulesetParser implements RulesetParser {
      * @param renderFor
      * @private
      */
-    private parseRenderFor (renderFor: Array<string> | Array<Viewport>): Record<string, Array<Viewport>> {
+    private parseRenderFor (renderFor?: Array<string> | Array<Viewport>): Record<string, Array<Viewport>> {
+        if (!renderFor) {
+            return defaultViewports
+        }
+
         if (isStringArray(renderFor)) {
             return filterObject(defaultViewports, renderFor as Array<string>)
         } else {

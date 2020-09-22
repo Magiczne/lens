@@ -63,10 +63,10 @@ const main = async () => {
 		logger,
 		rulesetParser: new DefaultRulesetParser(),
 		rulesetValidator: new DefaultRulesetValidator()
-	})
+	}, args, lensConfig)
 
 	try {
-		await lens.init(args, lensConfig)
+		await lens.init()
 		await lens.run()
 		await lens.dispose()
 	} catch (e) {
