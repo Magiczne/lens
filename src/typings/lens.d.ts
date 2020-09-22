@@ -6,15 +6,15 @@ interface ArgumentParser {
     parse (args: LensArguments): ParsedLensArguments
 
     parseDirectory (dir?: string): string | undefined
-    parseResolution (resolution?: string): Record<string, Viewport[]>
-    parseUrl (url: string): URL[]
+    parseResolution (resolution?: string[]): Record<string, Viewport[]>
+    parseUrl (url?: string[]): URL[]
 }
 
 interface LensArguments {
     [x: string]: unknown
 
-    url?: string
-    resolution?: string
+    url?: string[]
+    resolution?: string[]
     tag: string
 
     inputDir?: string

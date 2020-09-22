@@ -23,31 +23,30 @@ yarn global add @magiczne/lens
 
 ```
 lens --help
-
-  Usage: lens -u <url>
   
   Options:
         --help        Show help                                          [boolean]
         --version     Show version number                                [boolean]
     -u, --url         The url from which screenshots will be taken. If you want to
                       create screenshots from multiple urls separate them with a
-                      space (e.g. "https://example.com https://example.com/page").
-                      Remember to include protocol (http:// or https://).
-                                                               [string] [required]
+                      space (e.g. https://example.com https://example.com/page).
+                      Remember to include protocol (http:// or https://).  [array]
     -r, --resolution  Custom resolution (e.g. 800x600). If you want to create
                       screenshots for multiple resolutions separate them with a
-                      space (e.g. "800x600 1920x1080")                    [string]
-    -t, --tag         Custom tag that will be used as a subdirectory for 
+                      space (e.g. 800x600 1920x1080)                       [array]
+    -t, --tag         Custom tag that will be used as a subdirectory for
                       screenshots                           [string] [default: ""]
-    -o, --output-dir  Output directory for the screenshots                [string]
     -i, --input-dir   Input directory with screenshot rules               [string]
+    -o, --output-dir  Output directory for the screenshots                [string]
                       
   Examples:
     lens -u https://example.com
     lens -u https://example.com -r 1280x720
-    lens -u "https://example.com https://example.com/subpage" -r 1920x1080
-    lens -u https://example.com -r "800x600 1280x720" -o ./output
+    lens -u https://example.com https://example.com/subpage -r 1920x1080
+    lens -u https://example.com -r 800x600 1280x720 -o ./output
     lens -u https://example.com -r 1280x720 -t "custom tag"
+
+  For advanced usage documentation please visit https://github.com/Magiczne/lens
 ```
 
 ## Advanced configuration

@@ -13,21 +13,22 @@ import { DefaultRulesetValidator } from '@/validation/ruleset-validator'
 import { DefaultRulesetParser } from '@/parsing/ruleset-parser'
 
 const args: LensArguments = yargs
-	.usage('Usage: lens -u <url>')
 	.option('url', {
 		alias: 'u',
 		describe: 'The url from which screenshots will be taken. ' +
                   'If you want to create screenshots from multiple urls separate them with a space ' +
-                  '(e.g. "https://example.com https://example.com/page"). ' +
+                  '(e.g. https://example.com https://example.com/page). ' +
                   'Remember to include protocol (http:// or https://).',
-		string: true
+		string: true,
+		array: true
 	})
 	.option('resolution', {
 		alias: 'r',
 		describe: 'Custom resolution (e.g. 800x600). ' +
 			'If you want to create screenshots for multiple resolutions separate them with a space ' +
-            '(e.g. "800x600 1920x1080")',
-		string: true
+            '(e.g. 800x600 1920x1080)',
+		string: true,
+		array: true
 	})
 	.option('tag', {
 		alias: 't',
@@ -45,12 +46,11 @@ const args: LensArguments = yargs
 		describe: 'Output directory for the screenshots',
 		string: true
 	})
-
 	.epilogue('For advanced usage documentation please visit https://github.com/Magiczne/lens')
 	.example('lens -u https://example.com', '')
 	.example('lens -u https://example.com -r 1280x720', '')
-	.example('lens -u "https://example.com https://example.com/subpage" -r 1920x1080', '')
-	.example('lens -u https://example.com -r "800x600 1280x720" -o ./output', '')
+	.example('lens -u https://example.com https://example.com/subpage -r 1920x1080', '')
+	.example('lens -u https://example.com -r 800x600 1280x720 -o ./output', '')
 	.example('lens -u https://example.com -r 1280x720 -t "custom tag"', '')
 	.showHelpOnFail(false, 'Use lens --help for available options')
 	.argv
