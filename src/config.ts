@@ -11,6 +11,7 @@ import { LensConfig } from '@/typings/types'
 const defaultConfig: LensConfig = {
     chunkSize: 5,
     directories: {
+        input: path.resolve('./rules'),
         output: path.resolve('./screenshots')
     },
     puppeteer: {
@@ -35,9 +36,16 @@ const config = async (): Promise<LensConfig>  => {
         searchPlaces: searchPlaces,
         stopDir: searchDirectory,
         transform (result: CosmiconfigResult): CosmiconfigResult {
-            // Resolve output filepath
             if (result.config.directories && result.config.directories.output) {
-                result.config.directories.output = path.resolve(result.config.directories.output)
+                // Resolve input filepath
+                if (result.config.directories.input) {
+                    result.config.directories.input = path.resolve(result.config.directories.input)
+                }
+
+                // Resolve output filepath
+                if (result.config.directories.output) {
+                    result.config.directories.output = path.resolve(result.config.directories.output)
+                }
             }
 
             return result

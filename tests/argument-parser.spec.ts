@@ -105,6 +105,7 @@ describe('DefaultArgumentParser', () => {
                 resolution: '1280x720',
                 tag: 'custom tag',
 
+                inputDir: './rules',
                 outputDir: './screenshots'
             }
 
@@ -115,6 +116,7 @@ describe('DefaultArgumentParser', () => {
                 resolutions: parser.parseResolution('1280x720'),
                 tag: 'custom tag',
 
+                inputDir: parser.parseDirectory(args.inputDir),
                 outputDir: parser.parseDirectory(args.outputDir)
             })
         })

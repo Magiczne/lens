@@ -17,6 +17,7 @@ interface LensArguments {
     resolution?: string
     tag: string
 
+    inputDir?: string
     outputDir?: string
 
     _: string[]
@@ -28,12 +29,14 @@ interface ParsedLensArguments {
     resolutions: Record<string, Viewport[]>
     tag: string
 
+    inputDir?: string
     outputDir?: string
 }
 
 interface LensConfig {
     chunkSize: number
     directories: {
+        input: string
         output: string
     }
     puppeteer: {

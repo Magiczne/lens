@@ -33,12 +33,17 @@ const args: LensArguments = yargs
 		string: true,
 		default: ''
 	})
+	.option('input-dir', {
+		alias: 'i',
+		describe: 'Input directory with screenshot rules',
+		string: true
+	})
 	.option('output-dir', {
 		alias: 'o',
 		describe: 'Output directory for the screenshots',
 		string: true
 	})
-	.demandOption(['url'], 'You need to provide at least the "url" parameter to work with this tool')
+
 	.epilogue('For advanced usage documentation please visit https://github.com/Magiczne/lens')
 	.example('lens -u https://example.com', '')
 	.example('lens -u https://example.com -r 1280x720', '')
