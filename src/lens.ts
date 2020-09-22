@@ -60,10 +60,10 @@ export default class Lens {
 			)
 		}
 
-		if (this.config.directories.input) {
-			await this.runFromRuleset()
-		} else {
+		if (this.args.urls.length > 0) {
 			await this.runFromArgs()
+		} else {
+			await this.runFromRuleset()
 		}
 	}
 
