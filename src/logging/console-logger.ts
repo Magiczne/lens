@@ -1,6 +1,7 @@
-import chalk from 'chalk'
 import boxen from 'boxen'
+import chalk from 'chalk'
 
+import { LogLevel } from '@/logging/log-level'
 import { Logger } from '@/typings/types'
 
 export default class ConsoleLogger implements Logger {
@@ -8,8 +9,8 @@ export default class ConsoleLogger implements Logger {
         console.error(chalk.red(`[ERROR] ${message}`))
     }
 
-    public header (message: string): void {
-        console.log(chalk.cyan(boxen(message, {
+    public header (message: string, level: LogLevel = LogLevel.Info): void {
+        const box = boxen(message, {
             borderStyle: boxen.BorderStyle.Round,
             padding: {
                 top: 0,
@@ -17,7 +18,20 @@ export default class ConsoleLogger implements Logger {
                 bottom: 0,
                 left: 3
             }
-        })))
+        })
+
+        switch (level) {
+            case LogLevel.Error:
+                console.error(chalk.redBright(box))
+                break
+
+            case LogLevel.Info:
+                console.log(chalk.cyan(box))
+                break
+
+            default:
+                console.log(chalk.white(box))
+        }
     }
 
     public info (message: string): void {
