@@ -1,9 +1,17 @@
 import fs from 'fs'
+import path from 'path'
 import puppeteer, { Browser, Viewport } from 'puppeteer'
 
 import ExitCode from '@/exit-code'
 import {
-	ArgumentParser, LensArguments, LensConfig, LensDependencies, Logger, ParsedLensArguments
+	ArgumentParser,
+	LensArguments,
+	LensConfig,
+	LensDependencies,
+	Logger,
+	ParsedLensArguments,
+	RulesetParser,
+	RulesetValidator
 } from '@/typings/types'
 import { arrayToChunks, forEachAsync } from '@/utils'
 import { LensCriticalError } from '@/errors'
@@ -12,13 +20,17 @@ export default class Lens {
 	private readonly argumentParser: ArgumentParser
 	private browser: Browser | undefined
 	private readonly logger: Logger
+	private readonly rulesetParser: RulesetParser
+	private readonly rulesetValidator: RulesetValidator
 
 	private args: ParsedLensArguments
 	private config: LensConfig
 
-	public constructor ({ argumentParser, logger }: LensDependencies) {
+	public constructor ({ argumentParser, logger, rulesetParser, rulesetValidator }: LensDependencies) {
 		this.argumentParser = argumentParser
 		this.logger = logger
+		this.rulesetParser = rulesetParser
+		this.rulesetValidator = rulesetValidator
 	}
 
 	/**
@@ -48,11 +60,48 @@ export default class Lens {
 			)
 		}
 
+		if (this.config.directories.input) {
+			await this.runFromRuleset()
+		} else {
+			await this.runFromArgs()
+		}
+	}
+
+	/**
+	 * Run lens from specified ruleset
+	 *
+	 * @private
+	 */
+	private async runFromRuleset (): Promise<void> {
+		for (const file of fs.readdirSync(this.config.directories.input)) {
+			const rawRuleset = await import(path.join(this.config.directories.input, file))
+			const validatedRuleset = await this.rulesetValidator.validate(rawRuleset.default, file)
+			const parsedRuleset = this.rulesetParser.parse(validatedRuleset)
+
+			if (!parsedRuleset.disable) {
+				await forEachAsync(parsedRuleset.rules, async rule => {
+					this.logger.header(`Running lens for ${rule.url}`)
+
+					const directory = this.createDirectoryForUrl(rule.url, rule.tag)
+					await this.generateScreenshots(rule.url, directory, rule.renderFor)
+				})
+			} else {
+				this.logger.info(`Ruleset ${file} disabled. Skipping.`)
+			}
+		}
+	}
+
+	/**
+	 * Run lens from CLI arguments
+	 *
+	 * @private
+	 */
+	private async runFromArgs (): Promise<void> {
 		await forEachAsync(this.args.urls, async url => {
 			this.logger.header(`Running lens for ${url.href}`)
 
 			const directory = this.createDirectoryForUrl(url, this.args.tag)
-			await this.generateScreenshots(url, directory)
+			await this.generateScreenshots(url, directory, this.args.resolutions)
 		})
 	}
 
@@ -109,9 +158,10 @@ export default class Lens {
 	 *
 	 * @param url
 	 * @param dir
+	 * @param viewportSet
 	 * @private
 	 */
-	private async generateScreenshots (url: URL, dir: string): Promise<void> {
+	private async generateScreenshots (url: URL, dir: string, viewportSet: Record<string, Array<Viewport>>): Promise<void> {
 		if (!this.browser) {
 			throw new LensCriticalError(
 				'Browser has not been initialized.',
@@ -119,7 +169,7 @@ export default class Lens {
 			)
 		}
 
-		for (const [key, viewports] of Object.entries(this.args.resolutions)) {
+		for (const [key, viewports] of Object.entries(viewportSet)) {
 			const chunks = arrayToChunks(viewports, this.config.chunkSize)
 
 			await forEachAsync(chunks, async chunk => {
@@ -164,6 +214,10 @@ export default class Lens {
 	private overrideConfigFromFlags (): void {
 		if (this.args.outputDir) {
 			this.config.directories.output = this.args.outputDir
+		}
+
+		if (this.args.inputDir) {
+			this.config.directories.input = this.args.inputDir
 		}
 	}
 

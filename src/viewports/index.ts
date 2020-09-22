@@ -10,6 +10,9 @@ const defaultViewports: Record<string, Viewport[]> = {
     tablet
 }
 
+const availableViewportSets = Object.keys(defaultViewports)
+
 export {
+    availableViewportSets,
     defaultViewports
 }

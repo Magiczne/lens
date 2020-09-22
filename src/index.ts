@@ -7,7 +7,10 @@ import { LensArguments } from '@/typings/types'
 import Lens from '@/lens'
 import DefaultArgumentParser from '@/parsing/argument-parser'
 import ConsoleLogger from '@/logging/console-logger'
-import { LensCriticalError } from '@/errors'
+import { LogLevel } from '@/logging/log-level'
+import { LensCriticalError, LensRulesetError } from '@/errors'
+import { DefaultRulesetValidator } from '@/validation/ruleset-validator'
+import { DefaultRulesetParser } from '@/parsing/ruleset-parser'
 
 const args: LensArguments = yargs
 	.usage('Usage: lens -u <url>')
@@ -32,18 +35,24 @@ const args: LensArguments = yargs
 		string: true,
 		default: ''
 	})
+	.option('input-dir', {
+		alias: 'i',
+		describe: 'Input directory with screenshot rules',
+		string: true
+	})
 	.option('output-dir', {
 		alias: 'o',
 		describe: 'Output directory for the screenshots',
 		string: true
 	})
-	.demandOption(['url'], 'You need to provide at least the "url" parameter to work with this tool')
+
 	.epilogue('For advanced usage documentation please visit https://github.com/Magiczne/lens')
 	.example('lens -u https://example.com', '')
 	.example('lens -u https://example.com -r 1280x720', '')
 	.example('lens -u "https://example.com https://example.com/subpage" -r 1920x1080', '')
 	.example('lens -u https://example.com -r "800x600 1280x720" -o ./output', '')
 	.example('lens -u https://example.com -r 1280x720 -t "custom tag"', '')
+	.showHelpOnFail(false, 'Use lens --help for available options')
 	.argv
 
 const main = async () => {
@@ -51,7 +60,9 @@ const main = async () => {
 	const logger = new ConsoleLogger()
 	const lens = new Lens({
 		argumentParser: new DefaultArgumentParser(),
-		logger
+		logger,
+		rulesetParser: new DefaultRulesetParser(),
+		rulesetValidator: new DefaultRulesetValidator()
 	})
 
 	try {
@@ -65,6 +76,15 @@ const main = async () => {
 			await lens?.dispose()
 
 			throw e
+		} else if (e.name === 'LensRulesetError') {
+			const error = e as LensRulesetError
+
+			logger.header(error.message, LogLevel.Error)
+			error.validationError.errors.forEach(err => {
+				logger.error(err)
+			})
+
+			await lens?.dispose()
 		} else if (e.name.startsWith('Lens')) {
 			logger.error(e.message)
 		} else {
