@@ -60,7 +60,7 @@ export default class Lens {
 			)
 		}
 
-		if (this.args.inputDir) {
+		if (this.config.directories.input) {
 			await this.runFromRuleset()
 		} else {
 			await this.runFromArgs()
@@ -73,8 +73,8 @@ export default class Lens {
 	 * @private
 	 */
 	private async runFromRuleset (): Promise<void> {
-		for (const file of fs.readdirSync(this.args.inputDir)) {
-			const rawRuleset = await import(path.join(this.args.inputDir, file))
+		for (const file of fs.readdirSync(this.config.directories.input)) {
+			const rawRuleset = await import(path.join(this.config.directories.input, file))
 			const validatedRuleset = await this.rulesetValidator.validate(rawRuleset.default, file)
 			const parsedRuleset = this.rulesetParser.parse(validatedRuleset)
 
@@ -212,6 +212,10 @@ export default class Lens {
 	private overrideConfigFromFlags (): void {
 		if (this.args.outputDir) {
 			this.config.directories.output = this.args.outputDir
+		}
+
+		if (this.args.inputDir) {
+			this.config.directories.input = this.args.inputDir
 		}
 	}
 
