@@ -1,4 +1,6 @@
-import ExitCode from '@/enums/exit-code'
+import { ValidationError } from 'yup'
+
+import ExitCode from '@/exit-code'
 
 class LensError extends Error {
     constructor (message: string) {
@@ -27,6 +29,17 @@ class LensResolutionError extends LensError {
     }
 }
 
+class LensRulesetError extends LensError {
+    validationError: ValidationError
+
+    constructor (validationError: ValidationError, file: string) {
+        super(`Ruleset ${file} contains errors`)
+
+        this.validationError = validationError
+        this.name = 'LensRulesetError'
+    }
+}
+
 class LensUrlError extends LensError {
     constructor (message: string) {
         super(message)
@@ -39,5 +52,6 @@ export {
     LensError,
     LensCriticalError,
     LensResolutionError,
+    LensRulesetError,
     LensUrlError
 }

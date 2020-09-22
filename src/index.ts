@@ -7,7 +7,8 @@ import { LensArguments } from '@/typings/types'
 import Lens from '@/lens'
 import DefaultArgumentParser from '@/parsing/argument-parser'
 import ConsoleLogger from '@/logging/console-logger'
-import { LensCriticalError } from '@/errors'
+import { LogLevel } from '@/logging/log-level'
+import { LensCriticalError, LensRulesetError } from '@/errors'
 
 const args: LensArguments = yargs
 	.usage('Usage: lens -u <url>')
@@ -65,6 +66,15 @@ const main = async () => {
 			await lens?.dispose()
 
 			throw e
+		} else if (e.name === 'LensRulesetError') {
+			const error = e as LensRulesetError
+
+			logger.header(error.message, LogLevel.Error)
+			error.validationError.errors.forEach(err => {
+				logger.error(err)
+			})
+
+			await lens?.dispose()
 		} else if (e.name.startsWith('Lens')) {
 			logger.error(e.message)
 		} else {
