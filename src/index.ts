@@ -52,6 +52,7 @@ const args: LensArguments = yargs
 	.example('lens -u "https://example.com https://example.com/subpage" -r 1920x1080', '')
 	.example('lens -u https://example.com -r "800x600 1280x720" -o ./output', '')
 	.example('lens -u https://example.com -r 1280x720 -t "custom tag"', '')
+	.showHelpOnFail(false, 'Use lens --help for available options')
 	.argv
 
 const main = async () => {
