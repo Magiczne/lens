@@ -1,6 +1,6 @@
 import { LoadEvent, Viewport } from 'puppeteer'
 import { Logger } from '@/typings/logging'
-import { RulesetValidator } from '@/typings/rules'
+import { RulesetParser, RulesetValidator } from '@/typings/rules'
 
 interface ArgumentParser {
     parse (args: LensArguments): ParsedLensArguments
@@ -48,6 +48,7 @@ interface LensConfig {
 interface LensDependencies {
     argumentParser: ArgumentParser
     logger: Logger
+    rulesetParser: RulesetParser
     rulesetValidator: RulesetValidator
 }
 

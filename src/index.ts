@@ -9,6 +9,8 @@ import DefaultArgumentParser from '@/parsing/argument-parser'
 import ConsoleLogger from '@/logging/console-logger'
 import { LogLevel } from '@/logging/log-level'
 import { LensCriticalError, LensRulesetError } from '@/errors'
+import { DefaultRulesetValidator } from '@/validation/ruleset-validator'
+import { DefaultRulesetParser } from '@/parsing/ruleset-parser'
 
 const args: LensArguments = yargs
 	.usage('Usage: lens -u <url>')
@@ -57,7 +59,9 @@ const main = async () => {
 	const logger = new ConsoleLogger()
 	const lens = new Lens({
 		argumentParser: new DefaultArgumentParser(),
-		logger
+		logger,
+		rulesetParser: new DefaultRulesetParser(),
+		rulesetValidator: new DefaultRulesetValidator()
 	})
 
 	try {
