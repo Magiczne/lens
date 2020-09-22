@@ -46,6 +46,7 @@ const args: LensArguments = yargs
 		describe: 'Output directory for the screenshots',
 		string: true
 	})
+	.conflicts('input-dir', ['url', 'resolution', 'tag'])
 	.epilogue('For advanced usage documentation please visit https://github.com/Magiczne/lens')
 	.example('lens -u https://example.com', '')
 	.example('lens -u https://example.com -r 1280x720', '')
