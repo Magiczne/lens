@@ -11,6 +11,7 @@ import { LogLevel } from '@/logging/log-level'
 import { LensCriticalError, LensRulesetError } from '@/errors'
 import { DefaultRulesetValidator } from '@/validation/ruleset-validator'
 import { DefaultRulesetParser } from '@/parsing/ruleset-parser'
+import { availableViewportSets } from '@/viewports'
 
 const args: LensArguments = yargs
 	.option('url', {
@@ -18,7 +19,7 @@ const args: LensArguments = yargs
 		describe: 'The url from which screenshots will be taken. ' +
                   'If you want to create screenshots from multiple urls separate them with a space ' +
                   '(e.g. https://example.com https://example.com/page). ' +
-                  'Remember to include protocol (http:// or https://).',
+                  'Remember to include protocol (http:// or https://)',
 		string: true,
 		array: true
 	})
@@ -27,6 +28,14 @@ const args: LensArguments = yargs
 		describe: 'Custom resolution (e.g. 800x600). ' +
 			'If you want to create screenshots for multiple resolutions separate them with a space ' +
             '(e.g. 800x600 1920x1080)',
+		string: true,
+		array: true
+	})
+	.option('viewports', {
+		alias: 'v',
+		choices: availableViewportSets,
+		default: availableViewportSets,
+		describe: 'Render screenshots only for selected viewport types',
 		string: true,
 		array: true
 	})
@@ -46,14 +55,17 @@ const args: LensArguments = yargs
 		describe: 'Output directory for the screenshots',
 		string: true
 	})
-	.conflicts('input-dir', ['url', 'resolution', 'tag'])
+	.conflicts('input-dir', ['url', 'resolution', 'tag', 'viewports'])
+	.conflicts('viewports', 'resolution')
 	.epilogue('For advanced usage documentation please visit https://github.com/Magiczne/lens')
 	.example('lens -u https://example.com', '')
 	.example('lens -u https://example.com -r 1280x720', '')
 	.example('lens -u https://example.com https://example.com/subpage -r 1920x1080', '')
 	.example('lens -u https://example.com -r 800x600 1280x720 -o ./output', '')
 	.example('lens -u https://example.com -r 1280x720 -t "custom tag"', '')
+	.example('lens -u https://example.com -v desktop phone', '')
 	.showHelpOnFail(false, 'Use lens --help for available options')
+	.wrap(Math.min(120, yargs.terminalWidth()))
 	.argv
 
 const main = async () => {

@@ -1,15 +1,16 @@
 import path from 'path'
 import { Viewport } from 'puppeteer'
 
-import { ArgumentParser, LensArguments, ParsedLensArguments } from '@/typings/types'
-import { defaultViewports } from '@/viewports'
 import { LensResolutionError, LensUrlError } from '@/errors'
+import { ArgumentParser, LensArguments, ParsedLensArguments } from '@/typings/types'
+import { filterObject } from '@/utils'
+import { defaultViewports, ViewportType } from '@/viewports'
 
 export default class DefaultArgumentParser implements ArgumentParser {
     parse (args: LensArguments): ParsedLensArguments {
         return {
             urls: this.parseUrl(args.url),
-            resolutions: this.parseResolution(args.resolution),
+            viewportSet: this.parseViewports(args.viewports, args.resolution),
             tag: args.tag,
 
             inputDir: this.parseDirectory(args.inputDir),
@@ -35,14 +36,17 @@ export default class DefaultArgumentParser implements ArgumentParser {
      * Retrieve all resolutions from the input argument.
      * If argument is not present, use default resolutions list.
      *
+     * If resolutions array is not present filter default viewports by the keys passed in the viewports array.
+     *
+     * @param viewports
      * @param resolution
      */
-    parseResolution (resolution?: string[]): Record<string, Viewport[]> {
+    parseViewports (viewports: ReadonlyArray<ViewportType>, resolution?: string[]): Record<string, Viewport[]> {
         if (!resolution || !resolution.length) {
-            return defaultViewports
+            return filterObject(defaultViewports, viewports)
         }
 
-        const viewports = resolution.map(res => {
+        const computedViewports = resolution.map(res => {
             const parsedResolution = res.trim()
                 .split('x')
                 .map(x => parseInt(x, 10))
@@ -63,7 +67,7 @@ export default class DefaultArgumentParser implements ArgumentParser {
             }
         })
 
-        return { default: viewports }
+        return { default: computedViewports }
     }
 
     /**

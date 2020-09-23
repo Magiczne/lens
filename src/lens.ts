@@ -2,6 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import puppeteer, { Browser, Viewport } from 'puppeteer'
 
+import { LensCriticalError } from '@/errors'
 import ExitCode from '@/exit-code'
 import {
 	ArgumentParser,
@@ -14,7 +15,6 @@ import {
 	RulesetValidator
 } from '@/typings/types'
 import { arrayToChunks, forEachAsync } from '@/utils'
-import { LensCriticalError } from '@/errors'
 
 export default class Lens {
 	private readonly argumentParser: ArgumentParser
@@ -101,7 +101,7 @@ export default class Lens {
 			this.logger.header(`Running lens for ${url.href}`)
 
 			const directory = this.createDirectoryForUrl(url, this.args.tag)
-			await this.generateScreenshots(url, directory, this.args.resolutions)
+			await this.generateScreenshots(url, directory, this.args.viewportSet)
 		})
 	}
 

@@ -1,12 +1,14 @@
 import { LoadEvent, Viewport } from 'puppeteer'
-import { Logger } from '@/typings/logging'
+
 import { RulesetParser, RulesetValidator } from '@/typings/rules'
+import { Logger } from '@/typings/logging'
+import { ViewportType } from '@/viewports'
 
 interface ArgumentParser {
     parse (args: LensArguments): ParsedLensArguments
 
     parseDirectory (dir?: string): string | undefined
-    parseResolution (resolution?: string[]): Record<string, Viewport[]>
+    parseViewports (viewports: ReadonlyArray<ViewportType>, resolution?: string[]): Record<string, Viewport[]>
     parseUrl (url?: string[]): URL[]
 }
 
@@ -15,6 +17,7 @@ interface LensArguments {
 
     url?: string[]
     resolution?: string[]
+    viewports: ReadonlyArray<ViewportType>
     tag: string
 
     inputDir?: string
@@ -26,7 +29,7 @@ interface LensArguments {
 
 interface ParsedLensArguments {
     urls: URL[]
-    resolutions: Record<string, Viewport[]>
+    viewportSet: Record<string, Viewport[]>
     tag: string
 
     inputDir?: string

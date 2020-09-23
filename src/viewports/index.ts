@@ -10,9 +10,11 @@ const defaultViewports: Record<string, Viewport[]> = {
     tablet
 }
 
-const availableViewportSets = Object.keys(defaultViewports)
+type ViewportType = 'desktop' | 'phone' | 'tablet'
+const availableViewportSets = Object.keys(defaultViewports) as ReadonlyArray<ViewportType>
 
 export {
     availableViewportSets,
-    defaultViewports
+    defaultViewports,
+    ViewportType
 }
