@@ -13,15 +13,19 @@ export default class ConsoleLogger implements Logger {
         const box = boxen(message, {
             borderStyle: boxen.BorderStyle.Round,
             padding: {
-                top: 0,
+                top: level === LogLevel.Critical ? 1 : 0,
                 right: 3,
-                bottom: 0,
+                bottom: level === LogLevel.Critical ? 1 : 0,
                 left: 3
             }
         })
 
         switch (level) {
             case LogLevel.Error:
+                console.error(chalk.redBright(box))
+                break
+
+            case LogLevel.Critical:
                 console.error(chalk.redBright(box))
                 break
 

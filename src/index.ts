@@ -3,14 +3,14 @@
 import yargs from 'yargs'
 
 import config from '@/config'
-import { LensArguments } from '@/typings/types'
 import Lens from '@/lens'
-import DefaultArgumentParser from '@/parsing/argument-parser'
+import { LensCriticalError, LensRulesetError } from '@/errors'
 import ConsoleLogger from '@/logging/console-logger'
 import { LogLevel } from '@/logging/log-level'
-import { LensCriticalError, LensRulesetError } from '@/errors'
-import { DefaultRulesetValidator } from '@/validation/ruleset-validator'
+import DefaultArgumentParser from '@/parsing/argument-parser'
 import { DefaultRulesetParser } from '@/parsing/ruleset-parser'
+import { LensArguments } from '@/typings/types'
+import { DefaultRulesetValidator } from '@/validation/ruleset-validator'
 import { availableViewportSets } from '@/viewports'
 
 const args: LensArguments = yargs
@@ -88,6 +88,8 @@ const main = async () => {
 			process.exitCode = (e as LensCriticalError).code
 
 			await lens?.dispose()
+
+			logger.header(e.message, LogLevel.Critical)
 
 			throw e
 		} else if (e.name === 'LensRulesetError') {
