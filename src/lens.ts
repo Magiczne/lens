@@ -73,6 +73,13 @@ export default class Lens {
 	 * @private
 	 */
 	private async runFromRuleset (): Promise<void> {
+		if (!fs.existsSync(this.config.directories.input)) {
+			throw new LensCriticalError(
+				`Input directory ${this.config.directories.input} does not exist.`,
+				ExitCode.InvalidInputDirectory
+			)
+		}
+
 		for (const file of fs.readdirSync(this.config.directories.input)) {
 			const rawRuleset = await import(path.join(this.config.directories.input, file))
 			const validatedRuleset = await this.rulesetValidator.validate(rawRuleset.default, file)
@@ -125,7 +132,7 @@ export default class Lens {
 			} catch {
 				throw new LensCriticalError(
 					`Could not create directory ${directory}`,
-					ExitCode.DirectoryNotCreated
+					ExitCode.CouldNotCreateDirectory
 				)
 			}
 		}
@@ -147,7 +154,7 @@ export default class Lens {
 			} catch (e) {
 				throw new LensCriticalError(
 					`Could not create output directory (${this.config.directories.output})`,
-					ExitCode.DirectoryNotCreated
+					ExitCode.CouldNotCreateDirectory
 				)
 			}
 		}
