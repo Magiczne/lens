@@ -2,7 +2,7 @@ import { LensRulesetError } from '@/errors'
 import { Ruleset, RulesetValidator } from '@/typings/types'
 import { rulesetSchema } from '@/validation/schemas'
 
-class DefaultRulesetValidator implements RulesetValidator {
+export default class DefaultRulesetValidator implements RulesetValidator {
     async validate (ruleset: Record<string, unknown>, file: string): Promise<Ruleset> {
         try {
             return await rulesetSchema.validate(ruleset)
@@ -14,8 +14,4 @@ class DefaultRulesetValidator implements RulesetValidator {
             throw e
         }
     }
-}
-
-export {
-    DefaultRulesetValidator
 }

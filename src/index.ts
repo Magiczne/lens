@@ -8,9 +8,9 @@ import { LensCriticalError, LensRulesetError } from '@/errors'
 import ConsoleLogger from '@/logging/console-logger'
 import { LogLevel } from '@/logging/log-level'
 import DefaultArgumentParser from '@/parsing/argument-parser'
-import { DefaultRulesetParser } from '@/parsing/ruleset-parser'
+import DefaultRulesetParser from '@/parsing/ruleset-parser'
 import { LensArguments } from '@/typings/types'
-import { DefaultRulesetValidator } from '@/validation/ruleset-validator'
+import DefaultRulesetValidator from '@/validation/ruleset-validator'
 import { availableViewportSets } from '@/viewports'
 
 const args: LensArguments = yargs
