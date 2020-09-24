@@ -71,5 +71,7 @@ describe('Lens', () => {
         await expect(lens.run())
             .rejects
             .toThrow(LensCriticalError)
+
+        await lens.dispose()
     })
 })
