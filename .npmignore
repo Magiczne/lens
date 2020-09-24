@@ -5,6 +5,7 @@
 .lens.config.json
 .yarnrc
 .vscode/
+__mocks__
 jest.config.js
 package-lock.json
 rules
