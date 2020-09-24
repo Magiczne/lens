@@ -1,11 +1,9 @@
-import { Page } from 'puppeteer'
-
 import DefaultRulesetParser from '@/parsing/ruleset-parser'
 import { Rule, Ruleset, RulesetParser } from '@/typings/rules'
 import { defaultViewports } from '@/viewports'
 
 describe('DefaultRulesetParser', () => {
-    const afterPageLoaded = async (page: Page) => { console.log('After page loaded') }
+    const afterPageLoaded = async () => { console.log('After page loaded') }
     let parser: RulesetParser
 
     beforeEach(() => {
