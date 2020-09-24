@@ -1,9 +1,9 @@
-import { Resolution } from '@/typings/types'
+import { Viewport } from 'puppeteer'
 
 // Common tablet resolutions - viewports
 // Values in parenthesis is an actual screen resolution of the device
 // Based on https://docs.adobe.com/content/help/en/target/using/experiences/vec/mobile-viewports.html
-const resolutions: Resolution[] = [
+const resolutions: Viewport[] = [
     // Apple
     { width: 414, height: 896, deviceScaleFactor: 2 },              // iPhone XR (828 x 1792)
     { width: 414, height: 896, deviceScaleFactor: 3 },              // iPhone XS Max (1242 x 2688)

@@ -1,46 +1,49 @@
 import fs from 'fs'
-import puppeteer, { Browser } from 'puppeteer'
-import { UrlWithStringQuery } from 'url'
+import path from 'path'
+import puppeteer, { Browser, Viewport } from 'puppeteer'
 
+import { LensCriticalError } from '@/errors'
+import ExitCode from '@/exit-code'
 import {
-	ArgumentParser, LensArguments, LensConfig, LensDependencies, Logger, ParsedLensArguments
+	ArgumentParser,
+	LensArguments,
+	LensConfig,
+	LensDependencies,
+	Logger,
+	ParsedLensArguments,
+	RulesetParser,
+	RulesetValidator
 } from '@/typings/types'
-import { forEachAsync } from '@/utils'
+import { arrayToChunks, forEachAsync } from '@/utils'
 
 export default class Lens {
 	private readonly argumentParser: ArgumentParser
 	private browser: Browser | undefined
 	private readonly logger: Logger
+	private readonly rulesetParser: RulesetParser
+	private readonly rulesetValidator: RulesetValidator
 
 	private args: ParsedLensArguments
 	private config: LensConfig
 
-	public constructor ({ argumentParser, logger }: LensDependencies) {
-		this.argumentParser = argumentParser
-		this.logger = logger
-	}
+	public constructor (dependencies: LensDependencies, args: LensArguments, config: LensConfig) {
+		this.argumentParser = dependencies.argumentParser
+		this.logger = dependencies.logger
+		this.rulesetParser = dependencies.rulesetParser
+		this.rulesetValidator = dependencies.rulesetValidator
 
-	/**
-	 * Create directory for screenshots if it does not exist,
-	 * then instantiate browser.
-	 */
-	public async init (args: LensArguments, config: LensConfig): Promise<void> {
 		this.args = this.argumentParser.parse(args)
 		this.config = config
 
 		this.overrideConfigFromFlags()
+		this.createOutputDirectory()
+	}
 
-		if (!fs.existsSync(this.config.directories.output)) {
-			try {
-				fs.mkdirSync(this.config.directories.output, { recursive: true })
-				this.logger.info(`Created ${this.config.directories.output}`)
-			} catch (e) {
-				this.logger.error(`Could not create screenshots directory`)
-
-				process.exit(14)
-			}
-		}
-
+	/**
+	 * Instantiate browser.
+	 * It cannot be done in the constructor since constructor cannot be marked as async.
+	 */
+	public async init (): Promise<void> {
 		this.browser = await puppeteer.launch({
 			headless: this.config.puppeteer.headless
 		})
@@ -51,16 +54,61 @@ export default class Lens {
 	 */
 	public async run (): Promise<void> {
 		if (!this.browser) {
-			this.logger.error('Lens has not been initialized. Please run "init" before running.')
-
-			process.exit(15)
+			throw new LensCriticalError(
+				'Lens has not been initialized. Please run "init" before running.',
+				ExitCode.BrowserNotInitialized
+			)
 		}
 
-		await forEachAsync(this.args.urls, async u => {
-			this.logger.header(`Running lens for ${u.href}`)
+		if (this.args.urls.length > 0) {
+			await this.runFromArgs()
+		} else {
+			await this.runFromRuleset()
+		}
+	}
 
-			const directory = this.createDirectoryForUrl(u, this.args.tag)
-			await this.generateScreenshots(this.args, u, directory)
+	/**
+	 * Run lens from specified ruleset
+	 *
+	 * @private
+	 */
+	private async runFromRuleset (): Promise<void> {
+		if (!fs.existsSync(this.config.directories.input)) {
+			throw new LensCriticalError(
+				`Input directory ${this.config.directories.input} does not exist.`,
+				ExitCode.InvalidInputDirectory
+			)
+		}
+
+		for (const file of fs.readdirSync(this.config.directories.input)) {
+			const rawRuleset = await import(path.join(this.config.directories.input, file))
+			const validatedRuleset = await this.rulesetValidator.validate(rawRuleset.default, file)
+			const parsedRuleset = this.rulesetParser.parse(validatedRuleset)
+
+			if (!parsedRuleset.disable) {
+				await forEachAsync(parsedRuleset.rules, async rule => {
+					this.logger.header(`Running lens for ${rule.url}`)
+
+					const directory = this.createDirectoryForUrl(rule.url, rule.tag)
+					await this.generateScreenshots(rule.url, directory, rule.renderFor)
+				})
+			} else {
+				this.logger.info(`Ruleset ${file} disabled. Skipping.`)
+			}
+		}
+	}
+
+	/**
+	 * Run lens from CLI arguments
+	 *
+	 * @private
+	 */
+	private async runFromArgs (): Promise<void> {
+		await forEachAsync(this.args.urls, async url => {
+			this.logger.header(`Running lens for ${url.href}`)
+
+			const directory = this.createDirectoryForUrl(url, this.args.tag)
+			await this.generateScreenshots(url, directory, this.args.viewportSet)
 		})
 	}
 
@@ -71,7 +119,7 @@ export default class Lens {
 	 * @param tag
 	 * @private
 	 */
-	private createDirectoryForUrl (url: UrlWithStringQuery, tag = ''): string {
+	private createDirectoryForUrl (url: URL, tag = ''): string {
 		let directory = `${this.config.directories.output}/${url.host}`
 		if (tag) {
 			directory = `${directory}/${tag}`
@@ -82,9 +130,10 @@ export default class Lens {
 				fs.mkdirSync(directory, { recursive: true })
 				this.logger.info(`Created ${directory}`)
 			} catch {
-				this.logger.error(`Could not create directory ${directory}`)
-
-				process.exit(14)
+				throw new LensCriticalError(
+					`Could not create directory ${directory}`,
+					ExitCode.CouldNotCreateDirectory
+				)
 			}
 		}
 
@@ -92,38 +141,83 @@ export default class Lens {
 	}
 
 	/**
-	 * Generate screenshots based on the specified arguments
+	 * Create output directory if it does not exist
 	 *
-	 * @param args
-	 * @param url
-	 * @param dir
 	 * @private
 	 */
-	private async generateScreenshots (args: ParsedLensArguments, url: UrlWithStringQuery, dir: string): Promise<void> {
-		let pendingScreenshots: Promise<void>[] = []
+	private createOutputDirectory (): void {
+		if (!fs.existsSync(this.config.directories.output)) {
+			try {
+				fs.mkdirSync(this.config.directories.output, { recursive: true })
 
-		for (const key of Object.keys(args.resolutions)) {
-			// TODO: Extract screenshot taking to separate method
-			pendingScreenshots = pendingScreenshots.concat(args.resolutions[key].map(async res => {
-				if (!this.browser) return // TODO: Handle that in a prettier way
+				this.logger.info(`Created ${this.config.directories.output}`)
+			} catch (e) {
+				throw new LensCriticalError(
+					`Could not create output directory (${this.config.directories.output})`,
+					ExitCode.CouldNotCreateDirectory
+				)
+			}
+		}
+	}
 
-				const page = await this.browser.newPage()
-
-				await page.setViewport({ ...res })
-				await page.goto(url.href, {
-					waitUntil: this.config.puppeteer.waitUntil
-				})
-				await page.screenshot({
-					path: `${dir}/${key !== 'default' ? `[${key}] ` : ''}${res.width}x${res.height}.png`
-				})
-
-				await page.close()
-
-				this.logger.success(`${url.host} ${res.width}x${res.height}`)
-			}))
+	/**
+	 * Generate screenshots based on the specified arguments
+	 *
+	 * @param url
+	 * @param dir
+	 * @param viewportSet
+	 * @private
+	 */
+	private async generateScreenshots (url: URL, dir: string, viewportSet: Record<string, Array<Viewport>>): Promise<void> {
+		if (!this.browser) {
+			throw new LensCriticalError(
+				'Browser has not been initialized.',
+				ExitCode.BrowserNotInitialized
+			)
 		}
 
-		await Promise.all(pendingScreenshots)
+		for (const [key, viewports] of Object.entries(viewportSet)) {
+			const chunks = arrayToChunks(viewports, this.config.chunkSize)
+
+			await forEachAsync(chunks, async chunk => {
+				await Promise.all(chunk.map(async viewport => {
+					const tag = key === 'default' ? '' : `[${key}] ` // Do not remove space at the end
+					await this.generateScreenshot(dir, tag, url, viewport)
+				}))
+			})
+		}
+	}
+
+	/**
+	 * Generate single screenshot
+	 *
+	 * @param dir
+	 * @param tag
+	 * @param url
+	 * @param viewport
+	 * @private
+	 */
+	private async generateScreenshot (
+		dir: string,
+		tag: string,
+		url: URL,
+		viewport: Viewport
+	): Promise<void> {
+		if (!this.browser) {
+			throw new LensCriticalError(
+				'Lens has not been initialized. Please run "init" before running.',
+				ExitCode.BrowserNotInitialized
+			)
+		}
+
+		const page = await this.browser.newPage()
+
+		await page.setViewport({ ...viewport })
+		await page.goto(url.href, { waitUntil: this.config.puppeteer.waitUntil })
+		await page.screenshot({ path: `${dir}/${tag}${viewport.width}x${viewport.height}.png` })
+		await page.close()
+
+		this.logger.success(`${url.host} ${viewport.width}x${viewport.height}`)
 	}
 
 	/**
@@ -134,6 +228,10 @@ export default class Lens {
 	private overrideConfigFromFlags (): void {
 		if (this.args.outputDir) {
 			this.config.directories.output = this.args.outputDir
+		}
+
+		if (this.args.inputDir) {
+			this.config.directories.input = this.args.inputDir
 		}
 	}
 

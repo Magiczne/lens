@@ -1,9 +1,9 @@
-import { Resolution } from '@/typings/types'
+import { Viewport } from 'puppeteer'
 
 // Common tablet resolutions - viewports
 // Values in parenthesis is an actual screen resolution of the device
 // Based on https://docs.adobe.com/content/help/en/target/using/experiences/vec/mobile-viewports.html
-const resolutions: Resolution[] = [
+const resolutions: Viewport[] = [
     // Windows
     { width: 912, height: 1368, deviceScaleFactor: 2 },     // Microsoft Surface Pro 7 (1824 x 2736)
 

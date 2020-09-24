@@ -1,7 +1,7 @@
-import { Resolution } from '@/typings/types'
+import { Viewport } from 'puppeteer'
 
 // Common desktop resolutions
-const resolutions: Resolution[] = [
+const resolutions: Viewport[] = [
     // 21:9-like
     { width: 2560, height: 1080 },  // 64:27
     { width: 3440, height: 1440 },  // 43:18
