@@ -4,7 +4,7 @@ import { Rule, Ruleset, ParsedRule, ParsedRuleset, RulesetParser } from '@/typin
 import { filterObject, isStringArray } from '@/utils'
 import { defaultViewports } from '@/viewports'
 
-class DefaultRulesetParser implements RulesetParser {
+export default class DefaultRulesetParser implements RulesetParser {
     parse (rawRuleset: Ruleset): ParsedRuleset {
         return {
             disable: rawRuleset.disable !== undefined ? rawRuleset.disable : false,
@@ -42,8 +42,4 @@ class DefaultRulesetParser implements RulesetParser {
             }
         }
     }
-}
-
-export {
-    DefaultRulesetParser
 }
