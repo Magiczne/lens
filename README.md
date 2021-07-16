@@ -4,7 +4,7 @@
 Create screenshots of your webpage in different resolutions in a matter of seconds.
 
 By default, **lens** will generate screenshots for some common screen resolutions.
-You can find more info by exploring files in the [resolutions][1] directory.
+You can find more info by exploring files in the [src/viewports][src/viewports] directory.
 
 ## Prerequisites
 - Node.js >= 12
@@ -67,7 +67,7 @@ Currently, these are options you can configure:
 | directories.input   | string             | './rules'                | Input directory with rule files.         |
 | directories.output  | string             | './screenshots'          | Output directory for the screenshots.    |
 | puppeteer.headless  | boolean            | true                     | Whether to run browser in headless mode. |
-| puppeteer.waitUntil | string \| string[] | ['load', 'networkidle2'] | When to consider navigation succedeed. Refer to the [puppeteer docs][2] for detailed information. |
+| puppeteer.waitUntil | string \| string[] | ['load', 'networkidle2'] | When to consider navigation succedeed. Refer to the [puppeteer docs][1] for detailed information. |
 
 Example config:
 
@@ -121,8 +121,8 @@ If input directory contains more than one rule file, each one will be loaded and
 |---------------------|--------------------|--------------------------|------------------------------------------|
 | url                 | string             |                          | **required**. The url from which screenshots will be taken. |
 | tag                 | string             |                          | **required**. Custom tag that will be used as a subdirectory. |
-| renderFor           | array              | `['desktop', 'tablet', 'phone']` | Array which can be: <ul><li>a list of keys which correspond to default viewports included with **lens**. Available values are `'desktop'`, `'tablet'` or `'phone'`.</li><li>a set of custom puppeteer [Viewports][3]</ul> **CAUTION!** <br> These options cannot be mixed. Rule parser will throw an error when you do like so. |
-| afterPageLoaded     | async function     | `undefined`              | Callback function which takes [`page`][2] as a parameter. It will be executed before the screenshot will be taken. |
+| renderFor           | array              | `['desktop', 'tablet', 'phone']` | Array which can be: <ul><li>a list of keys which correspond to default viewports included with **lens**. Available values are `'desktop'`, `'tablet'` or `'phone'`.</li><li>a set of custom puppeteer [Viewports][2]</ul> **CAUTION!** <br> These options cannot be mixed. Rule parser will throw an error when you do like so. |
+| afterPageLoaded     | async function     | `undefined`              | Callback function which takes [`page`][1] as a parameter. It will be executed before the screenshot will be taken. |
 
 ### Example rules file
 ```javascript
@@ -177,6 +177,5 @@ module.exports = {
 
 [badge]: https://img.shields.io/badge/dynamic/json?color=blue&label=npm&query=version&style=flat-square&url=https%3A%2F%2Fraw.githubusercontent.com%2FMagiczne%2Flens%2Fmaster%2Fpackage.json
 [0]: https://www.npmjs.com/package/@magiczne/lens
-[1]: https://github.com/Magiczne/lens/tree/master/src/resolutions
-[2]: https://github.com/puppeteer/puppeteer/blob/main/docs/api.md#pagegotourl-options
-[3]: https://github.com/puppeteer/puppeteer/blob/main/docs/api.md#pageviewport
+[1]: https://github.com/puppeteer/puppeteer/blob/main/docs/api.md#pagegotourl-options
+[2]: https://github.com/puppeteer/puppeteer/blob/main/docs/api.md#pageviewport
