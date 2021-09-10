@@ -1,3 +1,5 @@
+import { ValidationError } from 'yup'
+
 import { LensRulesetError } from '@/errors'
 import { Ruleset, RulesetValidator } from '@/typings/types'
 import { rulesetSchema } from '@/validation/schemas'
@@ -7,7 +9,7 @@ export default class DefaultRulesetValidator implements RulesetValidator {
         try {
             return await rulesetSchema.validate(ruleset)
         } catch (e) {
-            if (e.name === 'ValidationError') {
+            if (e instanceof ValidationError) {
                 throw new LensRulesetError(e, file)
             }
 

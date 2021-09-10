@@ -4,7 +4,7 @@ import yargs from 'yargs'
 
 import config from '@/config'
 import Lens from '@/lens'
-import { LensCriticalError, LensRulesetError } from '@/errors'
+import { LensCriticalError, LensError, LensRulesetError } from '@/errors'
 import ConsoleLogger from '@/logging/console-logger'
 import { LogLevel } from '@/logging/log-level'
 import DefaultArgumentParser from '@/parsing/argument-parser'
@@ -84,24 +84,23 @@ const main = async () => {
 		await lens.run()
 		await lens.dispose()
 	} catch (e) {
-		if (e.name === 'LensCriticalError') {
-			process.exitCode = (e as LensCriticalError).code
+		if (e instanceof LensCriticalError) {
+			process.exitCode = e.code
 
 			await lens?.dispose()
 
 			logger.header(e.message, LogLevel.Critical)
 
 			throw e
-		} else if (e.name === 'LensRulesetError') {
-			const error = e as LensRulesetError
+		} else if (e instanceof LensRulesetError) {
+			logger.header(e.message, LogLevel.Error)
 
-			logger.header(error.message, LogLevel.Error)
-			error.validationError.errors.forEach(err => {
+			e.validationError.errors.forEach(err => {
 				logger.error(err)
 			})
 
 			await lens?.dispose()
-		} else if (e.name.startsWith('Lens')) {
+		} else if (e instanceof LensError) {
 			logger.error(e.message)
 		} else {
 			await lens?.dispose()
