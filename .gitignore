@@ -7,3 +7,11 @@ tests/coverage
 .lens.config.js
 .lens.config.json
 yarn-error.log
+
+# Yarn
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
