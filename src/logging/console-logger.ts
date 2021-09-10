@@ -11,7 +11,7 @@ export default class ConsoleLogger implements Logger {
 
     public header (message: string, level: LogLevel = LogLevel.Info): void {
         const box = boxen(message, {
-            borderStyle: boxen.BorderStyle.Round,
+            borderStyle: 'double',
             padding: {
                 top: level === LogLevel.Critical ? 1 : 0,
                 right: 3,
