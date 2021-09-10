@@ -697,7 +697,7 @@ __metadata:
     ts-node: ^9.0.0
     tsconfig-paths: ^3.11.0
     typescript: ^4.0.3
-    yargs: ^16.0.3
+    yargs: ^16.2.0
     yup: ^0.29.3
   bin:
     lens: ./bin/lens
@@ -1872,14 +1872,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cliui@npm:^7.0.0":
-  version: 7.0.1
-  resolution: "cliui@npm:7.0.1"
+"cliui@npm:^7.0.2":
+  version: 7.0.4
+  resolution: "cliui@npm:7.0.4"
   dependencies:
     string-width: ^4.2.0
     strip-ansi: ^6.0.0
     wrap-ansi: ^7.0.0
-  checksum: a327327534dad81db343b3a5a41ade37ed004ea815f852a85b0d96d9246ef202a4a551280458babb70add7e283a95057602f0924c9b8a224e03a79c510a28517
+  checksum: ce2e8f578a4813806788ac399b9e866297740eecd4ad1823c27fd344d78b22c5f8597d548adbcc46f0573e43e21e751f39446c5a5e804a12aace402b7a315d7f
   languageName: node
   linkType: hard
 
@@ -2343,10 +2343,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"escalade@npm:^3.0.2":
-  version: 3.0.2
-  resolution: "escalade@npm:3.0.2"
-  checksum: 239fb2fa05bc556b123e36916c11b24f93e52a39546975a0ce6747dd259799e5d7c85bd38d60a42954594a70d21d0bf00ec68e6ec644adf6d10ef0dd12f24b39
+"escalade@npm:^3.1.1":
+  version: 3.1.1
+  resolution: "escalade@npm:3.1.1"
+  checksum: a3e2a99f07acb74b3ad4989c48ca0c3140f69f923e56d0cba0526240ee470b91010f9d39001f2a4a313841d237ede70a729e92125191ba5d21e74b106800b133
   languageName: node
   linkType: hard
 
@@ -6908,10 +6908,10 @@ typescript@^4.0.3:
   languageName: node
   linkType: hard
 
-"y18n@npm:^5.0.1":
-  version: 5.0.1
-  resolution: "y18n@npm:5.0.1"
-  checksum: b4c74a21f4e5d44fde0116b98b0b3b464a9f97c84dd98870ec5b58ee342f4590cf209201d954938edebacc94cd33a6b3fb212533e68af32a72dac2418797338a
+"y18n@npm:^5.0.5":
+  version: 5.0.8
+  resolution: "y18n@npm:5.0.8"
+  checksum: 54f0fb95621ee60898a38c572c515659e51cc9d9f787fb109cef6fde4befbe1c4602dc999d30110feee37456ad0f1660fa2edcfde6a9a740f86a290999550d30
   languageName: node
   linkType: hard
 
@@ -6946,10 +6946,10 @@ typescript@^4.0.3:
   languageName: node
   linkType: hard
 
-"yargs-parser@npm:^20.0.0":
-  version: 20.0.0
-  resolution: "yargs-parser@npm:20.0.0"
-  checksum: 8a5e4bd50c09beb8aeed386b5c81b98310ff34f76cf0c120f7490caf9bb0218648c5cd53973fabb8c39f317f4df4e0318b1823f006be562f7202ce819c1bcc52
+"yargs-parser@npm:^20.2.2":
+  version: 20.2.9
+  resolution: "yargs-parser@npm:20.2.9"
+  checksum: 8bb69015f2b0ff9e17b2c8e6bfe224ab463dd00ca211eece72a4cd8a906224d2703fb8a326d36fdd0e68701e201b2a60ed7cf81ce0fd9b3799f9fe7745977ae3
   languageName: node
   linkType: hard
 
@@ -6972,18 +6972,18 @@ typescript@^4.0.3:
   languageName: node
   linkType: hard
 
-"yargs@npm:^16.0.3":
-  version: 16.0.3
-  resolution: "yargs@npm:16.0.3"
+"yargs@npm:^16.2.0":
+  version: 16.2.0
+  resolution: "yargs@npm:16.2.0"
   dependencies:
-    cliui: ^7.0.0
-    escalade: ^3.0.2
+    cliui: ^7.0.2
+    escalade: ^3.1.1
     get-caller-file: ^2.0.5
     require-directory: ^2.1.1
     string-width: ^4.2.0
-    y18n: ^5.0.1
-    yargs-parser: ^20.0.0
-  checksum: e59676cfc84ae64c59200d066b9c9a736ef8c54bac909ea56e3578332f54aff4da64ce9ce9e595e25529cb3f4063a1902adf3bc08313ae1bf808563c8c6e348a
+    y18n: ^5.0.5
+    yargs-parser: ^20.2.2
+  checksum: b14afbb51e3251a204d81937c86a7e9d4bdbf9a2bcee38226c900d00f522969ab675703bee2a6f99f8e20103f608382936034e64d921b74df82b63c07c5e8f59
   languageName: node
   linkType: hard
 
