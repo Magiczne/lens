@@ -648,7 +648,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@magiczne/lens@workspace:."
   dependencies:
-    "@types/lodash": ^4.14.161
+    "@types/lodash": ^4.14.172
     "@types/node": ^14.11.2
     "@types/puppeteer": ^3.0.2
     "@types/yargs": ^15.0.7
@@ -664,7 +664,7 @@ __metadata:
     is-installed-globally: ^0.3.2
     jest: ^26.4.2
     jest-each: ^26.4.2
-    lodash: ^4.17.20
+    lodash: ^4.17.21
     pkg-dir: ^4.2.0
     puppeteer: ^5.3.1
     ts-jest: ^26.4.0
@@ -866,10 +866,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash@npm:^4.14.161":
-  version: 4.14.161
-  resolution: "@types/lodash@npm:4.14.161"
-  checksum: 3b03bde2b0cd8282f864951b70698115a8d9534110b12cc1cf85eef9caa2ea51a58ea790b5568a828406935966d3a23834d487a30774ed51a77eac271f7d97e9
+"@types/lodash@npm:^4.14.172":
+  version: 4.14.172
+  resolution: "@types/lodash@npm:4.14.172"
+  checksum: 5fc51ea40d7e455bd1c760bcc60c9e81f82d85988666d4d4969bd8311367c63bbf1fe2be48755ba87836710e45fff94014ec164ebe6ccaa72815014981152434
   languageName: node
   linkType: hard
 
@@ -4321,10 +4321,17 @@ fsevents@^2.1.2:
   languageName: node
   linkType: hard
 
-"lodash@npm:^4.17.14, lodash@npm:^4.17.15, lodash@npm:^4.17.19, lodash@npm:^4.17.20":
+"lodash@npm:^4.17.14, lodash@npm:^4.17.15, lodash@npm:^4.17.19":
   version: 4.17.20
   resolution: "lodash@npm:4.17.20"
   checksum: b31afa09739b7292a88ec49ffdb2fcaeb41f690def010f7a067eeedffece32da6b6847bfe4d38a77e6f41778b9b2bca75eeab91209936518173271f0b69376ea
+  languageName: node
+  linkType: hard
+
+"lodash@npm:^4.17.21":
+  version: 4.17.21
+  resolution: "lodash@npm:4.17.21"
+  checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
   languageName: node
   linkType: hard
 
