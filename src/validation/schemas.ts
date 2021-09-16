@@ -92,7 +92,7 @@ const ruleSchema: Yup.ObjectSchema<Rule> = Yup.object().shape({
 
 const rulesetSchema: Yup.ObjectSchema<Ruleset> = Yup.object().shape({
     disable: Yup.bool().default(false),
-    rules: Yup.array().of(ruleSchema).required()
+    rules: Yup.array().of(ruleSchema).required().min(1)
 }).required()
 
 export {
