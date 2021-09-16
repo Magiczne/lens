@@ -17,12 +17,17 @@
         "plugin:@typescript-eslint/recommended"
     ],
     "rules": {
-        "@typescript-eslint/quotes": [
-            "error", "single"
-        ],
-        "array-bracket-spacing": [
-            "error", "never"
-        ],
+        "@typescript-eslint/object-curly-spacing": ["error", "always"],
+        "@typescript-eslint/quotes": ["error", "single"],
+        "@typescript-eslint/space-before-function-paren": ["error", "always"],
+        "array-bracket-spacing": ["error", "never"],
+        "no-process-exit": "error",
+        "node/no-deprecated-api": "error",
+        "node/no-extraneous-import": "error",
+        "node/no-extraneous-require": "error",
+        "node/no-exports-assign": "error",
+        "node/no-unpublished-bin": "error",
+        "node/no-unpublished-require": "error",
         "object-curly-newline": ["error", {
             "consistent": true
         }],
@@ -31,12 +36,6 @@
         }],
         "quote-props": ["error", "consistent-as-needed"],
         "semi": ["warn", "never"],
-        "no-process-exit": "error",
-        "node/no-deprecated-api": "error",
-        "node/no-extraneous-import": "error",
-        "node/no-extraneous-require": "error",
-        "node/no-exports-assign": "error",
-        "node/no-unpublished-bin": "error",
-        "node/no-unpublished-require": "error"
+        "space-infix-ops": ["error"]
     }
 }
