@@ -3,9 +3,9 @@ import * as Yup from 'yup'
 
 import { Rule, Ruleset } from '@/typings/rules'
 import { isStringArray } from '@/utils'
-import { availableViewportSets } from '@/viewports'
+import { availableViewportSets, ViewportType } from '@/viewports'
 
-const viewportSchema: Yup.ObjectSchema<Viewport> = Yup.object().shape({
+const viewportSchema: Yup.SchemaOf<Viewport> = Yup.object().shape({
     width: Yup.number().required().integer().moreThan(0),
     height: Yup.number().required().integer().moreThan(0),
     deviceScaleFactor: Yup.number().notRequired().moreThan(0),
@@ -14,7 +14,7 @@ const viewportSchema: Yup.ObjectSchema<Viewport> = Yup.object().shape({
     isLandscape: Yup.bool().notRequired()
 }).required()
 
-const ruleSchema: Yup.ObjectSchema<Rule> = Yup.object().shape({
+const ruleSchema: Yup.SchemaOf<Rule> = Yup.object().shape({
     url: Yup.string().required().test({
         name: 'is-valid-url',
         test (v) {
@@ -51,7 +51,7 @@ const ruleSchema: Yup.ObjectSchema<Rule> = Yup.object().shape({
         if (Array.isArray(val)) {
             if (isStringArray(val)) {
                 return Yup.array()
-                    .of(Yup.string().oneOf(availableViewportSets))
+                    .of(Yup.string().oneOf(availableViewportSets as Array<ViewportType>))
                     .default(availableViewportSets)
             }
 
@@ -90,7 +90,7 @@ const ruleSchema: Yup.ObjectSchema<Rule> = Yup.object().shape({
     })
 }).required()
 
-const rulesetSchema: Yup.ObjectSchema<Ruleset> = Yup.object().shape({
+const rulesetSchema: Yup.SchemaOf<Ruleset> = Yup.object().shape({
     disable: Yup.bool().default(false),
     rules: Yup.array().of(ruleSchema).required().min(1)
 }).required()
