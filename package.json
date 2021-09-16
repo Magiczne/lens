@@ -7,11 +7,11 @@
 	"scripts": {
 		"build:dev": "ncc build ./src/index.ts -e puppeteer -o lib",
 		"build:prod": "ncc build ./src/index.ts -e puppeteer -o lib -m",
-		"coverage": "jest --coverage",
 		"start": "ts-node -r tsconfig-paths/register src/index.ts",
 		"lint": "eslint . --ext .ts",
 		"lint-and-fix": "eslint . --ext .ts --fix",
 		"test": "jest",
+		"test:coverage": "jest --coverage",
 		"tsc": "tsc"
 	},
 	"engines": {
