@@ -935,7 +935,7 @@ __metadata:
   dependencies:
     "@types/jest": ^27.0.1
     "@types/lodash": ^4.14.173
-    "@types/node": ^14.11.2
+    "@types/node": ^14.17.16
     "@types/yargs": ^17.0.2
     "@types/yup": ^0.29.7
     "@typescript-eslint/eslint-plugin": ^4.31.1
@@ -1205,10 +1205,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^14.11.2":
-  version: 14.11.2
-  resolution: "@types/node@npm:14.11.2"
-  checksum: d1c5277b171200716c9c01f2545601c322182aea2c7c50722294f910c8924c2bfc1c4b5353d876277d69df3cf117a9d44d2cc339cf1878ae08a9b8f5318c26a8
+"@types/node@npm:^14.17.16":
+  version: 14.17.16
+  resolution: "@types/node@npm:14.17.16"
+  checksum: 257e85d0c89310115312b8954f90588ec35065cace86dfe7989d223028c2d47af7c154074482f82988c1f9c1e6e80fef428f569f9767816987c71f6bc661fcb0
   languageName: node
   linkType: hard
 
