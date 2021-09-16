@@ -1,4 +1,4 @@
-name: 'Code style'
+name: 'Tests'
 
 on:
   push:
@@ -8,11 +8,12 @@ on:
   pull_request:
     branches:
       - develop
+      - master
   workflow_dispatch:
 
 jobs:
   lint:
-    name: 'Run ESLint'
+    name: 'Run Tests'
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
@@ -31,9 +32,8 @@ jobs:
           restore-keys: |
             yarn-${{ hashFiles('yarn.lock') }}
             yarn-
-
       - name: 'Install dependencies'
         run: yarn install
 
-      - name: 'Lint'
-        run: yarn lint
+      - name: 'Test'
+        run: yarn test
