@@ -3,7 +3,7 @@ import { Viewport } from 'puppeteer'
 
 import { LensResolutionError, LensUrlError } from '@/errors'
 import { ArgumentParser, LensArguments, ParsedLensArguments } from '@/typings/types'
-import { filterObject } from '@/utils'
+import { filterObject } from '@/util'
 import { defaultViewports, ViewportType } from '@/viewports'
 
 export default class DefaultArgumentParser implements ArgumentParser {

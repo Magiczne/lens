@@ -1,7 +1,7 @@
 import { Viewport } from 'puppeteer'
 
 import { Rule, Ruleset, ParsedRule, ParsedRuleset, RulesetParser } from '@/typings/rules'
-import { filterObject, isStringArray } from '@/utils'
+import { filterObject, isStringArray } from '@/util'
 import { defaultViewports } from '@/viewports'
 
 export default class DefaultRulesetParser implements RulesetParser {

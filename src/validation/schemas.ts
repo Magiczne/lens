@@ -2,7 +2,7 @@ import { Viewport } from 'puppeteer'
 import * as Yup from 'yup'
 
 import { Rule, Ruleset } from '@/typings/rules'
-import { isStringArray } from '@/utils'
+import { isStringArray } from '@/util'
 import { availableViewportSets, ViewportType } from '@/viewports'
 
 const viewportSchema: Yup.SchemaOf<Viewport> = Yup.object().shape({

@@ -14,7 +14,7 @@ import {
 	RulesetParser,
 	RulesetValidator
 } from '@/typings/types'
-import { arrayToChunks, forEachAsync } from '@/utils'
+import { arrayToChunks, forEachAsync } from '@/util'
 
 export default class Lens {
 	private readonly argumentParser: ArgumentParser
