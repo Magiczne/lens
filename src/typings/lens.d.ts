@@ -1,4 +1,4 @@
-import { LoadEvent, Viewport } from 'puppeteer'
+import { PuppeteerLifeCycleEvent, Viewport } from 'puppeteer'
 
 import { RulesetParser, RulesetValidator } from '@/typings/rules'
 import { Logger } from '@/typings/logging'
@@ -44,7 +44,7 @@ interface LensConfig {
     }
     puppeteer: {
         headless: boolean
-        waitUntil: LoadEvent | LoadEvent[]
+        waitUntil: PuppeteerLifeCycleEvent | PuppeteerLifeCycleEvent[]
     }
 }
 
