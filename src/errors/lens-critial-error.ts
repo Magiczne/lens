@@ -1,6 +1,7 @@
 import ExitCode from '@/exit-code'
+import { LensError } from '@/errors/lens-error'
 
-class LensCriticalError extends Error {
+class LensCriticalError extends LensError {
     code: ExitCode
     name = 'LensCriticalError'
 
