@@ -110,16 +110,16 @@ describe('DefaultArgumentParser', () => {
     describe('parse', () => {
         it('parses all arguments at once', () => {
             const args: LensArguments = {
-                _: [],
-                $0: '',
+                '_': [],
+                '$0': '',
 
-                url: ['https://example.com'],
-                resolution: ['1280x720'],
-                viewports: [],
-                tag: 'custom tag',
+                'url': ['https://example.com'],
+                'resolution': ['1280x720'],
+                'viewports': [],
+                'tag': 'custom tag',
 
-                inputDir: './rules',
-                outputDir: './screenshots'
+                'input-dir': './rules',
+                'output-dir': './screenshots'
             }
 
             const parsedArgs = parser.parse(args)
@@ -129,8 +129,8 @@ describe('DefaultArgumentParser', () => {
                 viewportSet: parser.parseViewports([], ['1280x720']),
                 tag: 'custom tag',
 
-                inputDir: parser.parseDirectory(args.inputDir),
-                outputDir: parser.parseDirectory(args.outputDir)
+                inputDir: parser.parseDirectory(args['input-dir']),
+                outputDir: parser.parseDirectory(args['output-dir'])
             })
         })
     })

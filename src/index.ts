@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 
 import yargs from 'yargs'
+import { hideBin } from 'yargs/helpers'
 
 import config from '@/config'
 import Lens from '@/lens'
-import { LensCriticalError, LensRulesetError } from '@/errors'
+import { LensCriticalError, LensError, LensRulesetError } from '@/errors'
 import ConsoleLogger from '@/logging/console-logger'
 import { LogLevel } from '@/logging/log-level'
 import DefaultArgumentParser from '@/parsing/argument-parser'
@@ -13,7 +14,7 @@ import { LensArguments } from '@/typings/types'
 import DefaultRulesetValidator from '@/validation/ruleset-validator'
 import { availableViewportSets } from '@/viewports'
 
-const args: LensArguments = yargs
+const args: LensArguments = yargs(hideBin(process.argv))
 	.option('url', {
 		alias: 'u',
 		describe: 'The url from which screenshots will be taken. ' +
@@ -26,8 +27,8 @@ const args: LensArguments = yargs
 	.option('resolution', {
 		alias: 'r',
 		describe: 'Custom resolution (e.g. 800x600). ' +
-			'If you want to create screenshots for multiple resolutions separate them with a space ' +
-            '(e.g. 800x600 1920x1080)',
+                  'If you want to create screenshots for multiple resolutions separate them with a space ' +
+                  '(e.g. 800x600 1920x1080)',
 		string: true,
 		array: true
 	})
@@ -67,7 +68,7 @@ const args: LensArguments = yargs
 	.example('lens -u https://example.com -v desktop phone', '')
 	.showHelpOnFail(false, 'Use lens --help for available options')
 	.wrap(Math.min(120, yargs.terminalWidth()))
-	.argv
+	.parseSync()
 
 const main = async () => {
 	const lensConfig = await config()
@@ -84,24 +85,23 @@ const main = async () => {
 		await lens.run()
 		await lens.dispose()
 	} catch (e) {
-		if (e.name === 'LensCriticalError') {
-			process.exitCode = (e as LensCriticalError).code
+		if (e instanceof LensCriticalError) {
+			process.exitCode = e.code
 
 			await lens?.dispose()
 
 			logger.header(e.message, LogLevel.Critical)
 
 			throw e
-		} else if (e.name === 'LensRulesetError') {
-			const error = e as LensRulesetError
+		} else if (e instanceof LensRulesetError) {
+			logger.header(e.message, LogLevel.Error)
 
-			logger.header(error.message, LogLevel.Error)
-			error.validationError.errors.forEach(err => {
+			e.validationError.errors.forEach(err => {
 				logger.error(err)
 			})
 
 			await lens?.dispose()
-		} else if (e.name.startsWith('Lens')) {
+		} else if (e instanceof LensError) {
 			logger.error(e.message)
 		} else {
 			await lens?.dispose()

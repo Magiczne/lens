@@ -10,8 +10,8 @@ export default class ArgumentParserMock implements ArgumentParser {
     parse (args: LensArguments): ParsedLensArguments {
         return {
             urls: [],
-            inputDir: path.resolve(args.inputDir ?? './rules'),
-            outputDir: path.resolve(args.outputDir ?? './screenshots'),
+            inputDir: path.resolve(args['input-dir'] ?? './rules'),
+            outputDir: path.resolve(args['output-dir'] ?? './screenshots'),
             tag: args.tag,
             viewportSet: {
                 default: [{ width: 1920, height: 1080 }]

@@ -15,16 +15,16 @@ interface ArgumentParser {
 interface LensArguments {
     [x: string]: unknown
 
-    url?: string[]
-    resolution?: string[]
-    viewports: ReadonlyArray<ViewportType>
-    tag: string
+    'url'?: Array<string>
+    'resolution'?: Array<string>
+    'viewports': ReadonlyArray<ViewportType>
+    'tag': string
 
-    inputDir?: string
-    outputDir?: string
+    'input-dir'?: string
+    'output-dir'?: string
 
-    _: string[]
-    $0: string
+    '_': Array<string | number>
+    '$0': string
 }
 
 interface ParsedLensArguments {
