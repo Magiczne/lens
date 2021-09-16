@@ -3,7 +3,7 @@ import path from 'path'
 import puppeteer, { Browser, Viewport } from 'puppeteer'
 
 import { LensCriticalError } from '@/errors'
-import ExitCode from '@/exit-code'
+import { ExitCode } from '@/exit-code'
 import {
 	ArgumentParser,
 	LensArguments,
