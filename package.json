@@ -11,7 +11,8 @@
 		"start": "ts-node -r tsconfig-paths/register src/index.ts",
 		"lint": "eslint . --ext .ts",
 		"lint-and-fix": "eslint . --ext .ts --fix",
-		"test": "jest"
+		"test": "jest",
+		"tsc": "tsc"
 	},
 	"engines": {
 		"node": ">=14",
