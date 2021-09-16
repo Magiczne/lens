@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import yargs from 'yargs'
+import { hideBin } from 'yargs/helpers'
 
 import config from '@/config'
 import Lens from '@/lens'
@@ -13,7 +14,7 @@ import { LensArguments } from '@/typings/types'
 import DefaultRulesetValidator from '@/validation/ruleset-validator'
 import { availableViewportSets } from '@/viewports'
 
-const args: LensArguments = yargs
+const args: LensArguments = yargs(hideBin(process.argv))
 	.option('url', {
 		alias: 'u',
 		describe: 'The url from which screenshots will be taken. ' +
@@ -26,8 +27,8 @@ const args: LensArguments = yargs
 	.option('resolution', {
 		alias: 'r',
 		describe: 'Custom resolution (e.g. 800x600). ' +
-			'If you want to create screenshots for multiple resolutions separate them with a space ' +
-            '(e.g. 800x600 1920x1080)',
+                  'If you want to create screenshots for multiple resolutions separate them with a space ' +
+                  '(e.g. 800x600 1920x1080)',
 		string: true,
 		array: true
 	})
@@ -67,7 +68,7 @@ const args: LensArguments = yargs
 	.example('lens -u https://example.com -v desktop phone', '')
 	.showHelpOnFail(false, 'Use lens --help for available options')
 	.wrap(Math.min(120, yargs.terminalWidth()))
-	.argv
+	.parseSync()
 
 const main = async () => {
 	const lensConfig = await config()

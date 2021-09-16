@@ -936,7 +936,7 @@ __metadata:
     "@types/jest": ^27.0.1
     "@types/lodash": ^4.14.172
     "@types/node": ^14.11.2
-    "@types/yargs": ^15.0.7
+    "@types/yargs": ^17.0.2
     "@types/yup": ^0.29.7
     "@typescript-eslint/eslint-plugin": ^4.31.1
     "@typescript-eslint/parser": ^4.31.1
@@ -1240,21 +1240,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/yargs@npm:^15.0.7":
-  version: 15.0.7
-  resolution: "@types/yargs@npm:15.0.7"
-  dependencies:
-    "@types/yargs-parser": "*"
-  checksum: a87f464d074b3c48b0a1a75a6183ed83a06b6c7633d55d20c0a39b32478bad3293a15ac911dc6b25912de2f1876f70eeb44903691f183e88494fc10f413c152c
-  languageName: node
-  linkType: hard
-
 "@types/yargs@npm:^16.0.0":
   version: 16.0.4
   resolution: "@types/yargs@npm:16.0.4"
   dependencies:
     "@types/yargs-parser": "*"
   checksum: caa21d2c957592fe2184a8368c8cbe5a82a6c2e2f2893722e489f842dc5963293d2f3120bc06fe3933d60a3a0d1e2eb269649fd6b1947fe1820f8841ba611dd9
+  languageName: node
+  linkType: hard
+
+"@types/yargs@npm:^17.0.2":
+  version: 17.0.2
+  resolution: "@types/yargs@npm:17.0.2"
+  dependencies:
+    "@types/yargs-parser": "*"
+  checksum: 6f4600d3b786c0eb083782f59c9ed61bb4c204269b0a07819bb9e9b1fc29deaf4fe28abde7dca5fbf3cf851beca9458cbcf63ebd128ebfe83d31002d84337b31
   languageName: node
   linkType: hard
 

@@ -13,8 +13,8 @@ export default class DefaultArgumentParser implements ArgumentParser {
             viewportSet: this.parseViewports(args.viewports, args.resolution),
             tag: args.tag,
 
-            inputDir: this.parseDirectory(args.inputDir),
-            outputDir: this.parseDirectory(args.outputDir)
+            inputDir: this.parseDirectory(args['input-dir']),
+            outputDir: this.parseDirectory(args['output-dir'])
         }
     }
 
