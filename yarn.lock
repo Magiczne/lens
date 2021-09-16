@@ -941,7 +941,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^4.31.1
     "@typescript-eslint/parser": ^4.31.1
     "@vercel/ncc": ^0.31.1
-    boxen: ^5.0.1
+    boxen: ^5.1.1
     chalk: ^4.1.2
     cosmiconfig: ^7.0.1
     eslint: ^7.32.0
@@ -1757,19 +1757,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"boxen@npm:^5.0.1":
-  version: 5.0.1
-  resolution: "boxen@npm:5.0.1"
+"boxen@npm:^5.1.1":
+  version: 5.1.1
+  resolution: "boxen@npm:5.1.1"
   dependencies:
     ansi-align: ^3.0.0
     camelcase: ^6.2.0
     chalk: ^4.1.0
     cli-boxes: ^2.2.1
-    string-width: ^4.2.0
+    string-width: ^4.2.2
     type-fest: ^0.20.2
     widest-line: ^3.1.0
     wrap-ansi: ^7.0.0
-  checksum: a5fd6e48ec3bf929dcfa8543ce41e6df0217e4d11a0c95c394c53e230bc59dcecbdfe3c1aa37cdacf6e80b6bd814dfab8f384dbab9563ac2f1cfd6e43e7a6940
+  checksum: c4936c49ebaac0e1c8108b5185b313e0a5d6133adb12afd55009a779e13a19d14c3367ff3db80ebe4a01056505aa149c2062f9d94fc0565d3287034f252b0c1b
   languageName: node
   linkType: hard
 
@@ -5232,6 +5232,17 @@ resolve@^1.20.0:
     is-fullwidth-code-point: ^3.0.0
     strip-ansi: ^6.0.0
   checksum: ee2c68df9a3ce4256565d2bdc8490f5706f195f88e799d3d425889264d3eff3d7984fe8b38dfc983dac948e03d8cdc737294b1c81f1528c37c9935d86b67593d
+  languageName: node
+  linkType: hard
+
+"string-width@npm:^4.2.2":
+  version: 4.2.2
+  resolution: "string-width@npm:4.2.2"
+  dependencies:
+    emoji-regex: ^8.0.0
+    is-fullwidth-code-point: ^3.0.0
+    strip-ansi: ^6.0.0
+  checksum: 343e089b0e66e0f72aab4ad1d9b6f2c9cc5255844b0c83fd9b53f2a3b3fd0421bdd6cb05be96a73117eb012db0887a6c1d64ca95aaa50c518e48980483fea0ab
   languageName: node
   linkType: hard
 
