@@ -1,4 +1,4 @@
-class LensError extends Error {
+class LensError extends Error implements Error {
     name = 'LensError'
 }
 
