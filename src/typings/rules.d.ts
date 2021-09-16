@@ -1,4 +1,3 @@
-import { Asserts } from 'yup'
 import { Page, Viewport } from 'puppeteer'
 
 interface Rule {

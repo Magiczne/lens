@@ -1,4 +1,4 @@
-import each from "jest-each"
+import each from 'jest-each'
 
 import { LensRulesetError } from '@/errors'
 import { RulesetValidator } from '@/typings/rules'
