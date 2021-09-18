@@ -1,7 +1,7 @@
 import { ValidationError } from 'yup'
 
 import { LensRulesetError } from '@/errors'
-import { Ruleset, RulesetValidator } from '@/typings/types'
+import type { Ruleset, RulesetValidator } from '@/typings/types'
 import { rulesetSchema } from '@/validation/schemas/ruleset-schema'
 
 export default class DefaultRulesetValidator implements RulesetValidator {

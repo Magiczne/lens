@@ -4,7 +4,7 @@ import puppeteer, { Browser, Viewport } from 'puppeteer'
 
 import { LensCriticalError } from '@/errors'
 import { ExitCode } from '@/exit-code'
-import {
+import type {
 	ArgumentParser,
 	LensArguments,
 	LensConfig,
@@ -72,7 +72,7 @@ export default class Lens {
 	 *
 	 * @private
 	 */
-	private async runFromRuleset (): Promise<void> {
+	async runFromRuleset (): Promise<void> {
 		if (!fs.existsSync(this.config.directories.input)) {
 			throw new LensCriticalError(
 				`Input directory ${this.config.directories.input} does not exist.`,
@@ -103,7 +103,7 @@ export default class Lens {
 	 *
 	 * @private
 	 */
-	private async runFromArgs (): Promise<void> {
+	async runFromArgs (): Promise<void> {
 		await forEachAsync(this.args.urls, async url => {
 			this.logger.header(`Running lens for ${url.href}`)
 

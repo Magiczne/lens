@@ -1,5 +1,5 @@
 import { cosmiconfig } from 'cosmiconfig'
-import { CosmiconfigResult } from 'cosmiconfig/dist/types'
+import type { CosmiconfigResult } from 'cosmiconfig/dist/types'
 import isInstalledGlobally from 'is-installed-globally'
 import { defaultsDeep } from 'lodash'
 import os from 'os'
