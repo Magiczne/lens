@@ -1,77 +1,1 @@
-import path from 'path'
-
-import { LensCriticalError } from '@/errors'
-import Lens from '@/lens'
-import ConsoleLogger from '@/logging/console-logger'
-import DefaultArgumentParser from '@/parsing/argument-parser'
-import DefaultRulesetParser from '@/parsing/ruleset-parser'
-import { LensArguments, LensConfig } from '@/typings/lens'
-import DefaultRulesetValidator from '@/validation/ruleset-validator'
-
-jest.mock('@/logging/console-logger')
-jest.mock('@/parsing/argument-parser')
-jest.mock('@/parsing/ruleset-parser')
-jest.mock('@/validation/ruleset-validator')
-
-describe('Lens', () => {
-    const defaultArgs: LensArguments = {
-        _: [],
-        $0: '',
-
-        url: ['https://example.com'],
-        resolution: ['1280x720'],
-        viewports: ['desktop', 'tablet', 'phone'],
-        tag: 'default'
-    }
-
-    const defaultConfig: LensConfig = {
-        chunkSize: 5,
-        directories: {
-            input: path.resolve('./rules'),
-            output: path.resolve('./screenshots')
-        },
-        puppeteer: {
-            headless: true,
-            waitUntil: [
-                'load', 'networkidle2'
-            ]
-        }
-    }
-
-    const lensFactory = (args?: Partial<LensArguments>, config?: Partial<LensConfig>): Lens => {
-        return new Lens({
-            argumentParser: new DefaultArgumentParser(),
-            logger: new ConsoleLogger(),
-            rulesetParser: new DefaultRulesetParser(),
-            rulesetValidator: new DefaultRulesetValidator()
-        }, {
-            ...defaultArgs,
-            ...args
-        }, {
-            ...defaultConfig,
-            ...config
-        })
-    }
-
-    it('should throw critical error when run without initialization', () => {
-        const lens = lensFactory()
-
-        expect(lens.run())
-            .rejects
-            .toThrow(LensCriticalError)
-    })
-
-    it('should throw critical error when input directory does not exist', async () => {
-        const lens = lensFactory({
-            inputDir: './not-existing-directory'
-        })
-
-        await lens.init()
-
-        await expect(lens.run())
-            .rejects
-            .toThrow(LensCriticalError)
-
-        await lens.dispose()
-    })
-})
+import fs from 'fs'import path from 'path'import Lens from '@/lens'import ConsoleLogger from '@/logging/console-logger'import DefaultArgumentParser from '@/parsing/argument-parser'import DefaultRulesetParser from '@/parsing/ruleset-parser'import { LensArguments, LensConfig, LensDependencies, ParsedLensArguments } from '@/typings/lens'import DefaultRulesetValidator from '@/validation/ruleset-validator'jest.mock('@/logging/console-logger')jest.mock('@/parsing/argument-parser')jest.mock('@/parsing/ruleset-parser')jest.mock('@/validation/ruleset-validator')describe('Lens', () => {    const defaultDependencies: LensDependencies = {        argumentParser: new DefaultArgumentParser(),        logger: new ConsoleLogger(),        rulesetParser: new DefaultRulesetParser(),        rulesetValidator: new DefaultRulesetValidator()    }    const defaultArgs: LensArguments = {        _: [],        $0: '',        url: ['https://example.com'],        resolution: ['1280x720'],        viewports: ['desktop', 'tablet', 'phone'],        tag: 'default'    }    const defaultConfig: LensConfig = {        chunkSize: 5,        directories: {            input: path.resolve('./rules'),            output: path.resolve('./screenshots')        },        puppeteer: {            headless: true,            waitUntil: [                'load', 'networkidle2'            ]        }    }    const lensFactory = (        dependencies?: Partial<LensDependencies>,        args?: Partial<LensArguments>,        config?: Partial<LensConfig>    ): Lens => {        return new Lens({            ...defaultDependencies,            ...dependencies        }, {            ...defaultArgs,            ...args        }, {            ...defaultConfig,            ...config        })    }    describe('run', (): void => {        it('should throw critical error when run without initialization', (): void => {            const lens = lensFactory()            expect(lens.run())                .rejects                .toThrowErrorMatchingSnapshot()        })        it('should run from args when url was passed in args', async (): Promise<void> => {            const parser = new DefaultArgumentParser()            jest.spyOn(parser, 'parse').mockImplementation((args: LensArguments): ParsedLensArguments => {                return {                    urls: [                        new URL('https://example.com')                    ]                } as ParsedLensArguments            })            const lens = lensFactory({ argumentParser: parser })            const runFromArgsSpy = jest.spyOn(lens, 'runFromArgs').mockImplementation()            const runFromRulesetSpy = jest.spyOn(lens, 'runFromRuleset').mockImplementation()            await lens.init()            await lens.run()            expect(runFromArgsSpy).toBeCalledTimes(1)            expect(runFromRulesetSpy).not.toBeCalled()            await lens.dispose()        })        it('should run from ruleset when url was not passed in args', async (): Promise<void> => {            const lens = lensFactory()            const runFromArgsSpy = jest.spyOn(lens, 'runFromArgs').mockImplementation()            const runFromRulesetSpy = jest.spyOn(lens, 'runFromRuleset').mockImplementation()            await lens.init()            await lens.run()            expect(runFromArgsSpy).not.toBeCalled()            expect(runFromRulesetSpy).toBeCalledTimes(1)            await lens.dispose()        })    })})

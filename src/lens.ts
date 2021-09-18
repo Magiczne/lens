@@ -41,7 +41,9 @@ export default class Lens {
 
 	/**
 	 * Instantiate browser.
-	 * It cannot be done in the constructor since constructor cannot be marked as async.
+	 *
+	 * It cannot be done in the constructor since we need to have an explicit control
+	 * of the asynchronous behavior.
 	 */
 	public async init (): Promise<void> {
 		this.browser = await puppeteer.launch({
