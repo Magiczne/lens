@@ -20,6 +20,6 @@ describe('LensRulesetError', (): void => {
         const error = new LensRulesetError(validationError, 'file.js')
 
         expect(error.validationError).toEqual(validationError)
-        expect(error.message).toBe(`Ruleset file.js contains errors`)
+        expect(error.message).toBe('Ruleset file.js contains errors')
     })
 })

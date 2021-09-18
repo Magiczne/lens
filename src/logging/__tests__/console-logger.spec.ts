@@ -2,7 +2,6 @@ import each from 'jest-each'
 
 import ConsoleLogger from '@/logging/console-logger'
 import { LogLevel } from '@/logging/log-level'
-import FunctionPropertyNames = jest.FunctionPropertyNames;
 
 describe('ConsoleLogger', () => {
     let logger: ConsoleLogger
@@ -17,8 +16,7 @@ describe('ConsoleLogger', () => {
     })
 
     it('prints error message', () => {
-        spy = jest.spyOn(console, 'error')
-            .mockImplementation()
+        spy = jest.spyOn(console, 'error').mockImplementation()
 
         expect(() => {
             logger.error('Message')
@@ -31,9 +29,8 @@ describe('ConsoleLogger', () => {
         [LogLevel.Info, 'log'],
         [LogLevel.Error, 'error'],
         [LogLevel.Critical, 'error']
-    ]).it('prints header with LogLevel = %s', (logLevel: LogLevel, method: FunctionPropertyNames<typeof console>) => {
-        spy = jest.spyOn(console, method)
-            .mockImplementation()
+    ]).it('prints header with LogLevel = %s', (logLevel: LogLevel, method: jest.FunctionPropertyNames<typeof console>) => {
+        spy = jest.spyOn(console, method).mockImplementation()
 
         expect(() => {
             logger.header('Message', logLevel)
@@ -43,8 +40,7 @@ describe('ConsoleLogger', () => {
     })
 
     it('prints info message', () => {
-        spy = jest.spyOn(console, 'log')
-            .mockImplementation()
+        spy = jest.spyOn(console, 'log').mockImplementation()
 
         expect(() => {
             logger.info('Message')
@@ -54,8 +50,7 @@ describe('ConsoleLogger', () => {
     })
 
     it('print success message', () => {
-        spy = jest.spyOn(console, 'log')
-            .mockImplementation()
+        spy = jest.spyOn(console, 'log').mockImplementation()
 
         expect(() => {
             logger.success('Message')

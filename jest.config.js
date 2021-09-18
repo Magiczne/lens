@@ -5,7 +5,7 @@ module.exports = {
         '!**/vendor/**',
         '!**/tests/**'
     ],
-    coverageDirectory: '<rootDir>/tests/coverage',
+    coverageDirectory: '<rootDir>/coverage',
     moduleFileExtensions: [
         'ts', 'js'
     ],
@@ -13,8 +13,7 @@ module.exports = {
         '^@/(.*)$': '<rootDir>/src/$1'
     },
     roots: [
-        '<rootDir>/src',
-        '<rootDir>/tests'
+        '<rootDir>/src'
     ],
     testEnvironment: 'node',
     transform: {
