@@ -28,7 +28,13 @@ describe('ConsoleLogger', () => {
     each([
         [LogLevel.Info, 'log'],
         [LogLevel.Error, 'error'],
-        [LogLevel.Critical, 'error']
+        [LogLevel.Critical, 'error'],
+
+        // No param passed
+        [undefined, 'log'],
+
+        // Some weird, unknown case
+        [5, 'log']
     ]).it('prints header with LogLevel = %s', (logLevel: LogLevel, method: jest.FunctionPropertyNames<typeof console>) => {
         spy = jest.spyOn(console, method).mockImplementation()
 
