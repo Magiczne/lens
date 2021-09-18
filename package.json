@@ -1,6 +1,6 @@
 {
 	"name": "@magiczne/lens",
-	"version": "1.0.0",
+	"version": "2.0.0",
 	"description": "Create screenshots of your webpage in different resolutions in a matter of seconds.",
 	"main": "./lib/index.js",
 	"bin": "./bin/lens",
