@@ -3,7 +3,6 @@ import each from 'jest-each'
 import { ArgumentParser, LensArguments } from '@/typings/types'
 import DefaultArgumentParser from '@/parsing/argument-parser'
 import { defaultViewports } from '@/viewports'
-import { LensResolutionError, LensUrlError } from '@/errors'
 
 jest.mock('path')
 
@@ -56,7 +55,7 @@ describe('DefaultArgumentParser', () => {
         ]).it('should throw on invalid resolution (%s)', (...res: Array<string>) => {
             expect(() => {
                 parser.parseViewports([], res)
-            }).toThrow(LensResolutionError)
+            }).toThrowErrorMatchingSnapshot()
         })
 
         it('parses resolution correctly', () => {
@@ -83,13 +82,13 @@ describe('DefaultArgumentParser', () => {
         it('should throw on invalid url', () => {
             expect(() => {
                 parser.parseUrl(['example.com'])
-            }).toThrow(LensUrlError)
+            }).toThrowErrorMatchingSnapshot()
         })
 
         it('should throw on invalid protocol', () => {
             expect(() => {
                 parser.parseUrl(['ht:/example.com'])
-            }).toThrow(LensUrlError)
+            }).toThrowErrorMatchingSnapshot()
         })
 
         it('parses single url', () => {
