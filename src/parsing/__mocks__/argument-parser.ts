@@ -4,7 +4,7 @@ import path from 'path'
 import { Viewport } from 'puppeteer'
 
 import { ArgumentParser, LensArguments, ParsedLensArguments } from '@/typings/lens'
-import { ViewportType} from '@/viewports'
+import { ViewportType } from '@/viewports'
 
 export default class ArgumentParserMock implements ArgumentParser {
     parse (args: LensArguments): ParsedLensArguments {

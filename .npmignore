@@ -3,11 +3,14 @@
 .idea/
 .lens.config.js
 .lens.config.json
-.yarnrc
+.yarnrc.yml
+.yarn
 .vscode/
 __mocks__
+__tests__
 jest.config.js
 package-lock.json
+coverage
 rules
 screenshots
 tests

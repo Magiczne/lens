@@ -1,8 +1,9 @@
 .idea/
+dist
 node_modules/
 rules/
 screenshots/
-tests/coverage
+coverage
 
 .lens.config.js
 .lens.config.json

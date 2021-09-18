@@ -1,18 +1,9 @@
-import { Viewport } from 'puppeteer'
 import * as Yup from 'yup'
-
-import { Rule, Ruleset } from '@/typings/rules'
-import { isStringArray } from '@/utils'
+import { Rule } from '@/typings/rules'
+import { isStringArray } from '@/util'
 import { availableViewportSets, ViewportType } from '@/viewports'
 
-const viewportSchema: Yup.SchemaOf<Viewport> = Yup.object().shape({
-    width: Yup.number().required().integer().moreThan(0),
-    height: Yup.number().required().integer().moreThan(0),
-    deviceScaleFactor: Yup.number().notRequired().moreThan(0),
-    isMobile: Yup.bool().notRequired(),
-    hasTouch: Yup.bool().notRequired(),
-    isLandscape: Yup.bool().notRequired()
-}).required()
+import { viewportSchema } from '@/validation/schemas/viewport-schema'
 
 const ruleSchema: Yup.SchemaOf<Rule> = Yup.object().shape({
     url: Yup.string().required().test({
@@ -22,7 +13,7 @@ const ruleSchema: Yup.SchemaOf<Rule> = Yup.object().shape({
 
             if (v === undefined) {
                 return this.createError({
-                    message: `Url in path \${path} (${v}) is invalid. Remember to include protocol.`,
+                    message: 'Url in path ${path} does not exist. That should not be a case.',
                     path: this.path
                 })
             }
@@ -90,11 +81,6 @@ const ruleSchema: Yup.SchemaOf<Rule> = Yup.object().shape({
     })
 }).required()
 
-const rulesetSchema: Yup.SchemaOf<Ruleset> = Yup.object().shape({
-    disable: Yup.bool().default(false),
-    rules: Yup.array().of(ruleSchema).required().min(1)
-}).required()
-
 export {
-    ruleSchema, rulesetSchema, viewportSchema
+    ruleSchema
 }

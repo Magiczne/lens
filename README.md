@@ -7,7 +7,7 @@ By default, **lens** will generate screenshots for some common screen resolution
 You can find more info by exploring files in the [src/viewports][src/viewports] directory.
 
 ## Prerequisites
-- Node.js >= 12
+- Node.js >= 14
 
 ## Installation
 

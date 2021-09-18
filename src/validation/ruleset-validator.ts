@@ -1,8 +1,8 @@
 import { ValidationError } from 'yup'
 
 import { LensRulesetError } from '@/errors'
-import { Ruleset, RulesetValidator } from '@/typings/types'
-import { rulesetSchema } from '@/validation/schemas'
+import type { Ruleset, RulesetValidator } from '@/typings/types'
+import { rulesetSchema } from '@/validation/schemas/ruleset-schema'
 
 export default class DefaultRulesetValidator implements RulesetValidator {
     async validate (ruleset: Record<string, unknown>, file: string): Promise<Ruleset> {

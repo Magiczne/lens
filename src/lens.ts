@@ -3,8 +3,8 @@ import path from 'path'
 import puppeteer, { Browser, Viewport } from 'puppeteer'
 
 import { LensCriticalError } from '@/errors'
-import ExitCode from '@/exit-code'
-import {
+import { ExitCode } from '@/exit-code'
+import type {
 	ArgumentParser,
 	LensArguments,
 	LensConfig,
@@ -14,7 +14,7 @@ import {
 	RulesetParser,
 	RulesetValidator
 } from '@/typings/types'
-import { arrayToChunks, forEachAsync } from '@/utils'
+import { arrayToChunks, forEachAsync } from '@/util'
 
 export default class Lens {
 	private readonly argumentParser: ArgumentParser
@@ -41,7 +41,9 @@ export default class Lens {
 
 	/**
 	 * Instantiate browser.
-	 * It cannot be done in the constructor since constructor cannot be marked as async.
+	 *
+	 * It cannot be done in the constructor since we need to have an explicit control
+	 * of the asynchronous behavior.
 	 */
 	public async init (): Promise<void> {
 		this.browser = await puppeteer.launch({
@@ -72,7 +74,7 @@ export default class Lens {
 	 *
 	 * @private
 	 */
-	private async runFromRuleset (): Promise<void> {
+	async runFromRuleset (): Promise<void> {
 		if (!fs.existsSync(this.config.directories.input)) {
 			throw new LensCriticalError(
 				`Input directory ${this.config.directories.input} does not exist.`,
@@ -103,7 +105,7 @@ export default class Lens {
 	 *
 	 * @private
 	 */
-	private async runFromArgs (): Promise<void> {
+	async runFromArgs (): Promise<void> {
 		await forEachAsync(this.args.urls, async url => {
 			this.logger.header(`Running lens for ${url.href}`)
 
@@ -115,8 +117,8 @@ export default class Lens {
 	/**
 	 * Create directory where screenshots of the specified url will be stored
 	 *
-	 * @param url
-	 * @param tag
+	 * @param url URL for which directory should be created
+	 * @param tag Optional tag which will be used as name for the subdirectory
 	 * @private
 	 */
 	private createDirectoryForUrl (url: URL, tag = ''): string {
@@ -163,9 +165,9 @@ export default class Lens {
 	/**
 	 * Generate screenshots based on the specified arguments
 	 *
-	 * @param url
-	 * @param dir
-	 * @param viewportSet
+	 * @param url URL of the page for which screenshots will be generated
+	 * @param dir Directory where screenshots will be stored
+	 * @param viewportSet Set of viewports to generate screenshots for
 	 * @private
 	 */
 	private async generateScreenshots (url: URL, dir: string, viewportSet: Record<string, Array<Viewport>>): Promise<void> {
@@ -191,10 +193,10 @@ export default class Lens {
 	/**
 	 * Generate single screenshot
 	 *
-	 * @param dir
-	 * @param tag
-	 * @param url
-	 * @param viewport
+	 * @param dir Directory where screenshot will be stored
+	 * @param tag Viewport set tag name
+	 * @param url URL of the page for which screenshot will be generated
+	 * @param viewport Viewport for which screenshot will be generated
 	 * @private
 	 */
 	private async generateScreenshot (

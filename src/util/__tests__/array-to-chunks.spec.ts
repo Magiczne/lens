@@ -1,6 +1,6 @@
 import each from 'jest-each'
 
-import { arrayToChunks, filterObject, isStringArray } from '@/utils'
+import { arrayToChunks } from '@/util'
 
 describe('arrayToChunks', () => {
     const array = ['a', 'b', 'c', 'd', 'e']
@@ -39,40 +39,5 @@ describe('arrayToChunks', () => {
         expect(chunks).toStrictEqual([
             ['a', 'b', 'c', 'd', 'e']
         ])
-    })
-})
-
-describe('filterObject', () => {
-    it('filters object', () => {
-        const obj = {
-            a: 10,
-            b: 'test',
-            c: {
-                d: 15
-            }
-        }
-
-        const filteredObj = filterObject(obj, ['a', 'c'])
-
-        expect(filteredObj).toStrictEqual({
-            a: 10,
-            c: {
-                d: 15
-            }
-        })
-    })
-})
-
-describe('isStringArray', () => {
-    it('returns true when array consists only of strings', () => {
-        const arr = ['a', 'b', 'c']
-
-        expect(isStringArray(arr)).toBe(true)
-    })
-
-    it('returns false when array contains element of another type', () => {
-        const arr = ['a', 'b', 10]
-
-        expect(isStringArray(arr)).toBe(false)
     })
 })

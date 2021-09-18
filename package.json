@@ -1,17 +1,18 @@
 {
 	"name": "@magiczne/lens",
-	"version": "1.0.0",
+	"version": "2.0.0",
 	"description": "Create screenshots of your webpage in different resolutions in a matter of seconds.",
 	"main": "./lib/index.js",
 	"bin": "./bin/lens",
 	"scripts": {
 		"build:dev": "ncc build ./src/index.ts -e puppeteer -o lib",
 		"build:prod": "ncc build ./src/index.ts -e puppeteer -o lib -m",
-		"coverage": "jest --coverage",
 		"start": "ts-node -r tsconfig-paths/register src/index.ts",
 		"lint": "eslint . --ext .ts",
 		"lint-and-fix": "eslint . --ext .ts --fix",
-		"test": "jest"
+		"test": "jest",
+		"test:coverage": "jest --coverage",
+		"tsc": "tsc"
 	},
 	"engines": {
 		"node": ">=14",

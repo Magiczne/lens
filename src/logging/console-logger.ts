@@ -2,7 +2,7 @@ import boxen from 'boxen'
 import chalk from 'chalk'
 
 import { LogLevel } from '@/logging/log-level'
-import { Logger } from '@/typings/types'
+import type { Logger } from '@/typings/types'
 
 export default class ConsoleLogger implements Logger {
     public error (message: string): void {

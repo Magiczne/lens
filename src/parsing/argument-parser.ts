@@ -1,9 +1,9 @@
 import path from 'path'
-import { Viewport } from 'puppeteer'
+import type { Viewport } from 'puppeteer'
 
 import { LensResolutionError, LensUrlError } from '@/errors'
-import { ArgumentParser, LensArguments, ParsedLensArguments } from '@/typings/types'
-import { filterObject } from '@/utils'
+import type { ArgumentParser, LensArguments, ParsedLensArguments } from '@/typings/types'
+import { filterObject } from '@/util'
 import { defaultViewports, ViewportType } from '@/viewports'
 
 export default class DefaultArgumentParser implements ArgumentParser {

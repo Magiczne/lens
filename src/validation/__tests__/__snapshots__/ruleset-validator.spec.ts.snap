@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DefaultRulesetValidator should throw LensRulesetError when input is invalid 1`] = `"Ruleset ruleset.js contains errors"`;
+
+exports[`DefaultRulesetValidator should throw LensRulesetError when input is invalid 2`] = `"Ruleset ruleset.js contains errors"`;
+
+exports[`DefaultRulesetValidator should throw LensRulesetError when input is invalid 3`] = `"Ruleset ruleset.js contains errors"`;
+
+exports[`DefaultRulesetValidator should throw LensRulesetError when input is invalid 4`] = `"Ruleset ruleset.js contains errors"`;
+
+exports[`DefaultRulesetValidator should throw LensRulesetError when input is invalid 5`] = `"Ruleset ruleset.js contains errors"`;

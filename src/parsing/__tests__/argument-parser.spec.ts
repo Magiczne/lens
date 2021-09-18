@@ -1,9 +1,8 @@
 import each from 'jest-each'
 
-import { ArgumentParser, LensArguments } from '../../src/typings/types'
-import DefaultArgumentParser from '../../src/parsing/argument-parser'
-import { defaultViewports } from '../../src/viewports'
-import { LensResolutionError, LensUrlError } from '../../src/errors'
+import { ArgumentParser, LensArguments } from '@/typings/types'
+import DefaultArgumentParser from '@/parsing/argument-parser'
+import { defaultViewports } from '@/viewports'
 
 jest.mock('path')
 
@@ -44,16 +43,19 @@ describe('DefaultArgumentParser', () => {
         each([
             // Invalid number of parts
             ['1280'], ['1280x720x2'], ['1280x720', '720'],
+
             // Invalid separator
             ['1280xx720'], ['1280;720'], ['1280x720', '1280.720'],
+
             // Negative resolution
             ['-1280x720'], ['-1280x-720'],
+
             // Zero
             ['0x720'], ['0x0']
         ]).it('should throw on invalid resolution (%s)', (...res: Array<string>) => {
             expect(() => {
                 parser.parseViewports([], res)
-            }).toThrow(LensResolutionError)
+            }).toThrowErrorMatchingSnapshot()
         })
 
         it('parses resolution correctly', () => {
@@ -80,13 +82,13 @@ describe('DefaultArgumentParser', () => {
         it('should throw on invalid url', () => {
             expect(() => {
                 parser.parseUrl(['example.com'])
-            }).toThrow(LensUrlError)
+            }).toThrowErrorMatchingSnapshot()
         })
 
         it('should throw on invalid protocol', () => {
             expect(() => {
                 parser.parseUrl(['ht:/example.com'])
-            }).toThrow(LensUrlError)
+            }).toThrowErrorMatchingSnapshot()
         })
 
         it('parses single url', () => {

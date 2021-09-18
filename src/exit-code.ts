@@ -5,4 +5,6 @@ enum ExitCode {
     InvalidInputDirectory = 17
 }
 
-export default ExitCode
+export {
+    ExitCode
+}

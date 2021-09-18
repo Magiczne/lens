@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DefaultArgumentParser parseResolution should throw on invalid resolution (-1280x-720) 1`] = `"Invalid resolution -1280x-720. Resolution cannot be smaller than 0"`;
+
+exports[`DefaultArgumentParser parseResolution should throw on invalid resolution (-1280x720) 1`] = `"Invalid resolution -1280x720. Resolution cannot be smaller than 0"`;
+
+exports[`DefaultArgumentParser parseResolution should throw on invalid resolution (0x0) 1`] = `"Invalid resolution 0x0. Resolution cannot be smaller than 0"`;
+
+exports[`DefaultArgumentParser parseResolution should throw on invalid resolution (0x720) 1`] = `"Invalid resolution 0x720. Resolution cannot be smaller than 0"`;
+
+exports[`DefaultArgumentParser parseResolution should throw on invalid resolution (1280) 1`] = `"Invalid resolution 1280. It should follow format [width]x[height]"`;
+
+exports[`DefaultArgumentParser parseResolution should throw on invalid resolution (1280;720) 1`] = `"Invalid resolution 1280;720. It should follow format [width]x[height]"`;
+
+exports[`DefaultArgumentParser parseResolution should throw on invalid resolution (1280x720) 1`] = `"Invalid resolution 720. It should follow format [width]x[height]"`;
+
+exports[`DefaultArgumentParser parseResolution should throw on invalid resolution (1280x720) 2`] = `"Invalid resolution 1280.720. It should follow format [width]x[height]"`;
+
+exports[`DefaultArgumentParser parseResolution should throw on invalid resolution (1280x720x2) 1`] = `"Invalid resolution 1280x720x2. It should follow format [width]x[height]"`;
+
+exports[`DefaultArgumentParser parseResolution should throw on invalid resolution (1280xx720) 1`] = `"Invalid resolution 1280xx720. It should follow format [width]x[height]"`;
+
+exports[`DefaultArgumentParser parseUrl should throw on invalid protocol 1`] = `"Url ht:/example.com is invalid. Only http: and https: protocols are allowed"`;
+
+exports[`DefaultArgumentParser parseUrl should throw on invalid url 1`] = `"Url example.com is invalid. Remember to include protocol!"`;
