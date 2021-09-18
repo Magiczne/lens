@@ -115,8 +115,8 @@ export default class Lens {
 	/**
 	 * Create directory where screenshots of the specified url will be stored
 	 *
-	 * @param url
-	 * @param tag
+	 * @param url URL for which directory should be created
+	 * @param tag Optional tag which will be used as name for the subdirectory
 	 * @private
 	 */
 	private createDirectoryForUrl (url: URL, tag = ''): string {
@@ -163,9 +163,9 @@ export default class Lens {
 	/**
 	 * Generate screenshots based on the specified arguments
 	 *
-	 * @param url
-	 * @param dir
-	 * @param viewportSet
+	 * @param url URL of the page for which screenshots will be generated
+	 * @param dir Directory where screenshots will be stored
+	 * @param viewportSet Set of viewports to generate screenshots for
 	 * @private
 	 */
 	private async generateScreenshots (url: URL, dir: string, viewportSet: Record<string, Array<Viewport>>): Promise<void> {
@@ -191,10 +191,10 @@ export default class Lens {
 	/**
 	 * Generate single screenshot
 	 *
-	 * @param dir
-	 * @param tag
-	 * @param url
-	 * @param viewport
+	 * @param dir Directory where screenshot will be stored
+	 * @param tag Viewport set tag name
+	 * @param url URL of the page for which screenshot will be generated
+	 * @param viewport Viewport for which screenshot will be generated
 	 * @private
 	 */
 	private async generateScreenshot (
