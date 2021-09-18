@@ -1,5 +1,3 @@
-import each from 'jest-each'
-
 import { arrayToChunks } from '@/util'
 
 describe('arrayToChunks', () => {
@@ -15,9 +13,12 @@ describe('arrayToChunks', () => {
         ])
     })
 
-    each([
-        0, -1, -10, -Infinity
-    ]).it('returns one chunk when chunk size is less than 1 (%s)', (chunkSize: number) => {
+    test.each([
+        0,
+        -1,
+        -10,
+        -Infinity
+    ])('returns one chunk when chunk size is less than 1 (%s)', (chunkSize: number) => {
         const chunks = arrayToChunks(array, chunkSize)
 
         expect(chunks).toStrictEqual([
