@@ -13,7 +13,7 @@ const ruleSchema: Yup.SchemaOf<Rule> = Yup.object().shape({
 
             if (v === undefined) {
                 return this.createError({
-                    message: `Url in path \${path} (${v}) is invalid. Remember to include protocol.`,
+                    message: 'Url in path ${path} does not exist. That should not be a case.',
                     path: this.path
                 })
             }
