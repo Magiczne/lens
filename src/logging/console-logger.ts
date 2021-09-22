@@ -5,10 +5,16 @@ import { LogLevel } from '@/logging/log-level'
 import type { Logger } from '@/typings/types'
 
 export default class ConsoleLogger implements Logger {
+    /**
+     * @inheritDoc
+     */
     public error (message: string): void {
         console.error(chalk.red(`[ERROR] ${message}`))
     }
 
+    /**
+     * @inheritDoc
+     */
     public header (message: string, level: LogLevel = LogLevel.Info): void {
         const box = boxen(message, {
             borderStyle: 'double',
@@ -38,10 +44,16 @@ export default class ConsoleLogger implements Logger {
         }
     }
 
+    /**
+     * @inheritDoc
+     */
     public info (message: string): void {
         console.log(chalk.blue(`[INFO] ${message}`))
     }
 
+    /**
+     * @inheritDoc
+     */
     public success (message: string): void {
         console.log(chalk.greenBright(`[SUCCESS] ${message}`))
     }

@@ -7,6 +7,11 @@ import { filterObject } from '@/util'
 import { defaultViewports, ViewportType } from '@/viewports'
 
 export default class DefaultArgumentParser implements ArgumentParser {
+    /**
+     * @inheritDoc
+     * @throws LensResolutionError
+     * @throws LensUrlError
+     */
     parse (args: LensArguments): ParsedLensArguments {
         return {
             urls: this.parseUrl(args.url),
@@ -19,10 +24,7 @@ export default class DefaultArgumentParser implements ArgumentParser {
     }
 
     /**
-     * Resolve path to directory if present.
-     * Return undefined otherwise.
-     *
-     * @param dir
+     * @inheritDoc
      */
     parseDirectory (dir?: string): string | undefined {
         if (dir) {
@@ -33,13 +35,8 @@ export default class DefaultArgumentParser implements ArgumentParser {
     }
 
     /**
-     * Retrieve all resolutions from the input argument.
-     * If argument is not present, use default resolutions list.
-     *
-     * If resolutions array is not present filter default viewports by the keys passed in the viewports array.
-     *
-     * @param viewports
-     * @param resolution
+     * @inheritDoc
+     * @throws LensResolutionError
      */
     parseViewports (viewports: ReadonlyArray<ViewportType>, resolution?: string[]): Record<string, Viewport[]> {
         if (!resolution || !resolution.length) {
@@ -71,9 +68,8 @@ export default class DefaultArgumentParser implements ArgumentParser {
     }
 
     /**
-     * Retrieve all urls from the input arguments
-     *
-     * @param url
+     * @inheritDoc
+     * @throws LensUrlError
      */
     parseUrl (url?: string[]): URL[] {
         if (!url) {
