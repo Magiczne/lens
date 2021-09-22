@@ -4,7 +4,7 @@
 Create screenshots of your webpage in different resolutions in a matter of seconds.
 
 By default, **lens** will generate screenshots for some common screen resolutions.
-You can find more info by exploring files in the [src/viewports][src/viewports] directory.
+You can find more info by exploring files in the [src/viewports](src/viewports) directory.
 
 ## Prerequisites
 - Node.js >= 14
