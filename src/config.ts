@@ -3,7 +3,7 @@ import type { CosmiconfigResult } from 'cosmiconfig/dist/types'
 import isInstalledGlobally from 'is-installed-globally'
 import { defaultsDeep } from 'lodash'
 import os from 'os'
-import packageDir from 'pkg-dir'
+import { packageDirectory } from 'pkg-dir'
 import path from 'path'
 
 import { LensConfig } from '@/typings/types'
@@ -25,7 +25,7 @@ const defaultConfig: LensConfig = {
 const config = async (): Promise<LensConfig>  => {
     const searchDirectory = isInstalledGlobally
         ? os.homedir()
-        : await packageDir()
+        : await packageDirectory()
 
     const searchPlaces = [
         '.lens.config.json',
