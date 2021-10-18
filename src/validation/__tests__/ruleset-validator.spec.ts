@@ -1,5 +1,3 @@
-import each from 'jest-each'
-
 import { RulesetValidator } from '@/typings/rules'
 import DefaultRulesetValidator from '@/validation/ruleset-validator'
 
@@ -28,7 +26,7 @@ describe('DefaultRulesetValidator', () => {
             .toStrictEqual(ruleset)
     })
 
-    each([
+    test.each([
         {
             rules: [{
                 url: 'example.com',
@@ -60,7 +58,7 @@ describe('DefaultRulesetValidator', () => {
                 }
             }]
         }
-    ]).it('should throw LensRulesetError when input is invalid', async (ruleset: Record<string, unknown>) => {
+    ])('should throw LensRulesetError when input is invalid', async (ruleset: Record<string, unknown>) => {
         await expect(validator.validate(ruleset, 'ruleset.js'))
             .rejects
             .toThrowErrorMatchingSnapshot()

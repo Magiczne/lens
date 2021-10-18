@@ -1,9 +1,10 @@
 import { Page, Viewport } from 'puppeteer'
+import { ViewportType } from '@/viewports'
 
 interface Rule {
     url: string
     tag: string
-    renderFor?: Array<string> | Array<Viewport>
+    renderFor?: Array<ViewportType> | Array<Viewport>
 
     afterPageLoaded?: (page: Page) => Promise<void> | void
 }
@@ -27,8 +28,20 @@ interface ParsedRuleset {
 }
 
 interface RulesetParser {
+    /**
+     * Parse set of rules for further use in the application.
+     *
+     * @param rawRuleset Raw ruleset data from file
+     * @return Parsed ruleset data
+     */
     parse (rawRuleset: Ruleset): ParsedRuleset
 
+    /**
+     * Parse single rule for further use in the application.
+     *
+     * @param rule Raw rule data from ruleset file
+     * @return Parsed rule data
+     */
     parseRule (rule: Rule): ParsedRule
 }
 

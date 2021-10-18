@@ -4,13 +4,14 @@ import desktop from '@/viewports/desktop'
 import phone from '@/viewports/phone'
 import tablet from '@/viewports/tablet'
 
-const defaultViewports: Record<string, Viewport[]> = {
+type ViewportType = 'desktop' | 'phone' | 'tablet'
+
+const defaultViewports: Record<ViewportType, Viewport[]> = {
     desktop,
     phone,
     tablet
 }
 
-type ViewportType = 'desktop' | 'phone' | 'tablet'
 const availableViewportSets = Object.keys(defaultViewports) as ReadonlyArray<ViewportType>
 
 export {

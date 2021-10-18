@@ -1,5 +1,3 @@
-import each from 'jest-each'
-
 import { ArgumentParser, LensArguments } from '@/typings/types'
 import DefaultArgumentParser from '@/parsing/argument-parser'
 import { defaultViewports } from '@/viewports'
@@ -40,19 +38,25 @@ describe('DefaultArgumentParser', () => {
             expect(viewports).toStrictEqual(defaultViewports)
         })
 
-        each([
+        test.each([
             // Invalid number of parts
-            ['1280'], ['1280x720x2'], ['1280x720', '720'],
+            ['1280'],
+            ['1280x720x2'],
+            ['1280x720', '720'],
 
             // Invalid separator
-            ['1280xx720'], ['1280;720'], ['1280x720', '1280.720'],
+            ['1280xx720'],
+            ['1280;720'],
+            ['1280x720', '1280.720'],
 
             // Negative resolution
-            ['-1280x720'], ['-1280x-720'],
+            ['-1280x720'],
+            ['-1280x-720'],
 
             // Zero
-            ['0x720'], ['0x0']
-        ]).it('should throw on invalid resolution (%s)', (...res: Array<string>) => {
+            ['0x720'],
+            ['0x0']
+        ])('should throw on invalid resolution (%s)', (...res: Array<string>) => {
             expect(() => {
                 parser.parseViewports([], res)
             }).toThrowErrorMatchingSnapshot()
